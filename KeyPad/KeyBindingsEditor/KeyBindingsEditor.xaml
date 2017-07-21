@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="KeyPad.KeyBindingsEditor.KeyBindingsEditor"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			 xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+			 xmlns:vm="clr-namespace:KeyPad.KeyBindingsEditor.ViewModels"
+			 xmlns:converters="clr-namespace:KeyPad.KeyBindingsEditor.Converters"
+			 xmlns:triggerActions="clr-namespace:KeyPad.TriggerActions"
+			 xmlns:ctrls="clr-namespace:KeyPad.KeyBindingsEditor.Controls"
+			 mc:Ignorable="d"
+			 d:DataContext="{d:DesignInstance {x:Type vm:KeyBindingsDesignViewModel}, IsDesignTimeCreatable=True}"
+			 Background="White"
+			 KeyboardNavigation.DirectionalNavigation="Once"
+			 d:DesignHeight="300" d:DesignWidth="300">
+	<UserControl.Resources>
+		<converters:WidthConverter x:Key="WidthConverter"/>
+	</UserControl.Resources>
+	<DockPanel>
+
+		<Grid DockPanel.Dock="Bottom"
+			  Background="Beige">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="45"/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Button Grid.Column="1"
+					Margin="5"
+					IsEnabled="{Binding SaveEnabled}"
+					Command="{Binding SaveCommand}"
+					Content="Save"/>
+		</Grid>
+
+		<Separator DockPanel.Dock="Bottom"
+				   BorderThickness="50"
+				   BorderBrush="Black"/>
+
+		<ScrollViewer VerticalScrollBarVisibility="Auto"
+					  HorizontalScrollBarVisibility="Auto">
+			<ctrls:DisabledArrowsListView ItemsSource="{Binding Bindings}"
+					  SelectedValue="{Binding SelectedBinding, Mode=TwoWay}"
+					  SelectionMode="Single"
+					  Margin="5,0,5,0">
+				<i:Interaction.Triggers>
+					<i:EventTrigger EventName="KeyUp">
+						<triggerActions:ParameterizedCommand Command="{Binding OnKeyUp}"/>
+					</i:EventTrigger>
+				</i:Interaction.Triggers>
+				<ctrls:DisabledArrowsListView.View>
+					<GridView KeyboardNavigation.DirectionalNavigation="None">
+						<GridViewColumn Header="Gamepad Button"
+										DisplayMemberBinding="{Binding GamepadButton}"/>
+						<GridViewColumn Header="Keyboard Button"
+										Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Converter={StaticResource WidthConverter}}">
+							<GridViewColumn.CellTemplate>
+								<DataTemplate>
+									<TextBlock VerticalAlignment="Center"
+											   Text="{Binding KeyboardButton}"/>
+								</DataTemplate>
+							</GridViewColumn.CellTemplate>
+						</GridViewColumn>
+					</GridView>
+				</ctrls:DisabledArrowsListView.View>
+			</ctrls:DisabledArrowsListView>
+		</ScrollViewer>
+
+	</DockPanel>
+</UserControl>
