@@ -1,4 +1,5 @@
 ﻿using KeyPad.KeyBindingsEditor.ViewModels;
+using KeyPad.ProcessWatcher.ViewModels;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,8 @@ namespace KeyPad.ViewModels {
 			this.NewFileCommand = new DelegateCommand<object>((param) => {
 				this.PresenterViewModel = new KeyBindingsEditorViewModel();
 			});
+
+			this.ProcessWatcherViewModel = new ProcessWatcherViewModel("keypadservice");
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged = delegate { };
@@ -31,9 +34,18 @@ namespace KeyPad.ViewModels {
 		private object _presenterViewModel;
 		public object PresenterViewModel {
 			get => _presenterViewModel;
-			internal set {
+			private set {
 				_presenterViewModel = value;
 				PropertyChanged(this, new PropertyChangedEventArgs("PresenterViewModel"));
+			}
+		}
+
+		private object _processWatcherViewModel;
+		public object ProcessWatcherViewModel {
+			get => _processWatcherViewModel;
+			private set {
+				_processWatcherViewModel = value;
+				PropertyChanged(this, new PropertyChangedEventArgs("ProcessWatcherViewModel"));
 			}
 		}
 

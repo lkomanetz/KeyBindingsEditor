@@ -18,6 +18,9 @@
 						  Command="{Binding ExitCommand}"/>
 			</MenuItem>
 		</Menu>
+		<StatusBar DockPanel.Dock="Bottom">
+			<ContentPresenter Content="{Binding ProcessWatcherViewModel}"/>
+		</StatusBar>
 		<ContentPresenter Content="{Binding PresenterViewModel}"/>
 	</DockPanel>
 </Window>

@@ -72,9 +72,14 @@
     <Compile Include="KeyBindingsEditor\ViewModels\KeyBindingsDesignViewModel.cs" />
     <Compile Include="KeyBindingsEditor\ViewModels\KeyBindingsEditorViewModel.cs" />
     <Compile Include="KeyBindingsEditor\ViewModels\KeyBindingViewModel.cs" />
+    <Compile Include="ProcessWatcher\ProcessWatcher.xaml.cs">
+      <DependentUpon>ProcessWatcher.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProcessWatcher\ViewModels\ProcessWatcherDesignViewModel.cs" />
     <Compile Include="TriggerActions\ParameterizedCommand.cs" />
     <Compile Include="ValidatorResult.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ProcessWatcher\ViewModels\ProcessWatcherViewModel.cs" />
     <Page Include="KeyBindingsEditor\KeyBindingsEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -91,6 +96,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ProcessWatcher\ProcessWatcher.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
