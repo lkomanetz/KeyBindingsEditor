@@ -46,6 +46,7 @@ namespace KeyPad.ProcessWatcher.ViewModels {
 		public string LabelContent => (_isProcessRunning) ? "Running..." : "Stopped...";
 		public string ButtonLabelContent => (_isProcessRunning) ? "Stop" : "Start";
 		public ICommand ButtonCommand => (_isProcessRunning) ? _stopProcessCommand : _startProcessCommand;
+		public Brush StatusColor => (_isProcessRunning) ? Brushes.Green : Brushes.Red;
 
 		private void WatchProcess(string processName) {
 			Process keypadProcess = Process.GetProcessesByName(processName).SingleOrDefault();
@@ -58,6 +59,7 @@ namespace KeyPad.ProcessWatcher.ViewModels {
 			ProcessStartInfo info = new ProcessStartInfo() {
 				FileName = @"C:\Users\logan\Desktop\XKey\keypadservice.exe",
 				UseShellExecute = true,
+				WindowStyle = ProcessWindowStyle.Minimized
 			};
 
 			Process keypadProcess = new Process() { StartInfo = info };

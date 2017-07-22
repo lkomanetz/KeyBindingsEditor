@@ -10,7 +10,7 @@ namespace KeyPad.ProcessWatcher.ViewModels {
 	public class ProcessWatcherDesignViewModel {
 
 		public string LabelContent => "Running...";
-		public string StatusColor => Colors.Green.ToString();
+		public Brush StatusBrush => Brushes.Green;
 		public string ButtonLabelContent => "Start Service";
 
 	}
