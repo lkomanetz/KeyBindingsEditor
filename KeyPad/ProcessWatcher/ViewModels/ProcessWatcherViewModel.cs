@@ -14,9 +14,12 @@ namespace KeyPad.ProcessWatcher.ViewModels {
 
 	public class ProcessWatcherViewModel : INotifyPropertyChanged {
 
+		private readonly object _threadKey = new object();
+
+		private ICommand _stopProcessCommand;
+		private ICommand _startProcessCommand;
 		private System.Timers.Timer _executeThreadTimer;
 		private Thread _watcherThread;
-		private Process _keypadProcess;
 		private string _processName;
 		private bool _isProcessRunning;
 
@@ -34,38 +37,46 @@ namespace KeyPad.ProcessWatcher.ViewModels {
 				_watcherThread.Start();
 			};
 
-			this.StartProcessCommand = new DelegateCommand<object>((param) => StartProcess());
+			_startProcessCommand = new DelegateCommand<object>((param) => StartProcess());
+			_stopProcessCommand = new DelegateCommand<object>((param) => StopProcess());
 		} 
 
 		public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
-		public string LabelContent => "KeyPad Service Status:";
-		public string StatusColor => (_isProcessRunning) ? Colors.Green.ToString() : Colors.DarkRed.ToString();
-		public Visibility ButtonVisibility => (_isProcessRunning) ? Visibility.Collapsed : Visibility.Visible;
-		public ICommand StartProcessCommand { get; private set; }
+		public string LabelContent => (_isProcessRunning) ? "Running..." : "Stopped...";
+		public string ButtonLabelContent => (_isProcessRunning) ? "Stop" : "Start";
+		public ICommand ButtonCommand => (_isProcessRunning) ? _stopProcessCommand : _startProcessCommand;
 
 		private void WatchProcess(string processName) {
-			_keypadProcess = Process.GetProcessesByName(processName).SingleOrDefault();
-			bool isRunning = _keypadProcess != null;
-			if (_isProcessRunning != isRunning) {
-				_isProcessRunning = isRunning;
-				PropertyChanged(this, new PropertyChangedEventArgs("StatusColor"));
-				PropertyChanged(this, new PropertyChangedEventArgs("ButtonVisibility"));
-			}
+			Process keypadProcess = Process.GetProcessesByName(processName).SingleOrDefault();
+
+			_isProcessRunning = keypadProcess != null;
+			InvokePropertyChangeEvents();
 		}
 
 		private void StartProcess() {
 			ProcessStartInfo info = new ProcessStartInfo() {
-				FileName = @"C:\users\logan\Desktop\XKey\keypadservice.exe",
-				UseShellExecute = false,
-				RedirectStandardOutput = true,
+				FileName = @"C:\Users\logan\Desktop\XKey\keypadservice.exe",
+				UseShellExecute = true,
 			};
-			if (_keypadProcess == null)
-			{
-				Process process = new Process();
-				process.StartInfo = info;
-				process.Start();
+
+			Process keypadProcess = new Process() { StartInfo = info };
+			_isProcessRunning = keypadProcess.Start();
+		}
+
+		private void StopProcess() {
+			Process keypadProcess = Process.GetProcessesByName(_processName).SingleOrDefault();
+			if (keypadProcess != null) {
+				keypadProcess.Kill();
+				InvokePropertyChangeEvents();
 			}
+		}
+
+		private void InvokePropertyChangeEvents() {
+			PropertyChanged(this, new PropertyChangedEventArgs("StatusColor"));
+			PropertyChanged(this, new PropertyChangedEventArgs("ButtonLabelContent"));
+			PropertyChanged(this, new PropertyChangedEventArgs("ButtonCommand"));
+			PropertyChanged(this, new PropertyChangedEventArgs("LabelContent"));
 		}
 
 	}

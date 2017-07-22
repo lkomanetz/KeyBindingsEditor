@@ -7,6 +7,7 @@
 			 xmlns:local="clr-namespace:KeyPad.ProcessWatcher"
 			 mc:Ignorable="d" 
 			 d:DataContext="{d:DesignInstance {x:Type vm:ProcessWatcherDesignViewModel}, IsDesignTimeCreatable=True}"
+			 Background="Beige"
 			 d:DesignHeight="300" d:DesignWidth="300">
 	<Grid>
 		<Grid.ColumnDefinitions>
@@ -15,29 +16,16 @@
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="25"/>
+			<RowDefinition Height="28"/>
 		</Grid.RowDefinitions>
-		<Label Content="{Binding LabelContent}"
+		<Label Content="Keypad Service Status:"
 			   Grid.Column="0"/>
-		<Ellipse Width="25"
-				 HorizontalAlignment="Center"
-				 Grid.Column="1">
-			<Ellipse.Fill>
-				<RadialGradientBrush GradientOrigin="0.5,0.5"
-									 Center="0.5,0.5">
-					<RadialGradientBrush.GradientStops>
-						<GradientStop Color="{Binding StatusColor}"
-									  Offset="0.8"/>
-						<GradientStop Color="Black"
-									  Offset="0.99"/>
-					</RadialGradientBrush.GradientStops>
-				</RadialGradientBrush>
-			</Ellipse.Fill>
-		</Ellipse>
+		<Label Content="{Binding LabelContent}"
+			   Grid.Column="1"
+			   FontWeight="Bold"/>
 		<Button Grid.Column="2"
 				HorizontalAlignment="Right"
-				Visibility="{Binding ButtonVisibility}"
-				Command="{Binding StartProcessCommand}"
-				Content="Start Process"/>
+				Command="{Binding ButtonCommand}"
+				Content="{Binding ButtonLabelContent}"/>
 	</Grid>
 </UserControl>
