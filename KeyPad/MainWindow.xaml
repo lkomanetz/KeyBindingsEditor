@@ -4,21 +4,24 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:KeyPad"
+		xmlns:vm="clr-namespace:KeyPad.ViewModels"
 		mc:Ignorable="d"
+		d:DataContext="{d:DesignInstance {x:Type vm:MainWindowDesignViewModel}, IsDesignTimeCreatable=True}"
 		Title="KeyPad Editor" Height="350" Width="525">
 	<DockPanel LastChildFill="True">
-		<Menu DockPanel.Dock="Top">
-			<MenuItem Header="_File">
-				<MenuItem Header="_New"
-						  Command="{Binding NewFileCommand}"/>
-				<MenuItem Header="_Open"
-						  Command="{Binding OpenFileCommand}" />
-				<MenuItem Header="_Settings"
-						  Command="{Binding SettingsCommand}"/>
-				<Separator />
-				<MenuItem Header="E_xit"
-						  Command="{Binding ExitCommand}"/>
-			</MenuItem>
+		<Menu DockPanel.Dock="Top"
+			  ItemsSource="{Binding TopMenu}">
+			<Menu.ItemContainerStyle>
+				<Style TargetType="{x:Type MenuItem}">
+					<Setter Property="Command" Value="{Binding Action}"/>
+				</Style>
+			</Menu.ItemContainerStyle>
+			<Menu.ItemTemplate>
+				<HierarchicalDataTemplate DataType="{x:Type local:TopBarMenuItem}"
+										  ItemsSource="{Binding Children}">
+					<TextBlock Text="{Binding Title}"/>
+				</HierarchicalDataTemplate>
+			</Menu.ItemTemplate>
 		</Menu>
 		<ContentPresenter DockPanel.Dock="Bottom"
 						  Content="{Binding ProcessWatcherViewModel}"/>

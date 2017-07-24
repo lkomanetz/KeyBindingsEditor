@@ -15,14 +15,14 @@ using System.Windows.Shapes;
 
 namespace KeyPad.Settings
 {
-	/// <summary>
-	/// Interaction logic for KeyPadSettings.xaml
-	/// </summary>
-	public partial class KeyPadSettings : UserControl
-	{
-		public KeyPadSettings()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for ServiceSettings.xaml
+    /// </summary>
+    public partial class ServiceSettings : UserControl
+    {
+        public ServiceSettings()
+        {
+            InitializeComponent();
+        }
+    }
 }

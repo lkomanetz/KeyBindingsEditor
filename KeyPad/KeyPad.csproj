@@ -82,14 +82,16 @@
       <DependentUpon>ProcessWatcher.xaml</DependentUpon>
     </Compile>
     <Compile Include="ProcessWatcher\ViewModels\ProcessWatcherDesignViewModel.cs" />
-    <Compile Include="Settings\KeyPadSettings.xaml.cs">
-      <DependentUpon>KeyPadSettings.xaml</DependentUpon>
+    <Compile Include="Settings\Models\KeyPadSetting.cs" />
+    <Compile Include="Settings\ServiceSettings.xaml.cs">
+      <DependentUpon>ServiceSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings\TreeMenuItem.cs" />
-    <Compile Include="Settings\ViewModels\KeyPadSettingsDesignViewModel.cs" />
-    <Compile Include="Settings\ViewModels\KeyPadSettingsViewModel.cs" />
+    <Compile Include="Settings\ViewModels\KeyPadSettingViewModel.cs" />
+    <Compile Include="Settings\ViewModels\ServiceSettingsViewModel.cs" />
+    <Compile Include="TopBarMenuItem.cs" />
     <Compile Include="TriggerActions\ParameterizedCommand.cs" />
     <Compile Include="ValidatorResult.cs" />
+    <Compile Include="ViewModels\MainWindowDesignViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ProcessWatcher\ViewModels\ProcessWatcherViewModel.cs" />
     <Page Include="KeyBindingsEditor\KeyBindingsEditor.xaml">
@@ -112,7 +114,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Settings\KeyPadSettings.xaml">
+    <Page Include="Settings\ServiceSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -143,5 +145,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

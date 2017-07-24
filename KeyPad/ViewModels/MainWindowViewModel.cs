@@ -16,25 +16,15 @@ namespace KeyPad.ViewModels {
 	internal class MainWindowViewModel : INotifyPropertyChanged {
 
 		public MainWindowViewModel() {
-			this.ExitCommand = new DelegateCommand<object>((param) => Shutdown());
-			this.OpenFileCommand = new DelegateCommand<object>((param) => OpenKeybindingsFile());
+			this.TopMenu = CreateMenu();
 
-			this.NewFileCommand = new DelegateCommand<object>((param) => {
-				this.PresenterViewModel = new KeyBindingsEditorViewModel();
-			});
-			this.SettingsCommand = new DelegateCommand<object>((param) => {
-				this.PresenterViewModel = new KeyPadSettingsViewModel();
-			});
 
 			this.ProcessWatcherViewModel = new ProcessWatcherViewModel("keypadservice");
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
-		public ICommand ExitCommand { get; private set; }
-		public ICommand OpenFileCommand { get; private set; }
-		public ICommand NewFileCommand { get; private set; }
-		public ICommand SettingsCommand { get; private set; }
+		public IList<IMenuItem> TopMenu { get; private set; }
 
 		private object _presenterViewModel;
 		public object PresenterViewModel {
@@ -68,6 +58,41 @@ namespace KeyPad.ViewModels {
 			}
 
 			this.PresenterViewModel = new KeyBindingsEditorViewModel(dlg.FileName);
+		}
+
+		private IList<IMenuItem> CreateMenu() {
+			return new List<IMenuItem>() {
+				new TopBarMenuItem() {
+					Title = "File",
+					Children = new List<IMenuItem>() {
+						new TopBarMenuItem() {
+							Title = "New",
+							Action = new DelegateCommand<object>((param) => PresenterViewModel = new KeyBindingsEditorViewModel())
+						},
+						new TopBarMenuItem() {
+							Title = "Open",
+							Action = new DelegateCommand<object>((param) => OpenKeybindingsFile())
+						},
+						new TopBarMenuItem() {
+							Title = "Settings",
+							Children = new List<IMenuItem>() {
+								new TopBarMenuItem() {
+									Title = "Service settings",
+									Action = new DelegateCommand<object>((param) => PresenterViewModel = new ServiceSettingsViewModel("settings.txt")),
+								},
+								new TopBarMenuItem() {
+									Title = "KeyPad settings",
+									Action = new DelegateCommand<object>((param) => { })
+								}
+							}
+						},
+						new TopBarMenuItem() {
+							Title = "Exit",
+							Action = new DelegateCommand<object>((param) => Shutdown())
+						}
+					}
+				}
+			};
 		}
 
 	}
