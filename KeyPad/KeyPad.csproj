@@ -40,6 +40,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
@@ -61,6 +62,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="IMenuItem.cs" />
     <Compile Include="IValidator.cs" />
     <Compile Include="KeyBindingsEditor\BindingFileManager.cs" />
     <Compile Include="KeyBindingsEditor\Controls\DisabledArrowsListView.cs" />
@@ -80,6 +82,12 @@
       <DependentUpon>ProcessWatcher.xaml</DependentUpon>
     </Compile>
     <Compile Include="ProcessWatcher\ViewModels\ProcessWatcherDesignViewModel.cs" />
+    <Compile Include="Settings\KeyPadSettings.xaml.cs">
+      <DependentUpon>KeyPadSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\TreeMenuItem.cs" />
+    <Compile Include="Settings\ViewModels\KeyPadSettingsDesignViewModel.cs" />
+    <Compile Include="Settings\ViewModels\KeyPadSettingsViewModel.cs" />
     <Compile Include="TriggerActions\ParameterizedCommand.cs" />
     <Compile Include="ValidatorResult.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
@@ -101,6 +109,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="ProcessWatcher\ProcessWatcher.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\KeyPadSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -130,12 +142,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="gamepad_icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Dtafalonso-Android-L-Play-Games.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

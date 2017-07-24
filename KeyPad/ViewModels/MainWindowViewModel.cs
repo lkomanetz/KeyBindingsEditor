@@ -1,5 +1,6 @@
 ﻿using KeyPad.KeyBindingsEditor.ViewModels;
 using KeyPad.ProcessWatcher.ViewModels;
+using KeyPad.Settings.ViewModels;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,9 @@ namespace KeyPad.ViewModels {
 			this.NewFileCommand = new DelegateCommand<object>((param) => {
 				this.PresenterViewModel = new KeyBindingsEditorViewModel();
 			});
+			this.SettingsCommand = new DelegateCommand<object>((param) => {
+				this.PresenterViewModel = new KeyPadSettingsViewModel();
+			});
 
 			this.ProcessWatcherViewModel = new ProcessWatcherViewModel("keypadservice");
 		}
@@ -30,6 +34,7 @@ namespace KeyPad.ViewModels {
 		public ICommand ExitCommand { get; private set; }
 		public ICommand OpenFileCommand { get; private set; }
 		public ICommand NewFileCommand { get; private set; }
+		public ICommand SettingsCommand { get; private set; }
 
 		private object _presenterViewModel;
 		public object PresenterViewModel {

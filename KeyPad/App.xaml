@@ -6,6 +6,8 @@
 			 xmlns:kbEditor="clr-namespace:KeyPad.KeyBindingsEditor"
 			 xmlns:pwVm="clr-namespace:KeyPad.ProcessWatcher.ViewModels"
 			 xmlns:pw="clr-namespace:KeyPad.ProcessWatcher"
+			 xmlns:settings="clr-namespace:KeyPad.Settings"
+			 xmlns:settingsVm="clr-namespace:KeyPad.Settings.ViewModels"
 			 StartupUri="MainWindow.xaml">
 	<Application.Resources>
 		<DataTemplate DataType="{x:Type kbEditorVm:KeyBindingsEditorViewModel}">
@@ -13,6 +15,9 @@
 		</DataTemplate>
 		<DataTemplate DataType="{x:Type pwVm:ProcessWatcherViewModel}">
 			<pw:ProcessWatcher/>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type settingsVm:KeyPadSettingsViewModel}">
+			<settings:KeyPadSettings/>
 		</DataTemplate>
 	</Application.Resources>
 </Application>

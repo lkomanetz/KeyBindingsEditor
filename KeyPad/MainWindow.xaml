@@ -13,6 +13,8 @@
 						  Command="{Binding NewFileCommand}"/>
 				<MenuItem Header="_Open"
 						  Command="{Binding OpenFileCommand}" />
+				<MenuItem Header="_Settings"
+						  Command="{Binding SettingsCommand}"/>
 				<Separator />
 				<MenuItem Header="E_xit"
 						  Command="{Binding ExitCommand}"/>
