@@ -23,6 +23,11 @@
 				</HierarchicalDataTemplate>
 			</Menu.ItemTemplate>
 		</Menu>
+		<Label Content="{Binding PresenterViewModel.Title}"
+			   Style="{StaticResource HeaderStyle}"
+			   DockPanel.Dock="Top"/>
+		<Separator DockPanel.Dock="Top"
+				   Margin="0,0,0,5"/>
 		<ContentPresenter DockPanel.Dock="Bottom"
 						  Content="{Binding ProcessWatcherViewModel}"/>
 		<ContentPresenter Content="{Binding PresenterViewModel}"/>

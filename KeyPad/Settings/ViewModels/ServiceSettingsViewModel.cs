@@ -12,24 +12,24 @@ using System.Windows.Input;
 
 namespace KeyPad.Settings.ViewModels {
 
-	public class ServiceSettingsViewModel : INotifyPropertyChanged{
+	public class ServiceSettingsViewModel : IViewModel, INotifyPropertyChanged {
 		private string _fileLocation;
 		private ObservableCollection<KeyPadSettingViewModel> _serviceSettings;
 
 		public ServiceSettingsViewModel(string fileLocation) {
 			_fileLocation = fileLocation;
-			_serviceSettings = new ObservableCollection<KeyPadSettingViewModel>(); 
+			_serviceSettings = new ObservableCollection<KeyPadSettingViewModel>();
 			LoadSettings(fileLocation);
+
 			this.SaveCommand = new DelegateCommand<object>((param) => SaveSettings());
-			this.UpdateButtonCommand = new DelegateCommand<object>((param) => PropertyChanged(this, new PropertyChangedEventArgs("ButtonEnabled")));
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
+		public string Title => "KeyPad Service Settings";
 		public ObservableCollection<KeyPadSettingViewModel> Settings => _serviceSettings;
 		public bool ButtonEnabled => _serviceSettings.Any(x => x.IsDirty);
 		public ICommand SaveCommand { get; private set; }
-		public ICommand UpdateButtonCommand { get; private set; }
 
 		private void LoadSettings(string fileLocation) {
 			if (_serviceSettings.Count > 0)
@@ -41,8 +41,10 @@ namespace KeyPad.Settings.ViewModels {
 				string name = items[0];
 				string value = (items[1].Equals("NULL")) ? String.Empty : items[1];
 				var setting = new KeyPadSetting(name, value);
+				var vm = new KeyPadSettingViewModel(setting);
+				vm.PropertyChanged += SettingChanged;
 
-				_serviceSettings.Add(new KeyPadSettingViewModel(setting));
+				_serviceSettings.Add(vm);
 			}
 		}
 
@@ -64,6 +66,9 @@ namespace KeyPad.Settings.ViewModels {
 			LoadSettings(_fileLocation);
 			PropertyChanged(this, new PropertyChangedEventArgs("ButtonEnabled"));
 		}
+
+		private void SettingChanged(object sender, PropertyChangedEventArgs e) =>
+			PropertyChanged(this, new PropertyChangedEventArgs("ButtonEnabled"));
 
 	}
 

@@ -25,21 +25,15 @@
 					  DockPanel.Dock="Top">
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
-					<Grid>
+					<Grid Focusable="True">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="*"/>
 							<ColumnDefinition Width="2*"/>
 						</Grid.ColumnDefinitions>
 						<TextBlock Text="{Binding Name}"
 								   Grid.Column="0"/>
-						<TextBox Text="{Binding Value}"
-								 Grid.Column="1">
-							<i:Interaction.Triggers>
-								<i:EventTrigger EventName="LostFocus">
-									<i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=DataContext.UpdateButtonCommand}"/>
-								</i:EventTrigger>
-							</i:Interaction.Triggers>
-						</TextBox>
+						<TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+								 Grid.Column="1"/>
 					</Grid>
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>

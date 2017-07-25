@@ -11,7 +11,7 @@ using Microsoft.Win32;
 
 namespace KeyPad.KeyBindingsEditor.ViewModels {
 
-	internal class KeyBindingsEditorViewModel : INotifyPropertyChanged {
+	internal class KeyBindingsEditorViewModel : IViewModel, INotifyPropertyChanged {
 
 		private KeyBindingViewModel[] _bindings;
 		private KeyBindingViewModel _selectedBinding;
@@ -38,6 +38,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 
 		public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
+		public string Title => "Key Bindings Editor";
 		public KeyBindingViewModel[] Bindings {
 			get { return _bindings; }
 			set {

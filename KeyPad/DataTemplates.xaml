@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:kbEditorVm="clr-namespace:KeyPad.KeyBindingsEditor.ViewModels"
+					xmlns:kbEditor="clr-namespace:KeyPad.KeyBindingsEditor"
+					xmlns:pwVm="clr-namespace:KeyPad.ProcessWatcher.ViewModels"
+					xmlns:pw="clr-namespace:KeyPad.ProcessWatcher"
+					xmlns:s="clr-namespace:KeyPad.Settings"
+					xmlns:svm="clr-namespace:KeyPad.Settings.ViewModels"
+					xmlns:local="clr-namespace:KeyPad">
+	
+	<DataTemplate DataType="{x:Type kbEditorVm:KeyBindingsEditorViewModel}">
+		<kbEditor:KeyBindingsEditor/>
+	</DataTemplate>
+	<DataTemplate DataType="{x:Type pwVm:ProcessWatcherViewModel}">
+		<pw:ProcessWatcher/>
+	</DataTemplate>
+	<DataTemplate DataType="{x:Type svm:ServiceSettingsViewModel}">
+		<s:ServiceSettings/>
+	</DataTemplate>
+
+</ResourceDictionary>

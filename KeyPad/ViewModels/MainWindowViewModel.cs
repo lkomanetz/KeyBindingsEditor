@@ -17,8 +17,6 @@ namespace KeyPad.ViewModels {
 
 		public MainWindowViewModel() {
 			this.TopMenu = CreateMenu();
-
-
 			this.ProcessWatcherViewModel = new ProcessWatcherViewModel("keypadservice");
 		}
 
@@ -41,6 +39,7 @@ namespace KeyPad.ViewModels {
 			private set {
 				_processWatcherViewModel = value;
 				PropertyChanged(this, new PropertyChangedEventArgs("ProcessWatcherViewModel"));
+				PropertyChanged(this, new PropertyChangedEventArgs("Title"));
 			}
 		}
 

@@ -64,6 +64,7 @@
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="IMenuItem.cs" />
     <Compile Include="IValidator.cs" />
+    <Compile Include="IViewModel.cs" />
     <Compile Include="KeyBindingsEditor\BindingFileManager.cs" />
     <Compile Include="KeyBindingsEditor\Controls\DisabledArrowsListView.cs" />
     <Compile Include="KeyBindingsEditor\Converters\WidthConverter.cs" />
@@ -94,6 +95,10 @@
     <Compile Include="ViewModels\MainWindowDesignViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ProcessWatcher\ViewModels\ProcessWatcherViewModel.cs" />
+    <Page Include="DataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="KeyBindingsEditor\KeyBindingsEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -115,6 +120,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Settings\ServiceSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\MainWindowStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
