@@ -30,6 +30,8 @@ namespace KeyPad.ViewModels {
 			private set {
 				_presenterViewModel = value;
 				PropertyChanged(this, new PropertyChangedEventArgs("PresenterViewModel"));
+				PropertyChanged(this, new PropertyChangedEventArgs("HeaderVisibility"));
+				PropertyChanged(this, new PropertyChangedEventArgs("Title"));
 			}
 		}
 
@@ -39,10 +41,10 @@ namespace KeyPad.ViewModels {
 			private set {
 				_processWatcherViewModel = value;
 				PropertyChanged(this, new PropertyChangedEventArgs("ProcessWatcherViewModel"));
-				PropertyChanged(this, new PropertyChangedEventArgs("Title"));
 			}
 		}
 
+		public Visibility HeaderVisibility => (this.PresenterViewModel != null) ? Visibility.Visible : Visibility.Collapsed;
 		private void Shutdown() => Application.Current.Shutdown();
 
 		private void OpenKeybindingsFile() {

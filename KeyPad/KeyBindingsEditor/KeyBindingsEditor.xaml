@@ -58,6 +58,7 @@
 							<GridViewColumn.CellTemplate>
 								<DataTemplate>
 									<TextBlock VerticalAlignment="Center"
+											   FontSize="18"
 											   Text="{Binding KeyboardButton}"/>
 								</DataTemplate>
 							</GridViewColumn.CellTemplate>

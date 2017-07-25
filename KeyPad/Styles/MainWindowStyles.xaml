@@ -3,17 +3,8 @@
 					xmlns:local="clr-namespace:KeyPad.Styles">
 
 	<Style x:Key="HeaderStyle" TargetType="{x:Type Label}">
-		<Setter Property="FontSize" Value="18"/>
+		<Setter Property="FontSize" Value="22"/>
 		<Setter Property="FontStyle" Value="Italic"/>
-		<Setter Property="Padding" Value="5"/>
-		<Setter Property="Background">
-			<Setter.Value>
-				<LinearGradientBrush>
-					<GradientStop Color="LightGray" Offset="0"/>
-					<GradientStop Color="WhiteSmoke" Offset="0.2"/>
-				</LinearGradientBrush>
-			</Setter.Value>
-		</Setter>
 	</Style>
 
 </ResourceDictionary>

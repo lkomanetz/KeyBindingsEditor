@@ -7,15 +7,21 @@
 		xmlns:vm="clr-namespace:KeyPad.ViewModels"
 		mc:Ignorable="d"
 		d:DataContext="{d:DesignInstance {x:Type vm:MainWindowDesignViewModel}, IsDesignTimeCreatable=True}"
-		Title="KeyPad Editor" Height="350" Width="525">
+		Title="KeyPad Editor" Height="450" Width="625">
 	<DockPanel LastChildFill="True">
-		<Menu DockPanel.Dock="Top"
+
+		<Menu DockPanel.Dock="Left"
 			  ItemsSource="{Binding TopMenu}">
 			<Menu.ItemContainerStyle>
 				<Style TargetType="{x:Type MenuItem}">
 					<Setter Property="Command" Value="{Binding Action}"/>
 				</Style>
 			</Menu.ItemContainerStyle>
+			<Menu.ItemsPanel>
+				<ItemsPanelTemplate>
+					<VirtualizingStackPanel Orientation="Vertical"/>
+				</ItemsPanelTemplate>
+			</Menu.ItemsPanel>
 			<Menu.ItemTemplate>
 				<HierarchicalDataTemplate DataType="{x:Type local:TopBarMenuItem}"
 										  ItemsSource="{Binding Children}">
@@ -23,13 +29,19 @@
 				</HierarchicalDataTemplate>
 			</Menu.ItemTemplate>
 		</Menu>
-		<Label Content="{Binding PresenterViewModel.Title}"
-			   Style="{StaticResource HeaderStyle}"
-			   DockPanel.Dock="Top"/>
-		<Separator DockPanel.Dock="Top"
-				   Margin="0,0,0,5"/>
+
 		<ContentPresenter DockPanel.Dock="Bottom"
 						  Content="{Binding ProcessWatcherViewModel}"/>
+
+		<StackPanel Orientation="Vertical"
+					DockPanel.Dock="Top"
+					Style="{StaticResource GradientBackground}"
+					Visibility="{Binding HeaderVisibility}">
+			<Label Content="{Binding PresenterViewModel.Title}"
+				   Style="{StaticResource HeaderStyle}" />
+			<Separator />
+		</StackPanel>
+
 		<ContentPresenter Content="{Binding PresenterViewModel}"/>
 	</DockPanel>
 </Window>

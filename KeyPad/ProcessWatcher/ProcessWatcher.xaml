@@ -9,7 +9,7 @@
 			 d:DataContext="{d:DesignInstance {x:Type vm:ProcessWatcherDesignViewModel}, IsDesignTimeCreatable=True}"
 			 Background="LightGray"
 			 d:DesignHeight="300" d:DesignWidth="300">
-	<Grid>
+	<Grid Style="{StaticResource GridGradientBackground}">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="Auto"/>
 			<ColumnDefinition Width="Auto"/>

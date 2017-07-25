@@ -23,6 +23,11 @@
 		</Grid>
 		<ItemsControl ItemsSource="{Binding Settings}"
 					  DockPanel.Dock="Top">
+			<ItemsControl.Style>
+				<Style TargetType="ItemsControl">
+					<Setter Property="FontSize" Value="18"/>
+				</Style>
+			</ItemsControl.Style>
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
 					<Grid Focusable="True">
