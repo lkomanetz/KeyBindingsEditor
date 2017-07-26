@@ -24,4 +24,20 @@
 		</Setter>
 	</Style>
 
+	<Style TargetType="{x:Type ListViewItem}">
+		<Setter Property="FontSize" Value="18"/>
+		<Style.Triggers>
+			<Trigger Property="IsSelected" Value="True">
+				<Setter Property="Margin" Value="5"/>
+				<Setter Property="FontSize" Value="20"/>
+				<Setter Property="FontWeight" Value="Bold"/>
+			</Trigger>
+			<Trigger Property="IsSelected" Value="False">
+				<Setter Property="Margin" Value="0"/>
+				<Setter Property="FontSize" Value="18"/>
+				<Setter Property="FontWeight" Value="Normal"/>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
 </ResourceDictionary>

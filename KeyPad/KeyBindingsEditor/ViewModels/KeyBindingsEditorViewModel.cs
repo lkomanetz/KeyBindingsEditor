@@ -54,7 +54,14 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 		public KeyBindingViewModel SelectedBinding {
 			get => _selectedBinding;
 			set {
+				if (_selectedBinding != null)
+					_selectedBinding.IsSelected = !_selectedBinding.IsSelected;
+
 				_selectedBinding = value;
+
+				if (_selectedBinding != null)
+					_selectedBinding.IsSelected = !_selectedBinding.IsSelected;
+
 				PropertyChanged(this, new PropertyChangedEventArgs("SelectedBinding"));
 			}
 		}

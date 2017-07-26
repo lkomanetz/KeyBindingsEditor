@@ -41,9 +41,9 @@
 		<ScrollViewer VerticalScrollBarVisibility="Auto"
 					  HorizontalScrollBarVisibility="Auto">
 			<ctrls:DisabledArrowsListView ItemsSource="{Binding Bindings}"
-					  SelectedValue="{Binding SelectedBinding, Mode=TwoWay}"
-					  SelectionMode="Single"
-					  Margin="5,0,5,0">
+										  SelectedValue="{Binding SelectedBinding, Mode=TwoWay}"
+										  SelectionMode="Single"
+										  Margin="5,0,5,0">
 				<i:Interaction.Triggers>
 					<i:EventTrigger EventName="KeyUp">
 						<triggerActions:ParameterizedCommand Command="{Binding OnKeyUp}"/>
@@ -58,7 +58,6 @@
 							<GridViewColumn.CellTemplate>
 								<DataTemplate>
 									<TextBlock VerticalAlignment="Center"
-											   FontSize="18"
 											   Text="{Binding KeyboardButton}"/>
 								</DataTemplate>
 							</GridViewColumn.CellTemplate>

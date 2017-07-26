@@ -34,6 +34,8 @@
 						</Grid.ColumnDefinitions>
 						<TextBlock Text="{Binding Name}"
 								   Grid.Column="0"/>
+						<TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
+								 Grid.Column="1"/>
 					</Grid>
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>

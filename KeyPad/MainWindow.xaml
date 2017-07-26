@@ -7,7 +7,7 @@
 		xmlns:vm="clr-namespace:KeyPad.ViewModels"
 		mc:Ignorable="d"
 		d:DataContext="{d:DesignInstance {x:Type vm:MainWindowDesignViewModel}, IsDesignTimeCreatable=True}"
-		Title="KeyPad Editor" Height="450" Width="625">
+		Title="KeyPad Editor" Height="450" Width="725">
 	<DockPanel LastChildFill="True">
 
 		<Menu DockPanel.Dock="Left"

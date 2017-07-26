@@ -30,13 +30,16 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 		public int KeyCode {
 			get => _binding.KeyboardButton;
 			set {
-				if (_binding.KeyboardButton != value) {
-					_binding = new Models.KeyBinding(GamepadCode, value);
+				int pressedKeyCode = value;
+				if (_binding.KeyboardButton != pressedKeyCode) {
+					pressedKeyCode = (pressedKeyCode == ESCAPE_KEY_CODE) ? -1 : pressedKeyCode;
+					_binding = new Models.KeyBinding(GamepadCode, pressedKeyCode);
 					PropertyChanged(this, new PropertyChangedEventArgs("KeyboardButton"));
 				}
 			}
 		}
 
+		public bool IsSelected { get; set; } = false;
 		public bool IsDirty => _binding.KeyboardButton != _startingValue;
 		public string GamepadButton => GamepadButtonToStringConverter.Convert(_binding.GamepadButton);
 		public string KeyboardButton => KeyboardButtonToStringConverter.Convert(_binding.KeyboardButton);
