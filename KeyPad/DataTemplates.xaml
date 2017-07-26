@@ -17,5 +17,8 @@
 	<DataTemplate DataType="{x:Type svm:ServiceSettingsViewModel}">
 		<s:ServiceSettings/>
 	</DataTemplate>
+	<DataTemplate DataType="{x:Type svm:AppSettingsEditorViewModel}">
+		<s:AppSettingsEditor/>
+	</DataTemplate>
 
 </ResourceDictionary>

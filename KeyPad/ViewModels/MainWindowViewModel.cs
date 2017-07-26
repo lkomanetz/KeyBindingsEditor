@@ -1,10 +1,13 @@
 ﻿using KeyPad.KeyBindingsEditor.ViewModels;
 using KeyPad.ProcessWatcher.ViewModels;
+using KeyPad.Settings.Models;
 using KeyPad.Settings.ViewModels;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,6 +64,14 @@ namespace KeyPad.ViewModels {
 			this.PresenterViewModel = new KeyBindingsEditorViewModel(dlg.FileName);
 		}
 
+		private void LoadAppSettings() {
+			IList<ApplicationSetting> settings = new List<ApplicationSetting>();
+			foreach (var key in ConfigurationManager.AppSettings.Keys)
+				settings.Add(new ApplicationSetting(key.ToString(), ConfigurationManager.AppSettings[key.ToString()]));
+
+			this.PresenterViewModel = new AppSettingsEditorViewModel(settings);
+		}
+
 		private IList<IMenuItem> CreateMenu() {
 			return new List<IMenuItem>() {
 				new TopBarMenuItem() {
@@ -83,7 +94,7 @@ namespace KeyPad.ViewModels {
 								},
 								new TopBarMenuItem() {
 									Title = "KeyPad settings",
-									Action = new DelegateCommand<object>((param) => { })
+									Action = new DelegateCommand<object>((param) => LoadAppSettings())
 								}
 							}
 						},

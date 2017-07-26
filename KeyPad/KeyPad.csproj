@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -83,10 +84,17 @@
       <DependentUpon>ProcessWatcher.xaml</DependentUpon>
     </Compile>
     <Compile Include="ProcessWatcher\ViewModels\ProcessWatcherDesignViewModel.cs" />
-    <Compile Include="Settings\Models\KeyPadSetting.cs" />
+    <Compile Include="Settings\AppSettingsEditor.xaml.cs">
+      <DependentUpon>AppSettingsEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\AppSettingsValidator.cs" />
+    <Compile Include="Settings\Models\ApplicationSetting.cs" />
+    <Compile Include="Settings\Models\KeyPadServiceSetting.cs" />
     <Compile Include="Settings\ServiceSettings.xaml.cs">
       <DependentUpon>ServiceSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings\ViewModels\ApplicationSettingViewModel.cs" />
+    <Compile Include="Settings\ViewModels\AppSettingsEditorViewModel.cs" />
     <Compile Include="Settings\ViewModels\KeyPadSettingViewModel.cs" />
     <Compile Include="Settings\ViewModels\ServiceSettingsViewModel.cs" />
     <Compile Include="TopBarMenuItem.cs" />
@@ -116,6 +124,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="ProcessWatcher\ProcessWatcher.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\AppSettingsEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

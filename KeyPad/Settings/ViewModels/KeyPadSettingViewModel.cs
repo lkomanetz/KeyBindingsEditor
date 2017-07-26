@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 namespace KeyPad.Settings.ViewModels {
 
 	public class KeyPadSettingViewModel : INotifyPropertyChanged {
-		private KeyPadSetting _setting;
+		private KeyPadServiceSetting _setting;
 		private string _initialValue;
 
-		public KeyPadSettingViewModel(KeyPadSetting setting) {
+		public KeyPadSettingViewModel(KeyPadServiceSetting setting) {
 			_setting = setting;
 			_initialValue = _setting.Value;
 		}
@@ -25,7 +25,7 @@ namespace KeyPad.Settings.ViewModels {
 			get => _setting.Value;
 			set {
 				if (_setting.Value != value) {
-					_setting = new KeyPadSetting(this.Name, value);
+					_setting = new KeyPadServiceSetting(this.Name, value);
 					PropertyChanged(this, new PropertyChangedEventArgs("IsDirty"));
 				}
 			}

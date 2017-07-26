@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace KeyPad.Settings.Models {
 
-	public class KeyPadSetting {
+	public class ApplicationSetting {
 
-		public KeyPadSetting(string name, string value) {
-			this.Value = value;
+		public ApplicationSetting(string name, object value)
+		{
 			this.Name = name;
+			this.Value = value;
 		}
 
 		public string Name { get; }
-
-		public string Value { get; }
+		public object Value { get; }
 
 	}
 

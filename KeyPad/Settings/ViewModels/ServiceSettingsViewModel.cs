@@ -40,7 +40,7 @@ namespace KeyPad.Settings.ViewModels {
 				string[] items = line.Split('=');
 				string name = items[0];
 				string value = (items[1].Equals("NULL")) ? String.Empty : items[1];
-				var setting = new KeyPadSetting(name, value);
+				var setting = new KeyPadServiceSetting(name, value);
 				var vm = new KeyPadSettingViewModel(setting);
 				vm.PropertyChanged += SettingChanged;
 
