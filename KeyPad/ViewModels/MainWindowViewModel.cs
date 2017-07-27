@@ -17,10 +17,15 @@ using System.Windows.Input;
 namespace KeyPad.ViewModels {
 	
 	internal class MainWindowViewModel : INotifyPropertyChanged {
+		private const string SETTINGS_FILE_LOCATION = "settings.json";
+		private IList<ApplicationSetting> _appSettings;
 
 		public MainWindowViewModel() {
 			this.TopMenu = CreateMenu();
+#if !DEBUG
 			this.ProcessWatcherViewModel = new ProcessWatcherViewModel("keypadservice");
+#endif
+			LoadAppSettings();
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged = delegate { };
@@ -65,11 +70,8 @@ namespace KeyPad.ViewModels {
 		}
 
 		private void LoadAppSettings() {
-			IList<ApplicationSetting> settings = new List<ApplicationSetting>();
-			foreach (var key in ConfigurationManager.AppSettings.Keys)
-				settings.Add(new ApplicationSetting(key.ToString(), ConfigurationManager.AppSettings[key.ToString()]));
-
-			this.PresenterViewModel = new AppSettingsEditorViewModel(settings);
+			string jsonString = System.IO.File.ReadAllText(SETTINGS_FILE_LOCATION);
+			_appSettings = new Settings.Serializer.SettingsJsonSerializer().Deserialize<ApplicationSetting[]>(jsonString);
 		}
 
 		private IList<IMenuItem> CreateMenu() {
@@ -94,7 +96,7 @@ namespace KeyPad.ViewModels {
 								},
 								new TopBarMenuItem() {
 									Title = "KeyPad settings",
-									Action = new DelegateCommand<object>((param) => LoadAppSettings())
+									Action = new DelegateCommand<object>((param) => PresenterViewModel = new AppSettingsEditorViewModel(_appSettings))
 								}
 							}
 						},

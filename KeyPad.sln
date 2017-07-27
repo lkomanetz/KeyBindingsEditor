@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyPad", "KeyPad\KeyPad.csproj", "{FF2EED26-D171-43D6-A234-6AF8C30F5AC6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyPad.UnitTests", "KeyPad.UnitTests\KeyPad.UnitTests.csproj", "{A16920E8-00AB-4985-A0B8-6665ACFD48A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{FF2EED26-D171-43D6-A234-6AF8C30F5AC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF2EED26-D171-43D6-A234-6AF8C30F5AC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF2EED26-D171-43D6-A234-6AF8C30F5AC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A16920E8-00AB-4985-A0B8-6665ACFD48A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A16920E8-00AB-4985-A0B8-6665ACFD48A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A16920E8-00AB-4985-A0B8-6665ACFD48A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A16920E8-00AB-4985-A0B8-6665ACFD48A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

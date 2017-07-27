@@ -8,7 +8,7 @@ namespace KeyPad {
 
 	public interface IValidator {
 
-		ValidatorResult Validate();
+		IList<ValidatorResult> Validate();
 
 	}
 

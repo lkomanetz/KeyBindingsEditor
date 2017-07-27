@@ -13,33 +13,34 @@ namespace KeyPad.Settings.ViewModels {
 
 	public class AppSettingsEditorViewModel : IViewModel, INotifyPropertyChanged {
 
-		private IList<ApplicationSettingViewModel> _settings;
+		private IList<IViewModel> _settings;
 		private IValidator _validator;
 
 		public AppSettingsEditorViewModel(IList<ApplicationSetting> settings) {
-			_settings = new List<ApplicationSettingViewModel>();
+			_settings = new List<IViewModel>();
 			foreach (var setting in settings) {
-				var vm = new ApplicationSettingViewModel(setting);
+				var vm = ToViewModel(setting);
 				vm.PropertyChanged += (sender, args) => OnSettingChanged();
 				_settings.Add(vm);
 			}
 
 			this.SaveCommand = new DelegateCommand<object>((param) => SaveSettings());
-			_validator = new AppSettingsValidator(_settings);
+			_validator = new AppSettingsValidator(settings); //TODO(Logan) -> FIX THIS!
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		public IList<ApplicationSettingViewModel> Settings => _settings;
+		public IList<IViewModel> Settings => _settings;
 		public string Title => "Keypad Settings";
-		public bool ButtonEnabled => _settings.Any(x => x.IsDirty);
+		public bool IsDirty => _settings.Any(x => x.IsDirty);
 		public ICommand SaveCommand { get; private set; }
 
 		private void SaveSettings() {
-			var result = _validator.Validate();
-			if (!result.IsSuccess) {
+			var results = _validator.Validate();
+			if (results.Any(x => !x.IsSuccess)) {
+				string msg = BuildValidationMessage(results);
 				MessageBox.Show(
-					result.Message,
+					msg,
 					this.Title,
 					MessageBoxButton.OK,
 					MessageBoxImage.Error
@@ -47,11 +48,29 @@ namespace KeyPad.Settings.ViewModels {
 				return;
 			}
 
-			foreach (var setting in _settings)
-				ConfigurationManager.AppSettings[setting.Name] = setting.Value.ToString();
+			//TODO(Logan) -> Re-implement saving changes to KeyPad settings
 		}
 
-		private void OnSettingChanged() => PropertyChanged(this, new PropertyChangedEventArgs("ButtonEnabled"));
+		private string BuildValidationMessage(IList<ValidatorResult> results) {
+			String result = String.Empty;
+			if (results.All(x => x.IsSuccess))
+				return result;
+
+			var failedResults = results.Where(x => !x.IsSuccess).ToList();
+			foreach (var failedResult in failedResults) {
+				result += $"{failedResult.Message}\n";
+			}
+
+			return result;
+		}
+
+		private void OnSettingChanged() => PropertyChanged(this, new PropertyChangedEventArgs("IsDirty"));
+
+		private IViewModel ToViewModel(ApplicationSetting setting) {
+			Type classType = typeof(ApplicationSettingViewModel<>);
+			Type constructedType = classType.MakeGenericType(Type.GetType(setting.ValueType));
+			return (IViewModel)Activator.CreateInstance(constructedType, new object[] { setting });
+		}
 
 	}
 

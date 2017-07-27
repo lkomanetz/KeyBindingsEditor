@@ -8,25 +8,38 @@ using System.Threading.Tasks;
 
 namespace KeyPad.Settings.ViewModels {
 
-	public class ApplicationSettingViewModel : INotifyPropertyChanged {
+	public class ApplicationSettingViewModel<T> : IViewModel {
 
 		private ApplicationSetting _setting;
-		private object _initialValue;
+		private T _initialValue;
 
 		public ApplicationSettingViewModel(ApplicationSetting setting) {
 			_setting = setting;
-			_initialValue = _setting.Value;
+			_initialValue = SafeCast(_setting.Value);
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
+		public string Title => String.Empty;
 		public string Name => _setting.Name;
-		public bool IsDirty => _setting.Value != _initialValue;
-		public object Value {
-			get => _setting.Value;
+		public bool IsDirty => !EqualityComparer<T>.Default.Equals(SafeCast(_setting.Value), _initialValue);
+		public T Value {
+			get => SafeCast(_setting.Value);
 			set {
-				_setting = new ApplicationSetting(this.Name, value);
+				_setting.Value = value; //TODO(Logan) -> Get dirty checking working for KeyPad.FileLocation type
 				PropertyChanged(this, new PropertyChangedEventArgs("IsDirty"));
+			}
+		}
+
+		private T SafeCast(object value) {
+			if (value is T)
+				return (T)value;
+
+			try {
+				return (T)Convert.ChangeType(value, typeof(T));
+			}
+			catch (InvalidCastException) {
+				return default(T);
 			}
 		}
 

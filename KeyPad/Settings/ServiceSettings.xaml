@@ -18,7 +18,7 @@
 			</Grid.ColumnDefinitions>
 			<Button Content="Save"
 					Grid.Column="1"
-					IsEnabled="{Binding ButtonEnabled}"
+					IsEnabled="{Binding IsDirty}"
 					Command="{Binding SaveCommand}"/>
 		</Grid>
 		<ItemsControl ItemsSource="{Binding Settings}"

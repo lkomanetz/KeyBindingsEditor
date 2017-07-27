@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace KeyPad.Settings.Models {
 
+	[DataContract]
 	public class ApplicationSetting {
 
-		public ApplicationSetting(string name, object value)
-		{
-			this.Name = name;
-			this.Value = value;
-		}
-
-		public string Name { get; }
-		public object Value { get; }
+		[DataMember] public string Name { get; set; }
+		[DataMember] public string Display { get; set; }
+		[DataMember] public object Value { get; set; }
+		[DataMember] public string ValueType { get; set; }
 
 	}
 

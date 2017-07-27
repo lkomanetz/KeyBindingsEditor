@@ -1,4 +1,5 @@
-﻿using KeyPad.Settings.ViewModels;
+﻿using KeyPad.Settings.Models;
+using KeyPad.Settings.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,14 +9,16 @@ using System.Threading.Tasks;
 
 namespace KeyPad.Settings {
 
-	public class AppSettingsValidator : IValidator
-	{
+	//TODO(Logan) -> Fix the validator after making changes to ApplicationSettingViewModel class
+	public class AppSettingsValidator : IValidator {
+
 		private const string EXE_IDENTIFIER = "MZ";
-		private IList<ApplicationSettingViewModel> _settings;
+		private IList<ApplicationSetting> _settings;
 
-		public AppSettingsValidator(IList<ApplicationSettingViewModel> settings) => _settings = settings;
+		public AppSettingsValidator(IList<ApplicationSetting> settings) => _settings = settings;
 
-		public ValidatorResult Validate() {
+		public IList<ValidatorResult> Validate() {
+			IList<ValidatorResult> results = new List<ValidatorResult>();
 			var startupSetting = _settings
 				.Where(x => x.Name.Equals("start_service_on_startup"))
 				.Single();
@@ -24,15 +27,21 @@ namespace KeyPad.Settings {
 				.Single();
 
 			if (!Boolean.TryParse(startupSetting.Value.ToString(), out bool result))
-				return new ValidatorResult(false, $"'{startupSetting.Name}' is not 'true|false'");
+				results.Add(new ValidatorResult(false, $"'{startupSetting.Name}' is not 'true|false'"));
 
 			if (!File.Exists(locationSetting.Value.ToString()))
-				return new ValidatorResult(false, $"File '{locationSetting.Value}' does not exist.");
+				results.Add(new ValidatorResult(false, $"File '{locationSetting.Value}' does not exist."));
 
-			if (!IsExecutable(locationSetting.Value.ToString()))
-				return new ValidatorResult(false, $"File '{locationSetting.Value}' is not an executable.");
+			if (!String.IsNullOrEmpty(locationSetting.Value.ToString()) &&
+				!IsExecutable(locationSetting.Value.ToString())) {
 
-			return new ValidatorResult(true);
+				results.Add(new ValidatorResult(false, $"File '{locationSetting.Value}' is not an executable."));
+			}
+
+			if (results.Count == 0)
+				results.Add(new ValidatorResult(true));
+
+			return results;
 		}
 
 		private bool IsExecutable(string filePath) {

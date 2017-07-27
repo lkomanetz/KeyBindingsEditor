@@ -11,7 +11,7 @@ using Microsoft.Win32;
 
 namespace KeyPad.KeyBindingsEditor.ViewModels {
 
-	internal class KeyBindingsEditorViewModel : IViewModel, INotifyPropertyChanged {
+	internal class KeyBindingsEditorViewModel : IViewModel {
 
 		private KeyBindingViewModel[] _bindings;
 		private KeyBindingViewModel _selectedBinding;
@@ -47,6 +47,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 			}
 		}
 
+		public bool IsDirty => false;
 		public ICommand OnKeyUp { get; private set; }
 		public ICommand SaveCommand { get; private set; }
 		public bool SaveEnabled => Bindings.Any(x => x.IsDirty);
@@ -83,12 +84,13 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 
 		private void SaveBindings() {
 			IValidator validator = new KeyBindingValidator(this.Bindings);
-			var result = validator.Validate();
+			var results = validator.Validate();
 
-			if (!result.IsSuccess) {
+			if (results.Any(x => !x.IsSuccess)) {
+				string msg = BuildValidationMessage(results);
 				MessageBox.Show(
-					result.Message,
-					"Validation Result",
+					msg,
+					this.Title,
 					MessageBoxButton.OK,
 					MessageBoxImage.Error
 				);
@@ -117,6 +119,19 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 			}
 
 			return dlg.FileName;
+		}
+
+		private string BuildValidationMessage(IList<ValidatorResult> results) {
+			String result = String.Empty;
+			if (results.All(x => x.IsSuccess))
+				return result;
+
+			var failedResults = results.Where(x => !x.IsSuccess).ToList();
+			foreach (var failedResult in failedResults) {
+				result += $"{failedResult.Message}\n";
+			}
+
+			return result;
 		}
 
 	}

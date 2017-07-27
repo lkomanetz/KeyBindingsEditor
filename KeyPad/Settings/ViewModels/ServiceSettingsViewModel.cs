@@ -12,7 +12,7 @@ using System.Windows.Input;
 
 namespace KeyPad.Settings.ViewModels {
 
-	public class ServiceSettingsViewModel : IViewModel, INotifyPropertyChanged {
+	public class ServiceSettingsViewModel : IViewModel {
 		private string _fileLocation;
 		private ObservableCollection<KeyPadSettingViewModel> _serviceSettings;
 
@@ -28,7 +28,7 @@ namespace KeyPad.Settings.ViewModels {
 
 		public string Title => "KeyPad Service Settings";
 		public ObservableCollection<KeyPadSettingViewModel> Settings => _serviceSettings;
-		public bool ButtonEnabled => _serviceSettings.Any(x => x.IsDirty);
+		public bool IsDirty => _serviceSettings.Any(x => x.IsDirty);
 		public ICommand SaveCommand { get; private set; }
 
 		private void LoadSettings(string fileLocation) {

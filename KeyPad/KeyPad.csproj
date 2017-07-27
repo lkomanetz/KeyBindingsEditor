@@ -42,6 +42,7 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
@@ -63,6 +64,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="FileLocation.cs" />
     <Compile Include="IMenuItem.cs" />
     <Compile Include="IValidator.cs" />
     <Compile Include="IViewModel.cs" />
@@ -90,9 +92,13 @@
     <Compile Include="Settings\AppSettingsValidator.cs" />
     <Compile Include="Settings\Models\ApplicationSetting.cs" />
     <Compile Include="Settings\Models\KeyPadServiceSetting.cs" />
+    <Compile Include="Settings\Models\KeyPadSettings.cs" />
+    <Compile Include="Settings\Serializer\ISerializer.cs" />
+    <Compile Include="Settings\Serializer\SettingsJsonSerializer.cs" />
     <Compile Include="Settings\ServiceSettings.xaml.cs">
       <DependentUpon>ServiceSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings\SettingsLoader.cs" />
     <Compile Include="Settings\ViewModels\ApplicationSettingViewModel.cs" />
     <Compile Include="Settings\ViewModels\AppSettingsEditorViewModel.cs" />
     <Compile Include="Settings\ViewModels\KeyPadSettingViewModel.cs" />
@@ -165,6 +171,9 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="settings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>

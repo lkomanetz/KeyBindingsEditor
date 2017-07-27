@@ -13,7 +13,7 @@ namespace KeyPad.KeyBindingsEditor {
 
 		public KeyBindingValidator(IEnumerable<KeyBindingViewModel> bindings) => _bindings = bindings;
 
-		public ValidatorResult Validate() {
+		public IList<ValidatorResult> Validate() {
 			var duplicates = _bindings.GroupBy(x => new { KeyboardButton = x.KeyboardButton, KeyCode = x.KeyCode })
 				.Where(x => x.Key.KeyCode != -1 && x.Count() > 1)
 				.Select(x => new { Element = x.Key.KeyboardButton, Count = x.Count() })
@@ -24,10 +24,10 @@ namespace KeyPad.KeyBindingsEditor {
 				foreach (var duplicate in duplicates)
 					msg += $"{duplicate.Element} -> {duplicate.Count} times\n";
 
-				return new ValidatorResult(false, msg);
+				return new List<ValidatorResult>() { new ValidatorResult(false, msg) };
 			}
 
-			return new ValidatorResult(true);
+			return new List<ValidatorResult>() { new ValidatorResult(true) };
 		}
 
 	}

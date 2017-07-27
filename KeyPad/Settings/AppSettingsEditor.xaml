@@ -15,7 +15,7 @@
 			</Grid.ColumnDefinitions>
 			<Button Content="Save"
 					Grid.Column="1"
-					IsEnabled="{Binding ButtonEnabled}"
+					IsEnabled="{Binding IsDirty}"
 					Command="{Binding SaveCommand}"/>
 		</Grid>
 
@@ -34,6 +34,7 @@
 						</Grid.ColumnDefinitions>
 						<TextBlock Text="{Binding Name}"
 								   Grid.Column="0"/>
+						<!-- TODO(Logan) -> Change this to ContentPresenter with DataTemplates -->
 						<TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
 								 Grid.Column="1"/>
 					</Grid>

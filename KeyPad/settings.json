@@ -1,0 +1,14 @@
+﻿[
+	{
+		"Name": "service_location",
+		"Display": "Service Location",
+		"Value": "C:\\Code",
+		"ValueType": "KeyPad.FileLocation"
+	},
+	{
+		"Name": "service_startup",
+		"Display": "Start Service on Startup",
+		"Value": false,
+		"ValueType": "System.Boolean"
+	}
+]
