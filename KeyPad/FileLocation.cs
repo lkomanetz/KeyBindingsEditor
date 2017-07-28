@@ -15,9 +15,12 @@ namespace KeyPad {
 
 		public bool FileExists => System.IO.File.Exists(_fileLocation);
 		public bool IsExecutable => IsExeFile();
-		public override string ToString() => _fileLocation;
+		public string Location {
+			get => _fileLocation;
+			set => _fileLocation = value;
+		}
 
-		public static explicit operator FileLocation(string value) => new FileLocation(value);
+		public override string ToString() => _fileLocation;
 
 		private bool IsExeFile() {
 			byte[] firstBytes = new byte[2];

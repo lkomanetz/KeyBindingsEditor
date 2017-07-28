@@ -90,6 +90,9 @@
       <DependentUpon>AppSettingsEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\AppSettingsValidator.cs" />
+    <Compile Include="Settings\UserControls\FilePicker.xaml.cs">
+      <DependentUpon>FilePicker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings\Models\ApplicationSetting.cs" />
     <Compile Include="Settings\Models\KeyPadServiceSetting.cs" />
     <Compile Include="Settings\Models\KeyPadSettings.cs" />
@@ -99,6 +102,7 @@
       <DependentUpon>ServiceSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\SettingsLoader.cs" />
+    <Compile Include="Settings\UserControls\ViewModels\FilePickerViewModel.cs" />
     <Compile Include="Settings\ViewModels\ApplicationSettingViewModel.cs" />
     <Compile Include="Settings\ViewModels\AppSettingsEditorViewModel.cs" />
     <Compile Include="Settings\ViewModels\KeyPadSettingViewModel.cs" />
@@ -134,6 +138,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Settings\AppSettingsEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\UserControls\FilePicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

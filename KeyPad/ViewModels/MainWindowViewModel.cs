@@ -1,6 +1,7 @@
 ﻿using KeyPad.KeyBindingsEditor.ViewModels;
 using KeyPad.ProcessWatcher.ViewModels;
 using KeyPad.Settings.Models;
+using KeyPad.Settings.UserControls.ViewModels;
 using KeyPad.Settings.ViewModels;
 using Microsoft.Win32;
 using System;
@@ -72,6 +73,9 @@ namespace KeyPad.ViewModels {
 		private void LoadAppSettings() {
 			string jsonString = System.IO.File.ReadAllText(SETTINGS_FILE_LOCATION);
 			_appSettings = new Settings.Serializer.SettingsJsonSerializer().Deserialize<ApplicationSetting[]>(jsonString);
+
+			var serviceLocationSetting = _appSettings.Where(x => x.Name.Equals("service_location")).Single();
+			serviceLocationSetting.Value = new FileLocation(serviceLocationSetting.Value.ToString());
 		}
 
 		private IList<IMenuItem> CreateMenu() {

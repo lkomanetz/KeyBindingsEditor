@@ -23,6 +23,7 @@ namespace KeyPad.Settings.ViewModels {
 		public string Title => String.Empty;
 		public string Name => _setting.Name;
 		public bool IsDirty => !EqualityComparer<T>.Default.Equals(SafeCast(_setting.Value), _initialValue);
+
 		public T Value {
 			get => SafeCast(_setting.Value);
 			set {
