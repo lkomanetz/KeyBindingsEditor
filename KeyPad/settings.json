@@ -2,7 +2,7 @@
 	{
 		"Name": "service_location",
 		"Display": "Service Location",
-		"Value": "C:\\Code",
+    "Value": "C:\\Code\\KeyPad\\KeyPad\\bin\\Debug\\KeyPad.exe",
 		"ValueType": "KeyPad.FileLocation"
 	},
 	{

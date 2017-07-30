@@ -20,8 +20,9 @@ namespace KeyPad.Settings {
 		public IList<ValidatorResult> Validate() {
 			IList<ValidatorResult> results = new List<ValidatorResult>();
 			var startupSetting = _settings
-				.Where(x => x.Name.Equals("start_service_on_startup"))
+				.Where(x => x.Name.Equals("service_startup"))
 				.Single();
+
 			var locationSetting = _settings
 				.Where(x => x.Name.Equals("service_location"))
 				.Single();

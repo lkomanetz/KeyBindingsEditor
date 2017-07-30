@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KeyPad.Settings.ViewModels {
 
-	public class ApplicationSettingViewModel<T> : IViewModel {
+	public class ApplicationSettingViewModel<T> : IViewModel, ISetting<T> {
 
 		private ApplicationSetting _setting;
 		private T _initialValue;

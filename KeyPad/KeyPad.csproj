@@ -90,6 +90,7 @@
       <DependentUpon>AppSettingsEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\AppSettingsValidator.cs" />
+    <Compile Include="Settings\Models\ISettings[T].cs" />
     <Compile Include="Settings\UserControls\FilePicker.xaml.cs">
       <DependentUpon>FilePicker.xaml</DependentUpon>
     </Compile>

@@ -5,17 +5,17 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 			 xmlns:local="clr-namespace:KeyPad.Settings"
 			 xmlns:ctrls="clr-namespace:KeyPad.Settings.UserControls"
-			 xmlns:svm="clr-namespace:KeyPad.Settings.UserControls.ViewModels"
 			 xmlns:kp="clr-namespace:KeyPad"
-			 xmlns:system="clr-namespace:System;assembly=mscorlib"
-			 mc:Ignorable="d" 
+			 mc:Ignorable="d"
+			 Background="White"
 			 d:DesignHeight="300" d:DesignWidth="300">
 	<UserControl.Resources>
 		<DataTemplate DataType="{x:Type kp:FileLocation}">
 			<ctrls:FilePicker Location="{Binding Value.Location}" />
 		</DataTemplate>
 	</UserControl.Resources>
-	<DockPanel LastChildFill="True">
+	<DockPanel LastChildFill="True"
+			   Height="Auto">
 		<Grid DockPanel.Dock="Bottom"
 			  Background="Beige">
 			<Grid.ColumnDefinitions>
@@ -28,29 +28,51 @@
 					Command="{Binding SaveCommand}"/>
 		</Grid>
 
-		<ItemsControl ItemsSource="{Binding Settings}">
-			<ItemsControl.Style>
-				<Style TargetType="{x:Type ItemsControl}">
-					<Setter Property="FontSize" Value="18"/>
-				</Style>
-			</ItemsControl.Style>
-			<ItemsControl.ItemTemplate>
-				<DataTemplate>
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="2*"/>
-						</Grid.ColumnDefinitions>
-						<TextBlock Text="{Binding Name}"
-								   Grid.Column="0"/>
-						<!-- TODO(Logan) -> Change this to ContentPresenter with DataTemplates -->
-						<ContentPresenter Grid.Column="1"
-										  Content="{Binding Value}"/>
-						<!--<TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
-								 Grid.Column="1"/>-->
-					</Grid>
-				</DataTemplate>
-			</ItemsControl.ItemTemplate>
-		</ItemsControl>
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
+
+			<Label Content="Service Location:"
+				   VerticalAlignment="Center"
+				   Grid.Column="0"
+				   Grid.Row="0"/>
+			<Grid Grid.Column="1"
+				  Grid.Row="0"
+				  VerticalAlignment="Center">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="Auto"/>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+
+				<TextBox Grid.Column="0"
+						 Text="{Binding ServiceLocation}"/>
+				<Button Content="..."
+						Grid.Column="1"
+						Width="25"
+						Command="{Binding FindServiceCommand}"/>
+			</Grid>
+			<Label Content="Start Service On Launch:"
+				   VerticalAlignment="Center"
+				   Grid.Row="1"
+				   Grid.Column="0"/>
+			<CheckBox IsChecked="{Binding ShouldStartOnStartup}"
+					  Grid.Column="1"
+					  VerticalAlignment="Center"
+					  Grid.Row="1">
+				<CheckBox.LayoutTransform>
+					<ScaleTransform ScaleX="1.25" ScaleY="1.25"/>
+				</CheckBox.LayoutTransform>
+			</CheckBox>
+		</Grid>
+
 	</DockPanel>
 </UserControl>
