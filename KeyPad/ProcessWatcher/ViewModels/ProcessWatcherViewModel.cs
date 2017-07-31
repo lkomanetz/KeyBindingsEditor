@@ -1,44 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
 namespace KeyPad.ProcessWatcher.ViewModels {
 
-	public class ProcessWatcherViewModel : INotifyPropertyChanged {
+	internal class ProcessWatcherViewModel : INotifyPropertyChanged {
 
-		private readonly object _threadKey = new object();
-
+		private const double TIMER_INTERVAL = 500D;
 		private ICommand _stopProcessCommand;
 		private ICommand _startProcessCommand;
 		private System.Timers.Timer _executeThreadTimer;
 		private Thread _watcherThread;
-		private string _processName;
+		private IProcessManager _processManager;
 		private bool _isProcessRunning;
 
-		public ProcessWatcherViewModel(string processName) {
-			_processName = processName;
-			_watcherThread = new Thread(() => WatchProcess(processName));
+		public ProcessWatcherViewModel(IProcessManager processManager) {
+			_processManager = processManager;
+			_processManager.ProcessStarted += (sender, args) => InvokePropertyChangeEvents();
+			_processManager.ProcessStopped += (sender, args) => InvokePropertyChangeEvents();
+
+			_watcherThread = new Thread(() => WatchProcess());
 			_executeThreadTimer = new System.Timers.Timer() {
-				Interval = 500.0D,
+				Interval = TIMER_INTERVAL,
 				Enabled = true
 			};
 			_executeThreadTimer.Elapsed += (sender, args) => {
-				if (_watcherThread.ThreadState != System.Threading.ThreadState.Running)
-					_watcherThread = new Thread(() => WatchProcess(_processName));
+				if (_watcherThread.ThreadState != ThreadState.Running)
+					_watcherThread = new Thread(() => WatchProcess());
 
 				_watcherThread.Start();
 			};
 
-			_startProcessCommand = new DelegateCommand<object>((param) => StartProcess());
-			_stopProcessCommand = new DelegateCommand<object>((param) => StopProcess());
+			_startProcessCommand = new DelegateCommand<object>((param) => _processManager.Start());
+			_stopProcessCommand = new DelegateCommand<object>((param) => _processManager.Stop());
 		} 
 
 		public event PropertyChangedEventHandler PropertyChanged = delegate { };
@@ -48,30 +48,9 @@ namespace KeyPad.ProcessWatcher.ViewModels {
 		public ICommand ButtonCommand => (_isProcessRunning) ? _stopProcessCommand : _startProcessCommand;
 		public Brush StatusColor => (_isProcessRunning) ? Brushes.Green : Brushes.Red;
 
-		private void WatchProcess(string processName) {
-			Process keypadProcess = Process.GetProcessesByName(processName).SingleOrDefault();
-
-			_isProcessRunning = keypadProcess != null;
+		private void WatchProcess() {
+			_isProcessRunning = _processManager.IsRunning;
 			InvokePropertyChangeEvents();
-		}
-
-		private void StartProcess() {
-			ProcessStartInfo info = new ProcessStartInfo() {
-				FileName = @"C:\Users\logan\Desktop\XKey\keypadservice.exe",
-				UseShellExecute = true,
-				WindowStyle = ProcessWindowStyle.Minimized
-			};
-
-			Process keypadProcess = new Process() { StartInfo = info };
-			_isProcessRunning = keypadProcess.Start();
-		}
-
-		private void StopProcess() {
-			Process keypadProcess = Process.GetProcessesByName(_processName).SingleOrDefault();
-			if (keypadProcess != null) {
-				keypadProcess.Kill();
-				InvokePropertyChangeEvents();
-			}
 		}
 
 		private void InvokePropertyChangeEvents() {

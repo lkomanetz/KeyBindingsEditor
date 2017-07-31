@@ -38,34 +38,32 @@
 				   BorderThickness="50"
 				   BorderBrush="Black"/>
 
-		<ScrollViewer VerticalScrollBarVisibility="Auto"
-					  HorizontalScrollBarVisibility="Auto">
-			<ctrls:DisabledArrowsListView ItemsSource="{Binding Bindings}"
-										  SelectedValue="{Binding SelectedBinding, Mode=TwoWay}"
-										  SelectionMode="Single"
-										  Margin="5,0,5,0">
-				<i:Interaction.Triggers>
-					<i:EventTrigger EventName="KeyUp">
-						<triggerActions:ParameterizedCommand Command="{Binding OnKeyUp}"/>
-					</i:EventTrigger>
-				</i:Interaction.Triggers>
-				<ctrls:DisabledArrowsListView.View>
-					<GridView KeyboardNavigation.DirectionalNavigation="None">
-						<GridViewColumn Header="Gamepad Button"
-										DisplayMemberBinding="{Binding GamepadButton}"/>
-						<GridViewColumn Header="Keyboard Button"
-										Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Converter={StaticResource WidthConverter}}">
-							<GridViewColumn.CellTemplate>
-								<DataTemplate>
-									<TextBlock VerticalAlignment="Center"
-											   Text="{Binding KeyboardButton}"/>
-								</DataTemplate>
-							</GridViewColumn.CellTemplate>
-						</GridViewColumn>
-					</GridView>
-				</ctrls:DisabledArrowsListView.View>
-			</ctrls:DisabledArrowsListView>
-		</ScrollViewer>
+		<ctrls:DisabledArrowsListView ItemsSource="{Binding Bindings}"
+									  SelectedValue="{Binding SelectedBinding, Mode=TwoWay}"
+									  SelectionMode="Single"
+									  ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+									  Margin="5,0,5,0">
+			<i:Interaction.Triggers>
+				<i:EventTrigger EventName="KeyUp">
+					<triggerActions:ParameterizedCommand Command="{Binding OnKeyUp}"/>
+				</i:EventTrigger>
+			</i:Interaction.Triggers>
+			<ctrls:DisabledArrowsListView.View>
+				<GridView KeyboardNavigation.DirectionalNavigation="None">
+					<GridViewColumn Header="Gamepad Button"
+									DisplayMemberBinding="{Binding GamepadButton}"/>
+					<GridViewColumn Header="Keyboard Button"
+									Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Converter={StaticResource WidthConverter}}">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock VerticalAlignment="Center"
+										   Text="{Binding KeyboardButton}"/>
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+				</GridView>
+			</ctrls:DisabledArrowsListView.View>
+		</ctrls:DisabledArrowsListView>
 
 	</DockPanel>
 </UserControl>

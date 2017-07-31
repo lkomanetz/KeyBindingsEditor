@@ -40,4 +40,18 @@
 		</Style.Triggers>
 	</Style>
 
+	<Style TargetType="{x:Type TextBox}">
+		<Setter Property="FontSize" Value="18"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+	</Style>
+
+	<Style TargetType="{x:Type Label}">
+		<Setter Property="FontSize" Value="14"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+	</Style>
+
+	<Style TargetType="{x:Type Button}">
+		<Setter Property="FontSize" Value="14"/>
+	</Style>
+
 </ResourceDictionary>

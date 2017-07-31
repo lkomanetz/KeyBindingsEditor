@@ -34,8 +34,9 @@
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
 			<Grid.RowDefinitions>
-				<RowDefinition/>
-				<RowDefinition/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
 
 			<Label Content="Service Location:"
@@ -60,14 +61,22 @@
 						Width="25"
 						Command="{Binding FindServiceCommand}"/>
 			</Grid>
-			<Label Content="Start Service On Launch:"
+			<Label Content="Process Name:"
 				   VerticalAlignment="Center"
 				   Grid.Row="1"
+				   Grid.Column="0"/>
+			<TextBox Grid.Row="1"
+					 Grid.Column="1"
+					 VerticalContentAlignment="Center"
+					 Text="{Binding ProcessName, UpdateSourceTrigger=PropertyChanged}"/>
+			<Label Content="Start Service On Launch:"
+				   VerticalAlignment="Center"
+				   Grid.Row="2"
 				   Grid.Column="0"/>
 			<CheckBox IsChecked="{Binding ShouldStartOnStartup}"
 					  Grid.Column="1"
 					  VerticalAlignment="Center"
-					  Grid.Row="1">
+					  Grid.Row="2">
 				<CheckBox.LayoutTransform>
 					<ScaleTransform ScaleX="1.25" ScaleY="1.25"/>
 				</CheckBox.LayoutTransform>

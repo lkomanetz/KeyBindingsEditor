@@ -13,7 +13,6 @@ namespace KeyPad.Settings.Models {
 		[DataMember] public string Name { get; set; }
 		[DataMember] public string Display { get; set; }
 		[DataMember] public object Value { get; set; }
-		[DataMember] public string ValueType { get; set; }
 
 	}
 

@@ -1,32 +1,47 @@
 ﻿using KeyPad.KeyBindingsEditor.ViewModels;
+using KeyPad.ProcessWatcher;
 using KeyPad.ProcessWatcher.ViewModels;
 using KeyPad.Settings.Models;
-using KeyPad.Settings.UserControls.ViewModels;
 using KeyPad.Settings.ViewModels;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Configuration;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 
 namespace KeyPad.ViewModels {
 	
 	internal class MainWindowViewModel : INotifyPropertyChanged {
+
 		private const string SETTINGS_FILE_LOCATION = "settings.json";
 		private IList<ApplicationSetting> _appSettings;
+		private IProcessManager _processManager;
 
 		public MainWindowViewModel() {
-			this.TopMenu = CreateMenu();
-#if !DEBUG
-			this.ProcessWatcherViewModel = new ProcessWatcherViewModel("keypadservice");
-#endif
 			LoadAppSettings();
+			this.TopMenu = CreateMenu();
+
+			ApplicationSetting processName = _appSettings
+				.Where(x => x.Name.Equals("process_name"))
+				.Single();
+			ApplicationSetting exeLocation = _appSettings
+				.Where(x => x.Name.Equals("service_location"))
+				.Single();
+
+			_processManager = new WindowsProcessManager(processName.Value.ToString(), exeLocation.Value.ToString());
+			this.ProcessWatcherViewModel = new ProcessWatcherViewModel(_processManager);
+
+			bool startService = (bool)_appSettings
+				.Where(x => x.Name.Equals("service_startup"))
+				.Single()
+				.Value;
+
+			if (startService) {
+				_processManager.Start();
+			}
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged = delegate { };
@@ -73,9 +88,6 @@ namespace KeyPad.ViewModels {
 		private void LoadAppSettings() {
 			string jsonString = System.IO.File.ReadAllText(SETTINGS_FILE_LOCATION);
 			_appSettings = new Settings.Serializer.SettingsJsonSerializer().Deserialize<ApplicationSetting[]>(jsonString);
-
-			var serviceLocationSetting = _appSettings.Where(x => x.Name.Equals("service_location")).Single();
-			serviceLocationSetting.Value = new FileLocation(serviceLocationSetting.Value.ToString());
 		}
 
 		private IList<IMenuItem> CreateMenu() {

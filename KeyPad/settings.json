@@ -2,13 +2,16 @@
 	{
 		"Name": "service_location",
 		"Display": "Service Location",
-    "Value": "C:\\Code\\KeyPad\\KeyPad\\bin\\Debug\\KeyPad.exe",
-		"ValueType": "KeyPad.FileLocation"
+		"Value": "C:\\Windows\\System32\\notepad.exe"
+	},
+	{
+		"Name": "process_name",
+		"Display": "Process Name",
+		"Value": "notepad"
 	},
 	{
 		"Name": "service_startup",
 		"Display": "Start Service on Startup",
-		"Value": false,
-		"ValueType": "System.Boolean"
+		"Value": false
 	}
 ]
