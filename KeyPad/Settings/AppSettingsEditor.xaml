@@ -43,32 +43,9 @@
 				   VerticalAlignment="Center"
 				   Grid.Column="0"
 				   Grid.Row="0"/>
-			<Grid Grid.Column="1"
-				  Grid.Row="0"
-				  VerticalAlignment="Center">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="Auto"/>
-				</Grid.ColumnDefinitions>
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto"/>
-				</Grid.RowDefinitions>
-
-				<TextBox Grid.Column="0"
-						 Text="{Binding ServiceLocation}"/>
-				<Button Content="..."
-						Grid.Column="1"
-						Width="25"
-						Command="{Binding FindServiceCommand}"/>
-			</Grid>
-			<Label Content="Process Name:"
-				   VerticalAlignment="Center"
-				   Grid.Row="1"
-				   Grid.Column="0"/>
-			<TextBox Grid.Row="1"
-					 Grid.Column="1"
-					 VerticalContentAlignment="Center"
-					 Text="{Binding ProcessName, UpdateSourceTrigger=PropertyChanged}"/>
+			<ctrls:FilePicker Grid.Row="0"
+							  Grid.Column="1"
+							  Location="{Binding ServiceLocation, Mode=TwoWay}"/>
 			<Label Content="Start Service On Launch:"
 				   VerticalAlignment="Center"
 				   Grid.Row="2"

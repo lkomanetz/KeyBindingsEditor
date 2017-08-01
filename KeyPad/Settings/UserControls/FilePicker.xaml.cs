@@ -21,21 +21,25 @@ namespace KeyPad.Settings.UserControls {
 	/// Interaction logic for FilePicker.xaml
 	/// </summary>
 	public partial class FilePicker : UserControl {
-		private FilePickerViewModel _viewModel;
+
+		private static FilePickerViewModel _viewModel;
 
 		public FilePicker() {
 			InitializeComponent();
-			_viewModel = new FilePickerViewModel();
-			this.DataContext = _viewModel;
+			_viewModel = (FilePickerViewModel)rootGrid.DataContext;
+			_viewModel.LocationChanged += (sender, args) => this.Location = _viewModel.Location;
 		}
 
 		public static readonly DependencyProperty LocationProperty =
-			DependencyProperty.Register("Location", typeof(FilePickerViewModel), typeof(FilePicker), new UIPropertyMetadata(null));
+			DependencyProperty.Register("Location", typeof(string), typeof(FilePicker), new UIPropertyMetadata(null, OnLocationChanged));
 
 		public string Location {
 			get => GetValue(LocationProperty).ToString();
 			set => SetValue(LocationProperty, value);
 		}
+
+		private static void OnLocationChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e) =>
+			_viewModel.Location = e.NewValue as String;
 
 	}
 

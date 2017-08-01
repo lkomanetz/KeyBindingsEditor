@@ -1,5 +1,6 @@
-﻿using KeyPad.Settings.Models;
-using KeyPad.Settings.Serializer;
+﻿using KeyPad.DataManager;
+using KeyPad.Settings.Models;
+using KeyPad.Serializer;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -16,29 +18,23 @@ namespace KeyPad.Settings.ViewModels {
 	public class AppSettingsEditorViewModel : IViewModel, INotifyPropertyChanged {
 
 		private IValidator _validator;
+		private IDataManager _settingsManager;
 		private IList<ApplicationSetting> _settings;
 		private ApplicationSetting _startupSetting;
 		private ApplicationSetting _locationSetting;
 		private ApplicationSetting _processNameSetting;
-		private ISerializer _settingsSerializer;
 		private bool _initialStartupValue;
 		private string _initialLocationValue;
 		private string _initialProcessNameValue;
 
-		public AppSettingsEditorViewModel(IList<ApplicationSetting> settings) {
-			_settingsSerializer = new SettingsJsonSerializer();
-			_settings = settings;
-
-			_startupSetting = settings.Where(x => x.Name.Equals("service_startup")).Single();
-			_locationSetting = settings.Where(x => x.Name.Equals("service_location")).Single();
-			_processNameSetting = settings.Where(x => x.Name.Equals("process_name")).Single();
+		public AppSettingsEditorViewModel(IDataManager settingsDataManager) {
+			_settings = (IList<ApplicationSetting>)settingsDataManager.Read();
+			_settingsManager = settingsDataManager;
+			_startupSetting = _settings.Where(x => x.Name.Equals("service_startup")).Single();
+			_locationSetting = _settings.Where(x => x.Name.Equals("service_location")).Single();
+			_processNameSetting = _settings.Where(x => x.Name.Equals("process_name")).Single();
 			
-			_initialStartupValue = (bool)_startupSetting.Value;
-			_initialLocationValue = _locationSetting.Value.ToString();
-			_initialProcessNameValue = _processNameSetting.Value.ToString();
-
 			this.SaveCommand = new DelegateCommand<object>((param) => SaveSettings());
-			this.FindServiceCommand = new DelegateCommand<object>((param) => GetServiceLocation());
 
 			_validator = new AppSettingsValidator(_settings);
 			Initialize();
@@ -53,7 +49,6 @@ namespace KeyPad.Settings.ViewModels {
 			(_initialProcessNameValue != _processNameSetting.Value.ToString());
 
 		public ICommand SaveCommand { get; private set; }
-		public ICommand FindServiceCommand { get; private set; }
 
 		public bool ShouldStartOnStartup {
 			get => (bool)_startupSetting.Value;
@@ -71,17 +66,7 @@ namespace KeyPad.Settings.ViewModels {
 			set {
 				if (_locationSetting.Value.ToString() != value) {
 					_locationSetting.Value = value;
-					PropertyChanged(this, new PropertyChangedEventArgs("ServiceLocation"));
-					PropertyChanged(this, new PropertyChangedEventArgs("IsDirty"));
-				}
-			}
-		}
-
-		public string ProcessName {
-			get => _processNameSetting.Value.ToString();
-			set {
-				if (_processNameSetting.Value.ToString() != value) {
-					_processNameSetting.Value = value;
+					_processNameSetting.Value = GetProcessName(value);
 					PropertyChanged(this, new PropertyChangedEventArgs("ServiceLocation"));
 					PropertyChanged(this, new PropertyChangedEventArgs("IsDirty"));
 				}
@@ -101,8 +86,7 @@ namespace KeyPad.Settings.ViewModels {
 				return;
 			}
 
-			string settingsJson = _settingsSerializer.Serialize(_settings);
-			System.IO.File.WriteAllText("settings.json", settingsJson);
+			_settingsManager.Save(_settings);
 			Initialize();
 		}
 
@@ -119,24 +103,20 @@ namespace KeyPad.Settings.ViewModels {
 			return result;
 		}
 
-		private void GetServiceLocation() {
-			OpenFileDialog dlg = new OpenFileDialog() {
-				Filter = "Executable files (*.exe) | *.exe"
-			};
-
-			bool? result = dlg.ShowDialog();
-			if (result == false)
-				return;
-
-			this.ServiceLocation = dlg.FileName;
-		}
-
 		private void Initialize() {
 			_initialStartupValue = (bool)_startupSetting.Value;
 			_initialProcessNameValue = _processNameSetting.Value.ToString();
 			_initialLocationValue = _locationSetting.Value.ToString();
 
 			PropertyChanged(this, new PropertyChangedEventArgs("IsDirty"));
+		}
+
+		private string GetProcessName(string fileLocation) {
+			Match match = Regex.Match(fileLocation, @"[^\\]\w+(?=\.[a-zA-Z]{3}\z)");
+			if (match.Success)
+				return match.Value;
+			else
+				return String.Empty;
 		}
 
 	}

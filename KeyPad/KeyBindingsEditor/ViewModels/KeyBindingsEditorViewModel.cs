@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Win32;
+using KeyPad.DataManager;
 
 namespace KeyPad.KeyBindingsEditor.ViewModels {
 
@@ -15,7 +16,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 
 		private KeyBindingViewModel[] _bindings;
 		private KeyBindingViewModel _selectedBinding;
-		private BindingFileManager _fileManager;
+		private IDataManager _fileManager;
 
 		public KeyBindingsEditorViewModel() {
 			_bindings = new KeyBindingViewModel[15];
@@ -27,10 +28,9 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 			this.SaveCommand = new DelegateCommand<object>((param) => SaveBindings());
 		}
 
-		public KeyBindingsEditorViewModel(string fileLocation) {
-			_fileManager = _fileManager ?? new BindingFileManager(fileLocation);
-			_fileManager = new BindingFileManager(fileLocation);
-			_bindings = _fileManager.Read();
+		public KeyBindingsEditorViewModel(IDataManager dataManager) {
+			_fileManager = dataManager;
+			_bindings = (KeyBindingViewModel[])_fileManager.Read();
 
 			this.OnKeyUp = new DelegateCommand<KeyEventArgs>((keyEvent) => SetBinding(keyEvent));
 			this.SaveCommand = new DelegateCommand<object>((param) => SaveBindings());
@@ -103,7 +103,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 			}
 
 			_fileManager.Save(this.Bindings);
-			this.Bindings = _fileManager.Read();
+			this.Bindings = (KeyBindingViewModel[])_fileManager.Read();
 			PropertyChanged(this, new PropertyChangedEventArgs("SaveEnabled"));
 		}
 

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace KeyPad.Settings.Serializer {
+namespace KeyPad.Serializer {
 
 	public class SettingsJsonSerializer : ISerializer {
 		private readonly static Encoding _encoding = Encoding.UTF8;

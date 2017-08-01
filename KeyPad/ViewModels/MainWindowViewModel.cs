@@ -1,7 +1,9 @@
-﻿using KeyPad.KeyBindingsEditor.ViewModels;
+﻿using KeyPad.DataManager;
+using KeyPad.KeyBindingsEditor.ViewModels;
 using KeyPad.ProcessWatcher;
 using KeyPad.ProcessWatcher.ViewModels;
 using KeyPad.Settings.Models;
+using KeyPad.Serializer;
 using KeyPad.Settings.ViewModels;
 using Microsoft.Win32;
 using System;
@@ -19,9 +21,11 @@ namespace KeyPad.ViewModels {
 		private const string SETTINGS_FILE_LOCATION = "settings.json";
 		private IList<ApplicationSetting> _appSettings;
 		private IProcessManager _processManager;
+		private IDataManager _settingsManager;
 
 		public MainWindowViewModel() {
-			LoadAppSettings();
+			_settingsManager = new AppSettingsManager(new SettingsJsonSerializer());
+			_appSettings = (IList<ApplicationSetting>)_settingsManager.Read();
 			this.TopMenu = CreateMenu();
 
 			ApplicationSetting processName = _appSettings
@@ -82,12 +86,9 @@ namespace KeyPad.ViewModels {
 				return;
 			}
 
-			this.PresenterViewModel = new KeyBindingsEditorViewModel(dlg.FileName);
-		}
-
-		private void LoadAppSettings() {
-			string jsonString = System.IO.File.ReadAllText(SETTINGS_FILE_LOCATION);
-			_appSettings = new Settings.Serializer.SettingsJsonSerializer().Deserialize<ApplicationSetting[]>(jsonString);
+			this.PresenterViewModel = new KeyBindingsEditorViewModel(
+				new BindingFileManager(dlg.FileName)
+			);
 		}
 
 		private IList<IMenuItem> CreateMenu() {
@@ -112,7 +113,7 @@ namespace KeyPad.ViewModels {
 								},
 								new TopBarMenuItem() {
 									Title = "KeyPad settings",
-									Action = new DelegateCommand<object>((param) => PresenterViewModel = new AppSettingsEditorViewModel(_appSettings))
+									Action = new DelegateCommand<object>((param) => PresenterViewModel = new AppSettingsEditorViewModel(new AppSettingsManager(new SettingsJsonSerializer())))
 								}
 							}
 						},

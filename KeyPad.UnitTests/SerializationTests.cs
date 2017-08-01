@@ -1,4 +1,4 @@
-﻿using KeyPad.Settings.Serializer;
+﻿using KeyPad.Serializer;
 using System;
 using System.Runtime.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

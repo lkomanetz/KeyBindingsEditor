@@ -63,12 +63,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DataManager\AppSettingsManager.cs" />
+    <Compile Include="DataManager\IDataManager.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="FileLocation.cs" />
     <Compile Include="IMenuItem.cs" />
     <Compile Include="IValidator.cs" />
     <Compile Include="IViewModel.cs" />
-    <Compile Include="KeyBindingsEditor\BindingFileManager.cs" />
+    <Compile Include="DataManager\BindingFileManager.cs" />
     <Compile Include="KeyBindingsEditor\Controls\DisabledArrowsListView.cs" />
     <Compile Include="KeyBindingsEditor\Converters\WidthConverter.cs" />
     <Compile Include="KeyBindingsEditor\KeyBindingsEditor.xaml.cs">
@@ -98,8 +100,8 @@
     <Compile Include="Settings\Models\ApplicationSetting.cs" />
     <Compile Include="Settings\Models\KeyPadServiceSetting.cs" />
     <Compile Include="Settings\Models\KeyPadSettings.cs" />
-    <Compile Include="Settings\Serializer\ISerializer.cs" />
-    <Compile Include="Settings\Serializer\SettingsJsonSerializer.cs" />
+    <Compile Include="Serializer\ISerializer.cs" />
+    <Compile Include="Serializer\SettingsJsonSerializer.cs" />
     <Compile Include="Settings\ServiceSettings.xaml.cs">
       <DependentUpon>ServiceSettings.xaml</DependentUpon>
     </Compile>

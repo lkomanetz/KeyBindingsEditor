@@ -17,7 +17,6 @@ namespace KeyPad.Settings.UserControls.ViewModels {
 			this.OpenCommand = new DelegateCommand<object>((param) => GetExeLocation());
 		}
 
-
 		public string Title => String.Empty;
 		public bool IsDirty => false;
 		public ICommand OpenCommand { get; private set; }
@@ -31,6 +30,7 @@ namespace KeyPad.Settings.UserControls.ViewModels {
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
+		public event EventHandler<EventArgs> LocationChanged;
 
 		private void GetExeLocation() {
 			OpenFileDialog dlg = new OpenFileDialog() {
@@ -38,8 +38,10 @@ namespace KeyPad.Settings.UserControls.ViewModels {
 			};
 
 			bool? result = dlg.ShowDialog();
-			if (result == true)
+			if (result == true) {
 				this.Location = dlg.FileName;
+				LocationChanged(this, EventArgs.Empty);
+			}
 
 		}
 
