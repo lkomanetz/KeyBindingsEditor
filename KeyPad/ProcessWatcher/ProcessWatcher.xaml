@@ -26,6 +26,7 @@
 			   FontWeight="Bold"/>
 		<Button Grid.Column="2"
 				HorizontalAlignment="Right"
+				IsEnabled="{Binding ButtonEnabled}"
 				Command="{Binding ButtonCommand}"
 				Content="{Binding ButtonLabelContent}"/>
 	</Grid>
