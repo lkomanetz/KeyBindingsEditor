@@ -65,6 +65,7 @@
     </ApplicationDefinition>
     <Compile Include="DataManager\AppSettingsManager.cs" />
     <Compile Include="DataManager\IDataManager.cs" />
+    <Compile Include="DataManager\ServiceSettingsManager.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="FileLocation.cs" />
     <Compile Include="IMenuItem.cs" />

@@ -55,8 +55,8 @@ namespace KeyPad.Settings.ViewModels {
 			set {
 				if ((bool)_startupSetting.Value != value) {
 					_startupSetting.Value = value;
-					PropertyChanged(this, new PropertyChangedEventArgs("ShouldStartOnStartup"));
-					PropertyChanged(this, new PropertyChangedEventArgs("IsDirty"));
+					PropertyChanged(this, new PropertyChangedEventArgs(nameof(ShouldStartOnStartup)));
+					PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
 				}
 			}
 		}
@@ -67,8 +67,8 @@ namespace KeyPad.Settings.ViewModels {
 				if (_locationSetting.Value.ToString() != value) {
 					_locationSetting.Value = value;
 					_processNameSetting.Value = GetProcessName(value);
-					PropertyChanged(this, new PropertyChangedEventArgs("ServiceLocation"));
-					PropertyChanged(this, new PropertyChangedEventArgs("IsDirty"));
+					PropertyChanged(this, new PropertyChangedEventArgs(nameof(ServiceLocation)));
+					PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
 				}
 			}
 		}
@@ -76,7 +76,7 @@ namespace KeyPad.Settings.ViewModels {
 		private void SaveSettings() {
 			var results = _validator.Validate();
 			if (results.Any(x => !x.IsSuccess)) {
-				string msg = BuildValidationMessage(results);
+				string msg = ValidatorMessageBuilder.Build(results);
 				MessageBox.Show(
 					msg,
 					this.Title,
@@ -90,25 +90,12 @@ namespace KeyPad.Settings.ViewModels {
 			Initialize();
 		}
 
-		private string BuildValidationMessage(IList<ValidatorResult> results) {
-			String result = String.Empty;
-			if (results.All(x => x.IsSuccess))
-				return result;
-
-			var failedResults = results.Where(x => !x.IsSuccess).ToList();
-			foreach (var failedResult in failedResults) {
-				result += $"{failedResult.Message}\n";
-			}
-
-			return result;
-		}
-
 		private void Initialize() {
 			_initialStartupValue = (bool)_startupSetting.Value;
 			_initialProcessNameValue = _processNameSetting.Value.ToString();
 			_initialLocationValue = _locationSetting.Value.ToString();
 
-			PropertyChanged(this, new PropertyChangedEventArgs("IsDirty"));
+			PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
 		}
 
 		private string GetProcessName(string fileLocation) {

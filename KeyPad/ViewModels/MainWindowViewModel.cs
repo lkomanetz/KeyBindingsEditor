@@ -18,14 +18,17 @@ namespace KeyPad.ViewModels {
 	
 	internal class MainWindowViewModel : INotifyPropertyChanged {
 
-		private const string SETTINGS_FILE_LOCATION = "settings.json";
+		private const string APP_SETTINGS_FILE_LOCATION = "settings.json";
+		private const string SERVICE_SETTINGS_FILE_LOCATION = "settings.txt";
 		private IList<ApplicationSetting> _appSettings;
 		private IProcessManager _processManager;
-		private IDataManager _settingsManager;
+		private IDataManager _appSettingsManager;
+		private IDataManager _serviceSettingsManager;
 
 		public MainWindowViewModel() {
-			_settingsManager = new AppSettingsManager(new SettingsJsonSerializer());
-			_appSettings = (IList<ApplicationSetting>)_settingsManager.Read();
+			_appSettingsManager = new AppSettingsManager(new SettingsJsonSerializer());
+			_serviceSettingsManager = new ServiceSettingsManager(SERVICE_SETTINGS_FILE_LOCATION);
+			_appSettings = (IList<ApplicationSetting>)_appSettingsManager.Read();
 			this.TopMenu = CreateMenu();
 
 			ApplicationSetting processName = _appSettings
@@ -73,6 +76,9 @@ namespace KeyPad.ViewModels {
 		}
 
 		public Visibility HeaderVisibility => (this.PresenterViewModel != null) ? Visibility.Visible : Visibility.Collapsed;
+
+		public static string APP_SETTINGS_FILE_LOCATION1 => APP_SETTINGS_FILE_LOCATION;
+
 		private void Shutdown() => Application.Current.Shutdown();
 
 		private void OpenKeybindingsFile() {
@@ -109,7 +115,7 @@ namespace KeyPad.ViewModels {
 							Children = new List<IMenuItem>() {
 								new TopBarMenuItem() {
 									Title = "Service settings",
-									Action = new DelegateCommand<object>((param) => PresenterViewModel = new ServiceSettingsViewModel("settings.txt")),
+									Action = new DelegateCommand<object>((param) => PresenterViewModel = new ServiceSettingsViewModel(_serviceSettingsManager)),
 								},
 								new TopBarMenuItem() {
 									Title = "KeyPad settings",

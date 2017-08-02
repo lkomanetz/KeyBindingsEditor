@@ -56,7 +56,7 @@ namespace KeyPad.ProcessWatcher.ViewModels {
 					return;
 
 				_buttonEnabled = value;
-				InvokePropertyChangeEvents();
+				PropertyChanged(this, new PropertyChangedEventArgs(nameof(ButtonEnabled)));
 			}
 		}
 
@@ -75,11 +75,10 @@ namespace KeyPad.ProcessWatcher.ViewModels {
 		}
 
 		private void InvokePropertyChangeEvents() {
-			PropertyChanged(this, new PropertyChangedEventArgs("ButtonLabelContent"));
-			PropertyChanged(this, new PropertyChangedEventArgs("ButtonCommand"));
-			PropertyChanged(this, new PropertyChangedEventArgs("ButtonEnabled"));
-			PropertyChanged(this, new PropertyChangedEventArgs("LabelContent"));
-			PropertyChanged(this, new PropertyChangedEventArgs("StatusColor"));
+			PropertyChanged(this, new PropertyChangedEventArgs(nameof(ButtonLabelContent)));
+			PropertyChanged(this, new PropertyChangedEventArgs(nameof(ButtonCommand)));
+			PropertyChanged(this, new PropertyChangedEventArgs(nameof(LabelContent)));
+			PropertyChanged(this, new PropertyChangedEventArgs(nameof(StatusColor)));
 		}
 
 	}

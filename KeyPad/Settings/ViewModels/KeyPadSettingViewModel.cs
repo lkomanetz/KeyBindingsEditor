@@ -26,7 +26,7 @@ namespace KeyPad.Settings.ViewModels {
 			set {
 				if (_setting.Value != value) {
 					_setting = new KeyPadServiceSetting(this.Name, value);
-					PropertyChanged(this, new PropertyChangedEventArgs("IsDirty"));
+					PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
 				}
 			}
 		}

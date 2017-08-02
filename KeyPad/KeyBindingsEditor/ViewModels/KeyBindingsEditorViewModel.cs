@@ -43,7 +43,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 			get { return _bindings; }
 			set {
 				_bindings = value;
-				PropertyChanged(this, new PropertyChangedEventArgs("Bindings"));
+				PropertyChanged(this, new PropertyChangedEventArgs(nameof(Bindings)));
 			}
 		}
 
@@ -63,7 +63,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 				if (_selectedBinding != null)
 					_selectedBinding.IsSelected = !_selectedBinding.IsSelected;
 
-				PropertyChanged(this, new PropertyChangedEventArgs("SelectedBinding"));
+				PropertyChanged(this, new PropertyChangedEventArgs(nameof(SelectedBinding)));
 			}
 		}
 
@@ -79,7 +79,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 
 			binding.KeyCode = keyCode;
 			this.SelectedBinding = null;
-			PropertyChanged(this, new PropertyChangedEventArgs("SaveEnabled"));
+			PropertyChanged(this, new PropertyChangedEventArgs(nameof(SaveEnabled)));
 		}
 
 		private void SaveBindings() {
@@ -87,7 +87,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 			var results = validator.Validate();
 
 			if (results.Any(x => !x.IsSuccess)) {
-				string msg = BuildValidationMessage(results);
+				string msg = ValidatorMessageBuilder.Build(results);
 				MessageBox.Show(
 					msg,
 					this.Title,
@@ -104,7 +104,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 
 			_fileManager.Save(this.Bindings);
 			this.Bindings = (KeyBindingViewModel[])_fileManager.Read();
-			PropertyChanged(this, new PropertyChangedEventArgs("SaveEnabled"));
+			PropertyChanged(this, new PropertyChangedEventArgs(nameof(SaveEnabled)));
 		}
 
 		private string GetSaveLocation() {
@@ -119,19 +119,6 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 			}
 
 			return dlg.FileName;
-		}
-
-		private string BuildValidationMessage(IList<ValidatorResult> results) {
-			String result = String.Empty;
-			if (results.All(x => x.IsSuccess))
-				return result;
-
-			var failedResults = results.Where(x => !x.IsSuccess).ToList();
-			foreach (var failedResult in failedResults) {
-				result += $"{failedResult.Message}\n";
-			}
-
-			return result;
 		}
 
 	}

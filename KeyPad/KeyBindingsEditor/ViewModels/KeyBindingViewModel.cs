@@ -5,9 +5,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
 
 namespace KeyPad.KeyBindingsEditor.ViewModels {
 
@@ -34,7 +31,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 				if (_binding.KeyboardButton != pressedKeyCode) {
 					pressedKeyCode = (pressedKeyCode == ESCAPE_KEY_CODE) ? -1 : pressedKeyCode;
 					_binding = new Models.KeyBinding(GamepadCode, pressedKeyCode);
-					PropertyChanged(this, new PropertyChangedEventArgs("KeyboardButton"));
+					PropertyChanged(this, new PropertyChangedEventArgs(nameof(KeyboardButton)));
 				}
 			}
 		}
