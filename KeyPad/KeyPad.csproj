@@ -67,7 +67,6 @@
     <Compile Include="DataManager\IDataManager.cs" />
     <Compile Include="DataManager\ServiceSettingsManager.cs" />
     <Compile Include="DelegateCommand.cs" />
-    <Compile Include="FileLocation.cs" />
     <Compile Include="IMenuItem.cs" />
     <Compile Include="IValidator.cs" />
     <Compile Include="IViewModel.cs" />
@@ -113,6 +112,7 @@
     <Compile Include="Settings\ViewModels\ServiceSettingsViewModel.cs" />
     <Compile Include="TopBarMenuItem.cs" />
     <Compile Include="TriggerActions\ParameterizedCommand.cs" />
+    <Compile Include="ValidatorMessageBuilder.cs" />
     <Compile Include="ValidatorResult.cs" />
     <Compile Include="ViewModels\MainWindowDesignViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />

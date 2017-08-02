@@ -3,17 +3,10 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-			 xmlns:local="clr-namespace:KeyPad.Settings"
 			 xmlns:ctrls="clr-namespace:KeyPad.Settings.UserControls"
-			 xmlns:kp="clr-namespace:KeyPad"
 			 mc:Ignorable="d"
 			 Background="White"
 			 d:DesignHeight="300" d:DesignWidth="300">
-	<UserControl.Resources>
-		<DataTemplate DataType="{x:Type kp:FileLocation}">
-			<ctrls:FilePicker Location="{Binding Value.Location}" />
-		</DataTemplate>
-	</UserControl.Resources>
 	<DockPanel LastChildFill="True"
 			   Height="Auto">
 		<Grid DockPanel.Dock="Bottom"
