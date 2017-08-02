@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace KeyPad.Settings.Models {
 
-	public class KeyPadServiceSetting {
+	public class ServiceSetting {
 
-		public KeyPadServiceSetting(string name, string value) {
+		public ServiceSetting(string name, string value) {
 			this.Value = value;
 			this.Name = name;
 		}

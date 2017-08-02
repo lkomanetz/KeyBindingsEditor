@@ -17,19 +17,19 @@ namespace KeyPad.DataManager {
 
 		public object Read() {
 			string[] fileContents = System.IO.File.ReadAllLines(_fileLocation);
-			IList<KeyPadServiceSetting> settings = new List<KeyPadServiceSetting>();
+			IList<ServiceSetting> settings = new List<ServiceSetting>();
 
 			foreach (string line in fileContents) {
 				string[] items = line.Split('=');
 				string value = (items[1].Equals("NULL")) ? String.Empty : items[1];
-				settings.Add(new KeyPadServiceSetting(items[0], value));
+				settings.Add(new ServiceSetting(items[0], value));
 			}
 
 			return settings;
 		}
 
 		public bool Save<T>(T items) where T : class {
-			var serviceSettings = items as IList<KeyPadSettingViewModel>;
+			var serviceSettings = items as IList<ServiceSetting>;
 			if (serviceSettings == null)
 				throw new ArgumentException("items is not of type IList<KeyPadSettingViewModel>");
 

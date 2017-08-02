@@ -15,20 +15,20 @@ namespace KeyPad.Settings.ViewModels {
 
 	public class ServiceSettingsViewModel : IViewModel {
 		private IDataManager _dataManager;
-		private IList<KeyPadSettingViewModel> _serviceSettings;
+		private IList<ServiceSettingViewModel> _serviceSettings;
 
 		public ServiceSettingsViewModel(IDataManager dataManager) {
 			_dataManager = dataManager;
-			_serviceSettings = new List<KeyPadSettingViewModel>();
+			_serviceSettings = new List<ServiceSettingViewModel>();
 			LoadSettings();
 
 			this.SaveCommand = new DelegateCommand<object>((param) => SaveSettings());
 		}
 
-		public event PropertyChangedEventHandler PropertyChanged;
+		public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
 		public string Title => "KeyPad Service Settings";
-		public IList<KeyPadSettingViewModel> Settings => _serviceSettings;
+		public IList<ServiceSettingViewModel> Settings => _serviceSettings;
 		public bool IsDirty => _serviceSettings.Any(x => x.IsDirty);
 		public ICommand SaveCommand { get; private set; }
 
@@ -36,22 +36,26 @@ namespace KeyPad.Settings.ViewModels {
 			if (_serviceSettings.Count > 0)
 				_serviceSettings.Clear();
 
-			var settings = (IList<KeyPadServiceSetting>)_dataManager.Read();
+			var settings = (IList<ServiceSetting>)_dataManager.Read();
 			_serviceSettings = settings.Select(x => {
-				var vm = new KeyPadSettingViewModel(x);
-				vm.PropertyChanged += SettingChanged;
+				var vm = new ServiceSettingViewModel(x);
+				vm.PropertyChanged += (sender, e) => PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
 				return vm;
 			})
 			.ToList();
+
+			PropertyChanged(this, new PropertyChangedEventArgs(nameof(Settings)));
 		}
 
 		private void SaveSettings() {
-			_dataManager.Save(_serviceSettings);
-			LoadSettings();
-		}
+			var settings = _serviceSettings
+				.Select(x => new ServiceSetting(x.Name, x.Value))
+				.ToList();
 
-		private void SettingChanged(object sender, PropertyChangedEventArgs e) =>
+			_dataManager.Save(settings);
+			LoadSettings();
 			PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
+		}
 
 	}
 

@@ -70,7 +70,7 @@
     <Compile Include="IMenuItem.cs" />
     <Compile Include="IValidator.cs" />
     <Compile Include="IViewModel.cs" />
-    <Compile Include="DataManager\BindingFileManager.cs" />
+    <Compile Include="DataManager\KeyBindingFileManager.cs" />
     <Compile Include="KeyBindingsEditor\Controls\DisabledArrowsListView.cs" />
     <Compile Include="KeyBindingsEditor\Converters\WidthConverter.cs" />
     <Compile Include="KeyBindingsEditor\KeyBindingsEditor.xaml.cs">
@@ -84,6 +84,13 @@
     <Compile Include="KeyBindingsEditor\ViewModels\KeyBindingsDesignViewModel.cs" />
     <Compile Include="KeyBindingsEditor\ViewModels\KeyBindingsEditorViewModel.cs" />
     <Compile Include="KeyBindingsEditor\ViewModels\KeyBindingViewModel.cs" />
+    <Page Include="KeyBindingSelector\KeyBindingSelector.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="KeyBindingSelector\KeyBindingSelector.xaml.cs" />
+    <Compile Include="KeyBindingSelector\Models\KeyBindingFile.cs" />
+    <Compile Include="KeyBindingSelector\ViewModels\KeyBindingSelectorViewModel.cs" />
     <Compile Include="ProcessWatcher\IProcessManager.cs" />
     <Compile Include="ProcessWatcher\ProcessWatcher.xaml.cs">
       <DependentUpon>ProcessWatcher.xaml</DependentUpon>
@@ -98,7 +105,7 @@
       <DependentUpon>FilePicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\Models\ApplicationSetting.cs" />
-    <Compile Include="Settings\Models\KeyPadServiceSetting.cs" />
+    <Compile Include="Settings\Models\ServiceSetting.cs" />
     <Compile Include="Settings\Models\KeyPadSettings.cs" />
     <Compile Include="Serializer\ISerializer.cs" />
     <Compile Include="Serializer\SettingsJsonSerializer.cs" />
@@ -108,7 +115,7 @@
     <Compile Include="Settings\SettingsLoader.cs" />
     <Compile Include="Settings\UserControls\ViewModels\FilePickerViewModel.cs" />
     <Compile Include="Settings\ViewModels\AppSettingsEditorViewModel.cs" />
-    <Compile Include="Settings\ViewModels\KeyPadSettingViewModel.cs" />
+    <Compile Include="Settings\ViewModels\ServiceSettingViewModel.cs" />
     <Compile Include="Settings\ViewModels\ServiceSettingsViewModel.cs" />
     <Compile Include="TopBarMenuItem.cs" />
     <Compile Include="TriggerActions\ParameterizedCommand.cs" />

@@ -9,11 +9,11 @@ using KeyPad.KeyBindingsEditor.Models;
 
 namespace KeyPad.DataManager {
 
-	public class BindingFileManager : IDataManager {
+	public class KeyBindingFileManager : IDataManager {
 
 		private string _fileLocation;
 
-		public BindingFileManager(string fileLocation) => _fileLocation = fileLocation;
+		public KeyBindingFileManager(string fileLocation) => _fileLocation = fileLocation;
 
 		public bool Save<T>(T keyBindings) where T : class {
 			var bindings = keyBindings as IEnumerable<KeyBindingViewModel>;

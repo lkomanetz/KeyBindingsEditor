@@ -99,7 +99,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 
 			if (_fileManager == null) {
 				string fileLocation = GetSaveLocation();
-				_fileManager = new BindingFileManager(fileLocation);
+				_fileManager = new KeyBindingFileManager(fileLocation);
 			}
 
 			_fileManager.Save(this.Bindings);

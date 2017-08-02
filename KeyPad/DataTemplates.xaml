@@ -6,6 +6,8 @@
 					xmlns:pw="clr-namespace:KeyPad.ProcessWatcher"
 					xmlns:s="clr-namespace:KeyPad.Settings"
 					xmlns:svm="clr-namespace:KeyPad.Settings.ViewModels"
+					xmlns:kbSelectorVm="clr-namespace:KeyPad.KeyBindingSelector.ViewModels"
+					xmlns:kbSelector="clr-namespace:KeyPad.KeyBindingSelector"
 					xmlns:local="clr-namespace:KeyPad">
 	
 	<DataTemplate DataType="{x:Type kbEditorVm:KeyBindingsEditorViewModel}">
@@ -19,6 +21,9 @@
 	</DataTemplate>
 	<DataTemplate DataType="{x:Type svm:AppSettingsEditorViewModel}">
 		<s:AppSettingsEditor/>
+	</DataTemplate>
+	<DataTemplate DataType="{x:Type kbSelectorVm:KeyBindingSelectorViewModel}">
+		<kbSelector:KeyBindingSelector/>
 	</DataTemplate>
 
 </ResourceDictionary>

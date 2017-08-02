@@ -32,8 +32,18 @@
 			</Menu.ItemTemplate>
 		</Menu>
 
-		<ContentPresenter DockPanel.Dock="Bottom"
-						  Content="{Binding ProcessWatcherViewModel}"/>
+		<Grid DockPanel.Dock="Bottom"
+			  Style="{StaticResource GridGradientBackground}">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<ContentPresenter Content="{Binding ProcessWatcherViewModel}"
+							  Grid.Column="0"/>
+			<ContentPresenter Content="{Binding KeyBindingSelectorViewModel}"
+							  HorizontalAlignment="Right"
+							  Grid.Column="1"/>
+		</Grid>
 
 		<StackPanel Orientation="Vertical"
 					DockPanel.Dock="Top"

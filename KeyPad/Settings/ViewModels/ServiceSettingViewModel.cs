@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace KeyPad.Settings.ViewModels {
 
-	public class KeyPadSettingViewModel : INotifyPropertyChanged {
-		private KeyPadServiceSetting _setting;
+	public class ServiceSettingViewModel : INotifyPropertyChanged {
+		private ServiceSetting _setting;
 		private string _initialValue;
 
-		public KeyPadSettingViewModel(KeyPadServiceSetting setting) {
+		public ServiceSettingViewModel(ServiceSetting setting) {
 			_setting = setting;
 			_initialValue = _setting.Value;
 		}
@@ -25,7 +25,7 @@ namespace KeyPad.Settings.ViewModels {
 			get => _setting.Value;
 			set {
 				if (_setting.Value != value) {
-					_setting = new KeyPadServiceSetting(this.Name, value);
+					_setting = new ServiceSetting(this.Name, value);
 					PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
 				}
 			}

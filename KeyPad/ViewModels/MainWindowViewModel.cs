@@ -13,13 +13,18 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using KeyPad.KeyBindingSelector.ViewModels;
 
 namespace KeyPad.ViewModels {
 	
+	//TODO(Logan) -> Implement the interface segregation principle with view models.
+	//TODO(Logan) -> Look at saving/loading key bindings to internal directory in the app.
+	//TODO(Logan) -> Test the new keybinding selector.
+	//TODO(Logan) -> Implement hiding of keybinding selector if service is running.
 	internal class MainWindowViewModel : INotifyPropertyChanged {
 
 		private const string APP_SETTINGS_FILE_LOCATION = "settings.json";
-		private const string SERVICE_SETTINGS_FILE_LOCATION = "settings.txt";
+		private const string SERVICE_SETTINGS_FILE_LOCATION = "service_settings.txt";
 		private IList<ApplicationSetting> _appSettings;
 		private IProcessManager _processManager;
 		private IDataManager _appSettingsManager;
@@ -38,8 +43,10 @@ namespace KeyPad.ViewModels {
 				.Where(x => x.Name.Equals("service_location"))
 				.Single();
 
+#if DEBUG
 			_processManager = new WindowsProcessManager(processName.Value.ToString(), exeLocation.Value.ToString());
 			this.ProcessWatcherViewModel = new ProcessWatcherViewModel(_processManager);
+#endif
 
 			bool startService = (bool)_appSettings
 				.Where(x => x.Name.Equals("service_startup"))
@@ -49,34 +56,42 @@ namespace KeyPad.ViewModels {
 			if (startService) {
 				_processManager.Start();
 			}
+			this.KeyBindingSelectorViewModel = new KeyBindingSelectorViewModel(_serviceSettingsManager);
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
 		public IList<IMenuItem> TopMenu { get; private set; }
 
-		private object _presenterViewModel;
-		public object PresenterViewModel {
+		private IViewModel _presenterViewModel;
+		public IViewModel PresenterViewModel {
 			get => _presenterViewModel;
 			private set {
 				_presenterViewModel = value;
-				PropertyChanged(this, new PropertyChangedEventArgs("PresenterViewModel"));
-				PropertyChanged(this, new PropertyChangedEventArgs("HeaderVisibility"));
-				PropertyChanged(this, new PropertyChangedEventArgs("Title"));
+				PropertyChanged(this, new PropertyChangedEventArgs(nameof(PresenterViewModel)));
+				PropertyChanged(this, new PropertyChangedEventArgs(nameof(HeaderVisibility)));
 			}
 		}
 
-		private object _processWatcherViewModel;
-		public object ProcessWatcherViewModel {
+		private IViewModel _processWatcherViewModel;
+		public IViewModel ProcessWatcherViewModel {
 			get => _processWatcherViewModel;
 			private set {
 				_processWatcherViewModel = value;
-				PropertyChanged(this, new PropertyChangedEventArgs("ProcessWatcherViewModel"));
+				PropertyChanged(this, new PropertyChangedEventArgs(nameof(ProcessWatcherViewModel)));
+			}
+		}
+
+		private IViewModel _kbSelectorVm;
+		public IViewModel KeyBindingSelectorViewModel {
+			get => _kbSelectorVm;
+			private set {
+				_kbSelectorVm = value;
+				PropertyChanged(this, new PropertyChangedEventArgs(nameof(KeyBindingSelectorViewModel)));
 			}
 		}
 
 		public Visibility HeaderVisibility => (this.PresenterViewModel != null) ? Visibility.Visible : Visibility.Collapsed;
-
 		public static string APP_SETTINGS_FILE_LOCATION1 => APP_SETTINGS_FILE_LOCATION;
 
 		private void Shutdown() => Application.Current.Shutdown();
@@ -93,7 +108,7 @@ namespace KeyPad.ViewModels {
 			}
 
 			this.PresenterViewModel = new KeyBindingsEditorViewModel(
-				new BindingFileManager(dlg.FileName)
+				new KeyBindingFileManager(dlg.FileName)
 			);
 		}
 
