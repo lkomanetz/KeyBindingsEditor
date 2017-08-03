@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace KeyPad.KeyBindingSelector.ViewModels {
 
@@ -19,6 +20,7 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 		private readonly string _directoryLocation;
 		private IDataManager _serviceSettingManager;
 		private IList<ServiceSetting> _serviceSettings;
+		private Visibility _visibility;
 		private KeyBindingFile _selectedFile;
 
 		public KeyBindingSelectorViewModel(IDataManager dataManager) {
@@ -45,6 +47,16 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 		public string Title => String.Empty;
 		public bool IsDirty => throw new NotImplementedException();
 		public IList<KeyBindingFile> Files { get; set; }
+
+		public Visibility Visibility {
+			get => _visibility;
+			set {
+				if (_visibility == value)
+					return;
+				_visibility = value;
+				PropertyChanged(this, new PropertyChangedEventArgs(nameof(Visibility)));
+			}
+		}
 
 		public KeyBindingFile SelectedFile {
 			get => _selectedFile;

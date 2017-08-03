@@ -6,14 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KeyPad.KeyBindingsEditor.Models;
+using KeyPad.KeyBindingSelector.Models;
 
 namespace KeyPad.DataManager {
 
 	public class KeyBindingFileManager : IDataManager {
 
+		private const string DIRECTORY_NAME = "Bindings";
 		private string _fileLocation;
 
-		public KeyBindingFileManager(string fileLocation) => _fileLocation = fileLocation;
+		public KeyBindingFileManager(string fileName) =>
+			_fileLocation = $@"{Environment.CurrentDirectory}\{DIRECTORY_NAME}\{fileName}";
 
 		public bool Save<T>(T keyBindings) where T : class {
 			var bindings = keyBindings as IEnumerable<KeyBindingViewModel>;
@@ -34,6 +37,12 @@ namespace KeyPad.DataManager {
 				return false;
 			}
 
+		}
+
+		public KeyBindingFile[] GetFiles() {
+			return System.IO.Directory.GetFiles($@"{Environment.CurrentDirectory}\{DIRECTORY_NAME}")
+				.Select(x => new KeyBindingFile(x))
+				.ToArray();
 		}
 
 		public object Read() {

@@ -5,10 +5,11 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 			 xmlns:local="clr-namespace:KeyPad.KeyBindingSelector"
 			 mc:Ignorable="d" 
+			 Visibility="{Binding Visibility}"
 			 d:DesignHeight="300" d:DesignWidth="300">
 
 	<StackPanel Orientation="Horizontal">
-		<Label Content="Key Binding:"/>
+		<Label Content="Binding:"/>
 		<ComboBox ItemsSource="{Binding Files}"
 				  VerticalContentAlignment="Center"
 				  SelectedItem="{Binding SelectedFile}"/>

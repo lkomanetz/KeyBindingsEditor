@@ -7,9 +7,8 @@
 			 xmlns:local="clr-namespace:KeyPad.ProcessWatcher"
 			 mc:Ignorable="d" 
 			 d:DataContext="{d:DesignInstance {x:Type vm:ProcessWatcherDesignViewModel}, IsDesignTimeCreatable=True}"
-			 Background="LightGray"
 			 d:DesignHeight="300" d:DesignWidth="300">
-	<Grid Style="{StaticResource GridGradientBackground}">
+	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="Auto"/>
 			<ColumnDefinition Width="Auto"/>
@@ -18,7 +17,7 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="28"/>
 		</Grid.RowDefinitions>
-		<Label Content="Keypad Service Status:"
+		<Label Content="Status:"
 			   Grid.Column="0"/>
 		<Label Content="{Binding LabelContent}"
 			   Grid.Column="1"

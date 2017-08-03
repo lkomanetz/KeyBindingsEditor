@@ -19,7 +19,7 @@ using KeyPad.KeyBindingSelector.ViewModels;
 namespace KeyPad.ViewModels {
 	
 	//TODO(Logan) -> Look at saving/loading key bindings to internal directory in the app.
-	//TODO(Logan) -> Fix bug with saving new keybindings without choosing a file.
+	//TODO(Logan) -> Figure out how to edit bindings and settings with new UI.
 	internal class MainWindowViewModel : IObservableViewModel {
 
 		private const string APP_SETTINGS_FILE_LOCATION = "settings.json";
@@ -28,23 +28,18 @@ namespace KeyPad.ViewModels {
 		private IProcessManager _processManager;
 		private IDataManager _appSettingsManager;
 		private IDataManager _serviceSettingsManager;
+		private KeyBindingSelectorViewModel _kbSelectorVm;
+		private IViewModel _processWatcherViewModel;
 
 		public MainWindowViewModel() {
 			_appSettingsManager = new AppSettingsManager(new SettingsJsonSerializer());
 			_serviceSettingsManager = new ServiceSettingsManager(SERVICE_SETTINGS_FILE_LOCATION);
 			_appSettings = (IList<ApplicationSetting>)_appSettingsManager.Read();
-			this.TopMenu = CreateMenu();
 
-			ApplicationSetting processName = _appSettings
-				.Where(x => x.Name.Equals("process_name"))
-				.Single();
-			ApplicationSetting exeLocation = _appSettings
-				.Where(x => x.Name.Equals("service_location"))
-				.Single();
-
-#if !DEBUG
-			_processManager = SetupProcessMonitor(processName.Value.ToString(), exeLocation.Value.ToString());
-			this.ProcessWatcherViewModel = new ProcessWatcherViewModel(_processManager);
+			_kbSelectorVm = new KeyBindingSelectorViewModel(_serviceSettingsManager);
+#if DEBUG
+			_processManager = SetupProcessMonitor();
+			_processWatcherViewModel = new ProcessWatcherViewModel(_processManager);
 #endif
 
 			bool startService = (bool)_appSettings
@@ -52,68 +47,43 @@ namespace KeyPad.ViewModels {
 				.Single()
 				.Value;
 
-			if (startService) 
+			if (startService) {
 				_processManager.Start();
+			}
 
-			this.KeyBindingSelectorViewModel = new KeyBindingSelectorViewModel(_serviceSettingsManager);
-			this.KeyBindingSelectorVisibility = (_processManager.IsRunning) ? Visibility.Collapsed : Visibility.Visible;
+			if (_processManager.IsRunning)
+				_kbSelectorVm.Visibility = Visibility.Collapsed;	
+
+			this.Cards = BuildCards();
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
-		public IList<IMenuItem> TopMenu { get; private set; }
 		public bool IsDirty => false;
 
-		private Visibility _kbSelectorVisibility;
-		public Visibility KeyBindingSelectorVisibility
-		{
-			get => _kbSelectorVisibility;
+		private IList<IViewModel> _cards;
+		public IList<IViewModel> Cards {
+			get => _cards;
 			set {
-				if (_kbSelectorVisibility == value)
-					return;
-
-				_kbSelectorVisibility = value;
-				PropertyChanged(this, new PropertyChangedEventArgs(nameof(KeyBindingSelectorVisibility)));
+				_cards = value;
+				PropertyChanged(this, new PropertyChangedEventArgs(nameof(Cards)));
 			}
 		}
 
-		private IViewModel _presenterViewModel;
-		public IViewModel PresenterViewModel {
-			get => _presenterViewModel;
-			private set {
-				_presenterViewModel = value;
-				PropertyChanged(this, new PropertyChangedEventArgs(nameof(PresenterViewModel)));
-				PropertyChanged(this, new PropertyChangedEventArgs(nameof(HeaderVisibility)));
-			}
-		}
-
-		private IViewModel _processWatcherViewModel;
-		public IViewModel ProcessWatcherViewModel {
-			get => _processWatcherViewModel;
-			private set {
-				_processWatcherViewModel = value;
-				PropertyChanged(this, new PropertyChangedEventArgs(nameof(ProcessWatcherViewModel)));
-			}
-		}
-
-		private IViewModel _kbSelectorVm;
-		public IViewModel KeyBindingSelectorViewModel {
-			get => _kbSelectorVm;
-			private set {
-				_kbSelectorVm = value;
-				PropertyChanged(this, new PropertyChangedEventArgs(nameof(KeyBindingSelectorViewModel)));
-			}
-		}
-
-		public Visibility HeaderVisibility => (this.PresenterViewModel != null) ? Visibility.Visible : Visibility.Collapsed;
 		public static string APP_SETTINGS_FILE_LOCATION1 => APP_SETTINGS_FILE_LOCATION;
 
 		private void Shutdown() => Application.Current.Shutdown();
 
-		private IProcessManager SetupProcessMonitor(string processName, string exeLocation) {
-			var wpm = new WindowsProcessManager(processName, exeLocation);
-			wpm.ProcessStarted += (sender, args) => this.KeyBindingSelectorVisibility = Visibility.Collapsed;
-			wpm.ProcessStopped += (sender, args) => this.KeyBindingSelectorVisibility = Visibility.Visible;
+		private IProcessManager SetupProcessMonitor() {
+			var processNameSetting = _appSettings.First(x => x.Name.Equals("process_name"));
+			var exeLocationSetting = _appSettings.First(x => x.Name.Equals("service_location"));
+
+			var wpm = new WindowsProcessManager(
+				processNameSetting.Value.ToString(),
+				exeLocationSetting.Value.ToString()
+			);
+			wpm.ProcessStarted += (sender, args) => _kbSelectorVm.Visibility = Visibility.Collapsed;
+			wpm.ProcessStopped += (sender, args) => _kbSelectorVm.Visibility = Visibility.Visible;
 
 			return wpm;
 		}
@@ -123,47 +93,40 @@ namespace KeyPad.ViewModels {
 				DefaultExt = ".txt",
 				Filter = "Text Files (*.txt) | *.txt"
 			};
-
 			bool? result = dlg.ShowDialog();
 			if (result == false) {
 				return;
 			}
-
-			this.PresenterViewModel = new KeyBindingsEditorViewModel(
-				new KeyBindingFileManager(dlg.FileName)
-			);
 		}
 
-		private IList<IMenuItem> CreateMenu() {
-			return new List<IMenuItem>() {
-				new TopBarMenuItem() {
-					Title = "File",
-					Children = new List<IMenuItem>() {
-						new TopBarMenuItem() {
-							Title = "New",
-							Action = new DelegateCommand<object>((param) => PresenterViewModel = new KeyBindingsEditorViewModel())
-						},
-						new TopBarMenuItem() {
-							Title = "Open",
-							Action = new DelegateCommand<object>((param) => OpenKeybindingsFile())
-						},
-						new TopBarMenuItem() {
-							Title = "Settings",
-							Children = new List<IMenuItem>() {
-								new TopBarMenuItem() {
-									Title = "Service settings",
-									Action = new DelegateCommand<object>((param) => PresenterViewModel = new ServiceSettingsViewModel(_serviceSettingsManager)),
-								},
-								new TopBarMenuItem() {
-									Title = "KeyPad settings",
-									Action = new DelegateCommand<object>((param) => PresenterViewModel = new AppSettingsEditorViewModel(new AppSettingsManager(new SettingsJsonSerializer())))
-								}
-							}
-						},
-						new TopBarMenuItem() {
-							Title = "Exit",
-							Action = new DelegateCommand<object>((param) => Shutdown())
+		private IList<IViewModel> BuildCards() {
+			return new List<IViewModel>() {
+				new CardViewModel() {
+					Title = "Service",
+					TitleActions = new List<TitleAction>() {
+						new TitleAction() {
+							ActionImage = $@"{Environment.CurrentDirectory}/IconImages/edit_icon.png",
+							Action = new DelegateCommand<object>((param) => MessageBox.Show("Hello"))
 						}
+					},
+					CardContent = new List<IViewModel>() {
+						_processWatcherViewModel
+					}
+				},
+				new CardViewModel() {
+					Title = "Key Bindings",
+					TitleActions = new List<TitleAction>() {
+						new TitleAction() {
+							ActionImage= $@"{Environment.CurrentDirectory}/IconImages/edit_icon.png",
+							Action = new DelegateCommand<object>((param) => MessageBox.Show("There"))
+						},
+						new TitleAction() {
+							ActionImage = $@"{Environment.CurrentDirectory}/IconImages/add_icon.png",
+							Action = new DelegateCommand<object>((param) => MessageBox.Show("Yay!"))
+						}
+					},
+					CardContent = new List<IViewModel>() {
+						_kbSelectorVm
 					}
 				}
 			};

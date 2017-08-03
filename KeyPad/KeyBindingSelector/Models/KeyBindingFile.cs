@@ -23,7 +23,7 @@ namespace KeyPad.KeyBindingSelector.Models {
 		public override string ToString() => _fileName;
 
 		private string GetFileName(string fileLocation) {
-			Match match = Regex.Match(fileLocation, @"[^\\]\w+\.[a-zA-Z]{3}\z");
+			Match match = Regex.Match(fileLocation, @"[^\\]\w+(?=\.[a-zA-Z]{3}\z)");
 			if (match.Success)
 				return match.Value;
 			else

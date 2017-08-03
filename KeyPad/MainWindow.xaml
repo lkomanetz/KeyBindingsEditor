@@ -6,55 +6,23 @@
 		xmlns:local="clr-namespace:KeyPad"
 		xmlns:vm="clr-namespace:KeyPad.ViewModels"
 		mc:Ignorable="d"
-		d:DataContext="{d:DesignInstance {x:Type vm:MainWindowDesignViewModel}, IsDesignTimeCreatable=True}"
 		MinWidth="428"
 		MinHeight="350"
-		Title="KeyPad Editor" Height="450" Width="725">
+		SizeToContent="Width"
+		Title="KeyPad" Height="450" Width="500">
 	<DockPanel LastChildFill="True">
-
-		<Menu DockPanel.Dock="Left"
-			  ItemsSource="{Binding TopMenu}">
-			<Menu.ItemContainerStyle>
-				<Style TargetType="{x:Type MenuItem}">
-					<Setter Property="Command" Value="{Binding Action}"/>
+		<ItemsControl ItemsSource="{Binding Cards}">
+			<ItemsControl.ItemContainerStyle>
+				<Style TargetType="{x:Type ContentPresenter}">
+					<Setter Property="Margin" Value="20,0,20,0"/>
+					<Setter Property="Height" Value="Auto"/>
 				</Style>
-			</Menu.ItemContainerStyle>
-			<Menu.ItemsPanel>
+			</ItemsControl.ItemContainerStyle>
+			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
-					<VirtualizingStackPanel Orientation="Vertical"/>
+					<StackPanel Orientation="Horizontal"/>
 				</ItemsPanelTemplate>
-			</Menu.ItemsPanel>
-			<Menu.ItemTemplate>
-				<HierarchicalDataTemplate DataType="{x:Type local:TopBarMenuItem}"
-										  ItemsSource="{Binding Children}">
-					<TextBlock Text="{Binding Title}"/>
-				</HierarchicalDataTemplate>
-			</Menu.ItemTemplate>
-		</Menu>
-
-		<Grid DockPanel.Dock="Bottom"
-			  Style="{StaticResource GridGradientBackground}">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto"/>
-				<ColumnDefinition Width="*"/>
-			</Grid.ColumnDefinitions>
-			<ContentControl Content="{Binding ProcessWatcherViewModel}"
-							Grid.Column="0"/>
-			<ContentControl Content="{Binding KeyBindingSelectorViewModel}"
-							HorizontalAlignment="Right"
-							Visibility="{Binding KeyBindingSelectorVisibility}"
-							Grid.Column="1"/>
-		</Grid>
-
-		<StackPanel Orientation="Vertical"
-					DockPanel.Dock="Top"
-					Style="{StaticResource GradientBackground}"
-					Visibility="{Binding HeaderVisibility}">
-			<Label Content="{Binding PresenterViewModel.Title}"
-				   Style="{StaticResource HeaderStyle}" />
-			<Separator />
-		</StackPanel>
-
-		<ContentPresenter Content="{Binding PresenterViewModel}"/>
+			</ItemsControl.ItemsPanel>
+		</ItemsControl>
 	</DockPanel>
 </Window>
