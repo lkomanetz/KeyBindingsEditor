@@ -38,11 +38,12 @@
 				<ColumnDefinition Width="Auto"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
-			<ContentPresenter Content="{Binding ProcessWatcherViewModel}"
-							  Grid.Column="0"/>
-			<ContentPresenter Content="{Binding KeyBindingSelectorViewModel}"
-							  HorizontalAlignment="Right"
-							  Grid.Column="1"/>
+			<ContentControl Content="{Binding ProcessWatcherViewModel}"
+							Grid.Column="0"/>
+			<ContentControl Content="{Binding KeyBindingSelectorViewModel}"
+							HorizontalAlignment="Right"
+							Visibility="{Binding KeyBindingSelectorVisibility}"
+							Grid.Column="1"/>
 		</Grid>
 
 		<StackPanel Orientation="Vertical"

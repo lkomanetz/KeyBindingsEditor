@@ -1,4 +1,5 @@
-﻿using KeyPad.DataManager;
+﻿using KeyPad.ViewModels;
+using KeyPad.DataManager;
 using KeyPad.Settings.Models;
 using KeyPad.Serializer;
 using Microsoft.Win32;
@@ -15,7 +16,7 @@ using System.Windows.Input;
 
 namespace KeyPad.Settings.ViewModels {
 
-	public class AppSettingsEditorViewModel : IViewModel, INotifyPropertyChanged {
+	public class AppSettingsEditorViewModel : IObservableViewModel, IViewModel {
 
 		private IValidator _validator;
 		private IDataManager _settingsManager;
@@ -96,6 +97,8 @@ namespace KeyPad.Settings.ViewModels {
 			_initialLocationValue = _locationSetting.Value.ToString();
 
 			PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
+			PropertyChanged(this, new PropertyChangedEventArgs(nameof(ServiceLocation)));
+			PropertyChanged(this, new PropertyChangedEventArgs(nameof(ShouldStartOnStartup)));
 		}
 
 		private string GetProcessName(string fileLocation) {

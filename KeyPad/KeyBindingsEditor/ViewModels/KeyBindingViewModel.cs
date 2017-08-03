@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using KeyPad.ViewModels;
 
 namespace KeyPad.KeyBindingsEditor.ViewModels {
 
-	public class KeyBindingViewModel : INotifyPropertyChanged {
+	public class KeyBindingViewModel : IObservableViewModel {
 		private const int ESCAPE_KEY_CODE = 27;
 		private Models.KeyBinding _binding;
 		private Guid _id;

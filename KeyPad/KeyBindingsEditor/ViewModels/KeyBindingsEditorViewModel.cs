@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using KeyPad.KeyBindingsEditor.Models;
+using KeyPad.ViewModels;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
@@ -12,7 +13,7 @@ using KeyPad.DataManager;
 
 namespace KeyPad.KeyBindingsEditor.ViewModels {
 
-	internal class KeyBindingsEditorViewModel : IViewModel {
+	internal class KeyBindingsEditorViewModel : IViewModel, IObservableViewModel {
 
 		private KeyBindingViewModel[] _bindings;
 		private KeyBindingViewModel _selectedBinding;

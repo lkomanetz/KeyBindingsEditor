@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KeyPad.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -11,7 +12,7 @@ using System.Windows.Media;
 
 namespace KeyPad.ProcessWatcher.ViewModels {
 
-	internal class ProcessWatcherViewModel : INotifyPropertyChanged, IViewModel {
+	internal class ProcessWatcherViewModel : IObservableViewModel , IViewModel {
 
 		private const double TIMER_INTERVAL = 250D;
 		private ICommand _stopProcessCommand;
@@ -42,7 +43,7 @@ namespace KeyPad.ProcessWatcher.ViewModels {
 
 			_startProcessCommand = new DelegateCommand<object>((param) => ToggleActionAsync(() => _processManager.Start()));
 			_stopProcessCommand = new DelegateCommand<object>((param) => ToggleActionAsync(() => _processManager.Stop()));
-		} 
+		}
 
 		public event PropertyChangedEventHandler PropertyChanged = delegate { };
 

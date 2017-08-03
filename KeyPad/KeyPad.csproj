@@ -69,7 +69,8 @@
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="IMenuItem.cs" />
     <Compile Include="IValidator.cs" />
-    <Compile Include="IViewModel.cs" />
+    <Compile Include="ViewModels\IObservableViewModel.cs" />
+    <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="DataManager\KeyBindingFileManager.cs" />
     <Compile Include="KeyBindingsEditor\Controls\DisabledArrowsListView.cs" />
     <Compile Include="KeyBindingsEditor\Converters\WidthConverter.cs" />

@@ -1,4 +1,5 @@
-﻿using KeyPad.DataManager;
+﻿using KeyPad.ViewModels;
+using KeyPad.DataManager;
 using KeyPad.Settings.Models;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using System.Windows.Input;
 
 namespace KeyPad.Settings.ViewModels {
 
-	public class ServiceSettingsViewModel : IViewModel {
+	public class ServiceSettingsViewModel : IViewModel, IObservableViewModel {
 		private IDataManager _dataManager;
 		private IList<ServiceSettingViewModel> _serviceSettings;
 

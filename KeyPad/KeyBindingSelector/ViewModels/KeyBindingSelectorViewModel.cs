@@ -2,6 +2,7 @@
 using KeyPad.KeyBindingSelector.Models;
 using KeyPad.Settings.Models;
 using KeyPad.Settings.ViewModels;
+using KeyPad.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,10 +12,11 @@ using System.Threading.Tasks;
 
 namespace KeyPad.KeyBindingSelector.ViewModels {
 
-	public class KeyBindingSelectorViewModel : IViewModel {
+	public class KeyBindingSelectorViewModel : IViewModel, IObservableViewModel {
 
 		private const string PROPERTY_NAME = "keybindings_location";
-		private const string DIRECTORY_LOCATION = @"C:\Users\logan.komanetz\Desktop\KeyPad\Bindings";
+
+		private readonly string _directoryLocation;
 		private IDataManager _serviceSettingManager;
 		private IList<ServiceSetting> _serviceSettings;
 		private KeyBindingFile _selectedFile;
@@ -22,11 +24,17 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 		public KeyBindingSelectorViewModel(IDataManager dataManager) {
 			_serviceSettingManager = dataManager;
 			_serviceSettings = (List<ServiceSetting>)_serviceSettingManager.Read();
+			_directoryLocation = $@"{Environment.CurrentDirectory}\Bindings";
 
 			this.Files = LoadFiles();
 
-			string selectedFileName = _serviceSettings.Where(x => x.Name.Equals(PROPERTY_NAME)).Single().Value;
-			this.SelectedFile = this.Files.Where(x => x.FileName.Equals(selectedFileName)).Single(); 
+			string selectedFileLocation = _serviceSettings
+				.Where(x => x.Name.Equals(PROPERTY_NAME))
+				.Single()
+				.Value;
+
+			var kbf = new KeyBindingFile(selectedFileLocation);
+			this.SelectedFile = this.Files.Where(x => x.FileName.Equals(kbf.FileName)).Single(); 
 
 			PropertyChanged(this, new PropertyChangedEventArgs(nameof(Files)));
 			PropertyChanged(this, new PropertyChangedEventArgs(nameof(SelectedFile)));
@@ -50,20 +58,19 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 		}
 
 		private KeyBindingFile[] LoadFiles() {
-			if (!System.IO.Directory.Exists(DIRECTORY_LOCATION))
+			if (!System.IO.Directory.Exists(_directoryLocation))
 				return null;
 
-			return System.IO.Directory.GetFiles(DIRECTORY_LOCATION)
+			return System.IO.Directory.GetFiles(_directoryLocation)
 				.Select(x => new KeyBindingFile(x))
 				.ToArray();
 		}
 
 		private void UpdateServiceSettings() {
-			var setting = _serviceSettings
-				.Where(x => x.Name.Equals(PROPERTY_NAME))
-				.Single();
-
-			setting = new ServiceSetting(PROPERTY_NAME, SelectedFile.FileLocation);
+			for (int i = 0; i < _serviceSettings.Count; ++i) {
+				if (_serviceSettings[i].Name == PROPERTY_NAME)
+					_serviceSettings[i] = new ServiceSetting(PROPERTY_NAME, SelectedFile.FileLocation);
+			}
 			_serviceSettingManager.Save(_serviceSettings);
 		}
 

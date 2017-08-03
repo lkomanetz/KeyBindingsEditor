@@ -5,6 +5,7 @@ using KeyPad.ProcessWatcher.ViewModels;
 using KeyPad.Settings.Models;
 using KeyPad.Serializer;
 using KeyPad.Settings.ViewModels;
+using KeyPad.ViewModels;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -17,11 +18,9 @@ using KeyPad.KeyBindingSelector.ViewModels;
 
 namespace KeyPad.ViewModels {
 	
-	//TODO(Logan) -> Implement the interface segregation principle with view models.
 	//TODO(Logan) -> Look at saving/loading key bindings to internal directory in the app.
-	//TODO(Logan) -> Test the new keybinding selector.
-	//TODO(Logan) -> Implement hiding of keybinding selector if service is running.
-	internal class MainWindowViewModel : INotifyPropertyChanged {
+	//TODO(Logan) -> Fix bug with saving new keybindings without choosing a file.
+	internal class MainWindowViewModel : IObservableViewModel {
 
 		private const string APP_SETTINGS_FILE_LOCATION = "settings.json";
 		private const string SERVICE_SETTINGS_FILE_LOCATION = "service_settings.txt";
@@ -43,8 +42,8 @@ namespace KeyPad.ViewModels {
 				.Where(x => x.Name.Equals("service_location"))
 				.Single();
 
-#if DEBUG
-			_processManager = new WindowsProcessManager(processName.Value.ToString(), exeLocation.Value.ToString());
+#if !DEBUG
+			_processManager = SetupProcessMonitor(processName.Value.ToString(), exeLocation.Value.ToString());
 			this.ProcessWatcherViewModel = new ProcessWatcherViewModel(_processManager);
 #endif
 
@@ -53,15 +52,30 @@ namespace KeyPad.ViewModels {
 				.Single()
 				.Value;
 
-			if (startService) {
+			if (startService) 
 				_processManager.Start();
-			}
+
 			this.KeyBindingSelectorViewModel = new KeyBindingSelectorViewModel(_serviceSettingsManager);
+			this.KeyBindingSelectorVisibility = (_processManager.IsRunning) ? Visibility.Collapsed : Visibility.Visible;
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
 		public IList<IMenuItem> TopMenu { get; private set; }
+		public bool IsDirty => false;
+
+		private Visibility _kbSelectorVisibility;
+		public Visibility KeyBindingSelectorVisibility
+		{
+			get => _kbSelectorVisibility;
+			set {
+				if (_kbSelectorVisibility == value)
+					return;
+
+				_kbSelectorVisibility = value;
+				PropertyChanged(this, new PropertyChangedEventArgs(nameof(KeyBindingSelectorVisibility)));
+			}
+		}
 
 		private IViewModel _presenterViewModel;
 		public IViewModel PresenterViewModel {
@@ -95,6 +109,14 @@ namespace KeyPad.ViewModels {
 		public static string APP_SETTINGS_FILE_LOCATION1 => APP_SETTINGS_FILE_LOCATION;
 
 		private void Shutdown() => Application.Current.Shutdown();
+
+		private IProcessManager SetupProcessMonitor(string processName, string exeLocation) {
+			var wpm = new WindowsProcessManager(processName, exeLocation);
+			wpm.ProcessStarted += (sender, args) => this.KeyBindingSelectorVisibility = Visibility.Collapsed;
+			wpm.ProcessStopped += (sender, args) => this.KeyBindingSelectorVisibility = Visibility.Visible;
+
+			return wpm;
+		}
 
 		private void OpenKeybindingsFile() {
 			OpenFileDialog dlg = new OpenFileDialog() {

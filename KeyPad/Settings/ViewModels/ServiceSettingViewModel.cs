@@ -1,4 +1,5 @@
 ﻿using KeyPad.Settings.Models;
+using KeyPad.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace KeyPad.Settings.ViewModels {
 
-	public class ServiceSettingViewModel : INotifyPropertyChanged {
+	public class ServiceSettingViewModel : IObservableViewModel {
 		private ServiceSetting _setting;
 		private string _initialValue;
 

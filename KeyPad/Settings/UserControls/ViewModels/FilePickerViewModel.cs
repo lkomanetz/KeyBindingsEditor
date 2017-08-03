@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using KeyPad.ViewModels;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +11,7 @@ using System.Windows.Input;
 
 namespace KeyPad.Settings.UserControls.ViewModels {
 
-	public class FilePickerViewModel : IViewModel {
+	public class FilePickerViewModel : IViewModel, IObservableViewModel {
 		private string _fileLocation;
 
 		public FilePickerViewModel() {
@@ -25,7 +26,7 @@ namespace KeyPad.Settings.UserControls.ViewModels {
 			get => _fileLocation;
 			set {
 				_fileLocation = value;
-				PropertyChanged(this, new PropertyChangedEventArgs("Location"));
+				PropertyChanged(this, new PropertyChangedEventArgs(nameof(Location)));
 			}
 		}
 

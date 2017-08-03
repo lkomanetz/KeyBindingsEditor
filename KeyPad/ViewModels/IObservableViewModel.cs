@@ -1,15 +1,14 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeyPad {
+namespace KeyPad.ViewModels {
 
-	public interface IViewModel : INotifyPropertyChanged {
+	public interface IObservableViewModel : INotifyPropertyChanged {
 
-		string Title { get; }
 		bool IsDirty { get; }
 
 	}

@@ -6,12 +6,24 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace KeyPad
-{
+namespace KeyPad {
+
 	/// <summary>
 	/// Interaction logic for App.xaml
 	/// </summary>
-	public partial class App : Application
-	{
+	public partial class App : Application {
+
+		public App() {
+			Application.Current.DispatcherUnhandledException += (sender, args) => {
+				MessageBox.Show(
+					$"{args.Exception.Message}\n{args.Exception.Source}",
+					"Error",
+					MessageBoxButton.OK,
+					MessageBoxImage.Error
+				);
+			};
+		}
+
 	}
+	
 }
