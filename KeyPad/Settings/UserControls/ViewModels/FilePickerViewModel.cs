@@ -19,7 +19,6 @@ namespace KeyPad.Settings.UserControls.ViewModels {
 		}
 
 		public string Title => String.Empty;
-		public bool IsDirty => false;
 		public ICommand OpenCommand { get; private set; }
 
 		public string Location {

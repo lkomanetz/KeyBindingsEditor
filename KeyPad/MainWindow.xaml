@@ -6,23 +6,28 @@
 		xmlns:local="clr-namespace:KeyPad"
 		xmlns:vm="clr-namespace:KeyPad.ViewModels"
 		mc:Ignorable="d"
-		MinWidth="428"
+		d:DataContext="{d:DesignInstance Type=vm:MainWindowDesignerViewModel, IsDesignTimeCreatable=True}"
+		MinWidth="628"
 		MinHeight="350"
 		SizeToContent="Width"
-		Title="KeyPad" Height="450" Width="500">
+		Title="KeyPad" Height="450" Width="628">
 	<DockPanel LastChildFill="True">
-		<ItemsControl ItemsSource="{Binding Cards}">
+		<ItemsControl ItemsSource="{Binding Cards}"
+					  DockPanel.Dock="Left"
+					  Margin="0,0,10,0">
 			<ItemsControl.ItemContainerStyle>
 				<Style TargetType="{x:Type ContentPresenter}">
-					<Setter Property="Margin" Value="20,0,20,0"/>
+					<Setter Property="Margin" Value="0,5,0,5"/>
 					<Setter Property="Height" Value="Auto"/>
 				</Style>
 			</ItemsControl.ItemContainerStyle>
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
-					<StackPanel Orientation="Horizontal"/>
+					<StackPanel Orientation="Vertical"/>
 				</ItemsPanelTemplate>
 			</ItemsControl.ItemsPanel>
 		</ItemsControl>
+		<ContentControl Content="{Binding FormViewContent}"
+						DockPanel.Dock="Right"/>
 	</DockPanel>
 </Window>

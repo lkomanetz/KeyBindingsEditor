@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace KeyPad.Settings.ViewModels {
 
-	public class ServiceSettingsViewModel : IViewModel, IObservableViewModel {
+	public class ServiceSettingsViewModel : IViewModel, IObservableViewModel, IForm {
 		private IDataManager _dataManager;
 		private IList<ServiceSettingViewModel> _serviceSettings;
 
@@ -27,6 +27,7 @@ namespace KeyPad.Settings.ViewModels {
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged = delegate { };
+		public event EventHandler<EventArgs> SaveCompleted = delegate { };
 
 		public string Title => "KeyPad Service Settings";
 		public IList<ServiceSettingViewModel> Settings => _serviceSettings;
@@ -56,6 +57,7 @@ namespace KeyPad.Settings.ViewModels {
 			_dataManager.Save(settings);
 			LoadSettings();
 			PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
+			SaveCompleted(this, EventArgs.Empty);
 		}
 
 	}

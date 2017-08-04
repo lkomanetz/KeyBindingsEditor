@@ -45,7 +45,6 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 		public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
 		public string Title => String.Empty;
-		public bool IsDirty => throw new NotImplementedException();
 		public IList<KeyBindingFile> Files { get; set; }
 
 		public Visibility Visibility {

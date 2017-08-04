@@ -67,6 +67,7 @@
     <Compile Include="DataManager\IDataManager.cs" />
     <Compile Include="DataManager\ServiceSettingsManager.cs" />
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="IForm.cs" />
     <Compile Include="IValidator.cs" />
     <Compile Include="TitleAction.cs" />
     <Compile Include="UserControls\Card.xaml.cs">
@@ -125,6 +126,7 @@
     <Compile Include="TriggerActions\ParameterizedCommand.cs" />
     <Compile Include="ValidatorMessageBuilder.cs" />
     <Compile Include="ValidatorResult.cs" />
+    <Compile Include="ViewModels\MainWindowDesignerViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ProcessWatcher\ViewModels\ProcessWatcherViewModel.cs" />
     <Page Include="DataTemplates.xaml">

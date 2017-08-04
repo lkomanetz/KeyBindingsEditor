@@ -15,8 +15,8 @@ namespace KeyPad.DataManager {
 		private const string DIRECTORY_NAME = "Bindings";
 		private string _fileLocation;
 
-		public KeyBindingFileManager(string fileName) =>
-			_fileLocation = $@"{Environment.CurrentDirectory}\{DIRECTORY_NAME}\{fileName}";
+		public KeyBindingFileManager(string fileLocation) =>
+			_fileLocation = fileLocation;
 
 		public bool Save<T>(T keyBindings) where T : class {
 			var bindings = keyBindings as IEnumerable<KeyBindingViewModel>;

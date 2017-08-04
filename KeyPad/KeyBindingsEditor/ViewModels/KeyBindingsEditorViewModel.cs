@@ -13,7 +13,7 @@ using KeyPad.DataManager;
 
 namespace KeyPad.KeyBindingsEditor.ViewModels {
 
-	internal class KeyBindingsEditorViewModel : IViewModel, IObservableViewModel {
+	internal class KeyBindingsEditorViewModel : IViewModel, IObservableViewModel, IForm {
 
 		private KeyBindingViewModel[] _bindings;
 		private KeyBindingViewModel _selectedBinding;
@@ -38,6 +38,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged = delegate { };
+		public event EventHandler<EventArgs> SaveCompleted;
 
 		public string Title => "Key Bindings Editor";
 		public KeyBindingViewModel[] Bindings {
@@ -48,10 +49,9 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 			}
 		}
 
-		public bool IsDirty => false;
+		public bool IsDirty => Bindings.Any(x => x.IsDirty);
 		public ICommand OnKeyUp { get; private set; }
 		public ICommand SaveCommand { get; private set; }
-		public bool SaveEnabled => Bindings.Any(x => x.IsDirty);
 
 		public KeyBindingViewModel SelectedBinding {
 			get => _selectedBinding;
@@ -80,7 +80,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 
 			binding.KeyCode = keyCode;
 			this.SelectedBinding = null;
-			PropertyChanged(this, new PropertyChangedEventArgs(nameof(SaveEnabled)));
+			PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
 		}
 
 		private void SaveBindings() {
@@ -107,8 +107,9 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 			}
 
 			_fileManager.Save(this.Bindings);
+			SaveCompleted(this, EventArgs.Empty);
 			this.Bindings = (KeyBindingViewModel[])_fileManager.Read();
-			PropertyChanged(this, new PropertyChangedEventArgs(nameof(SaveEnabled)));
+			PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
 		}
 
 		private string GetSaveLocation() {

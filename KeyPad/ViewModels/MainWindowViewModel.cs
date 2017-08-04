@@ -40,7 +40,6 @@ namespace KeyPad.ViewModels {
 #if DEBUG
 			_processManager = SetupProcessMonitor();
 			_processWatcherViewModel = new ProcessWatcherViewModel(_processManager);
-#endif
 
 			bool startService = (bool)_appSettings
 				.Where(x => x.Name.Equals("service_startup"))
@@ -53,6 +52,7 @@ namespace KeyPad.ViewModels {
 
 			if (_processManager.IsRunning)
 				_kbSelectorVm.Visibility = Visibility.Collapsed;	
+#endif
 
 			this.Cards = BuildCards();
 		}
@@ -61,8 +61,8 @@ namespace KeyPad.ViewModels {
 
 		public bool IsDirty => false;
 
-		private IList<IViewModel> _cards;
-		public IList<IViewModel> Cards {
+		private IList<CardViewModel> _cards;
+		public IList<CardViewModel> Cards {
 			get => _cards;
 			set {
 				_cards = value;
@@ -70,7 +70,17 @@ namespace KeyPad.ViewModels {
 			}
 		}
 
-		public static string APP_SETTINGS_FILE_LOCATION1 => APP_SETTINGS_FILE_LOCATION;
+		private IForm _formViewContent;
+		public IForm FormViewContent {
+			get => _formViewContent;
+			set {
+				if (value != null) 
+					value.SaveCompleted += (sender, args) => this.FormViewContent = null;
+				
+				_formViewContent = value;
+				PropertyChanged(this, new PropertyChangedEventArgs(nameof(FormViewContent)));
+			}
+		}
 
 		private void Shutdown() => Application.Current.Shutdown();
 
@@ -99,14 +109,14 @@ namespace KeyPad.ViewModels {
 			}
 		}
 
-		private IList<IViewModel> BuildCards() {
-			return new List<IViewModel>() {
+		private IList<CardViewModel> BuildCards() {
+			return new List<CardViewModel>() {
 				new CardViewModel() {
 					Title = "Service",
 					TitleActions = new List<TitleAction>() {
 						new TitleAction() {
 							ActionImage = $@"{Environment.CurrentDirectory}/IconImages/edit_icon.png",
-							Action = new DelegateCommand<object>((param) => MessageBox.Show("Hello"))
+							Action = new DelegateCommand<object>((param) => this.FormViewContent = new ServiceSettingsViewModel(_serviceSettingsManager))
 						}
 					},
 					CardContent = new List<IViewModel>() {
@@ -118,11 +128,11 @@ namespace KeyPad.ViewModels {
 					TitleActions = new List<TitleAction>() {
 						new TitleAction() {
 							ActionImage= $@"{Environment.CurrentDirectory}/IconImages/edit_icon.png",
-							Action = new DelegateCommand<object>((param) => MessageBox.Show("There"))
+							Action = new DelegateCommand<object>((param) => this.FormViewContent = new KeyBindingsEditorViewModel(new KeyBindingFileManager(_kbSelectorVm.SelectedFile.FileLocation)))
 						},
 						new TitleAction() {
 							ActionImage = $@"{Environment.CurrentDirectory}/IconImages/add_icon.png",
-							Action = new DelegateCommand<object>((param) => MessageBox.Show("Yay!"))
+							Action = new DelegateCommand<object>((param) => this.FormViewContent = new KeyBindingsEditorViewModel())
 						}
 					},
 					CardContent = new List<IViewModel>() {

@@ -29,7 +29,7 @@
 			</Grid.ColumnDefinitions>
 			<Button Grid.Column="1"
 					Margin="5"
-					IsEnabled="{Binding SaveEnabled}"
+					IsEnabled="{Binding IsDirty}"
 					Command="{Binding SaveCommand}"
 					Content="Save"/>
 		</Grid>

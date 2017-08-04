@@ -16,7 +16,7 @@ using System.Windows.Input;
 
 namespace KeyPad.Settings.ViewModels {
 
-	public class AppSettingsEditorViewModel : IObservableViewModel, IViewModel {
+	public class AppSettingsEditorViewModel : IObservableViewModel, IViewModel, IForm {
 
 		private IValidator _validator;
 		private IDataManager _settingsManager;
@@ -42,6 +42,7 @@ namespace KeyPad.Settings.ViewModels {
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged = delegate { };
+		public event EventHandler<EventArgs> SaveCompleted = delegate { };
 
 		public string Title => "Keypad Settings";
 		public bool IsDirty =>
@@ -88,6 +89,7 @@ namespace KeyPad.Settings.ViewModels {
 			}
 
 			_settingsManager.Save(_settings);
+			SaveCompleted(this, EventArgs.Empty);
 			Initialize();
 		}
 

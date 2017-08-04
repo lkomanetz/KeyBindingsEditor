@@ -64,7 +64,6 @@ namespace KeyPad.ProcessWatcher.ViewModels {
 		public ICommand ButtonCommand => (_isProcessRunning) ? _stopProcessCommand : _startProcessCommand;
 		public Brush StatusColor => (_isProcessRunning) ? Brushes.Green : Brushes.Red;
 		public string Title => throw new NotImplementedException();
-		public bool IsDirty => throw new NotImplementedException();
 
 		private void WatchProcess() {
 			_isProcessRunning = _processManager.IsRunning;
