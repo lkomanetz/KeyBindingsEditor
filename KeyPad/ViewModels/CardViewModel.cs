@@ -9,7 +9,9 @@ using System.Windows.Input;
 
 namespace KeyPad.ViewModels {
 
-	public class CardViewModel : IViewModel, IObservableViewModel {
+	public class CardViewModel :
+		IViewModel,
+		IObservableViewModel {
 
 		public CardViewModel() {
 			this.ToggleCollapseState = new DelegateCommand<object>((param) => this.IsCollapsed = !this.IsCollapsed);

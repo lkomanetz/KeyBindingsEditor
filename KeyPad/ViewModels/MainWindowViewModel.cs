@@ -20,6 +20,7 @@ namespace KeyPad.ViewModels {
 	
 	//TODO(Logan) -> Look at saving/loading key bindings to internal directory in the app.
 	//TODO(Logan) -> Figure out how to edit bindings and settings with new UI.
+	//TODO(Logan) -> Refactor how the Card UserControl is defined in the directory structure.
 	internal class MainWindowViewModel : IObservableViewModel {
 
 		private const string APP_SETTINGS_FILE_LOCATION = "settings.json";

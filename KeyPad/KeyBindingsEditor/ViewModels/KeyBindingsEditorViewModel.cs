@@ -13,7 +13,10 @@ using KeyPad.DataManager;
 
 namespace KeyPad.KeyBindingsEditor.ViewModels {
 
-	internal class KeyBindingsEditorViewModel : IViewModel, IObservableViewModel, IForm {
+	internal class KeyBindingsEditorViewModel :
+		IViewModel,
+		IObservableViewModel,
+		IForm {
 
 		private KeyBindingViewModel[] _bindings;
 		private KeyBindingViewModel _selectedBinding;

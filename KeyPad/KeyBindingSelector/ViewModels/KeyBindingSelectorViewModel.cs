@@ -13,7 +13,9 @@ using System.Windows;
 
 namespace KeyPad.KeyBindingSelector.ViewModels {
 
-	public class KeyBindingSelectorViewModel : IViewModel, IObservableViewModel {
+	public class KeyBindingSelectorViewModel :
+		IViewModel,
+		IObservableViewModel {
 
 		private const string PROPERTY_NAME = "keybindings_location";
 

@@ -12,7 +12,9 @@ using System.Windows.Media;
 
 namespace KeyPad.ProcessWatcher.ViewModels {
 
-	internal class ProcessWatcherViewModel : IObservableViewModel , IViewModel {
+	internal class ProcessWatcherViewModel :
+		IObservableViewModel,
+		IViewModel {
 
 		private const double TIMER_INTERVAL = 250D;
 		private ICommand _stopProcessCommand;
