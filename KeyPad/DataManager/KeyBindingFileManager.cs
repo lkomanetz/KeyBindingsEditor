@@ -16,8 +16,15 @@ namespace KeyPad.DataManager {
 		private const string DIRECTORY_NAME = "Bindings";
 		private string _fileLocation;
 
+		public KeyBindingFileManager() {}
+
 		public KeyBindingFileManager(string fileLocation) =>
 			_fileLocation = fileLocation;
+
+		public string FileLocation {
+			get => _fileLocation;
+			set => _fileLocation = value;
+		}
 
 		public event EventHandler<SaveCompleteEventArgs> SaveComplete;
 

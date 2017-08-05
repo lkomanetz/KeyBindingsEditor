@@ -39,7 +39,7 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 			if (!System.IO.Directory.Exists(_directoryLocation))
 				System.IO.Directory.CreateDirectory(_directoryLocation);
 
-			this.Files = LoadFiles();
+			LoadFiles();
 
 			string selectedFileLocation = _serviceSettings
 				.Where(x => x.Name.Equals(PROPERTY_NAME))
@@ -56,7 +56,15 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 		public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
 		public string Title => String.Empty;
-		public IList<KeyBindingFile> Files { get; set; }
+
+		private IList<KeyBindingFile> _files;
+		public IList<KeyBindingFile> Files {
+			get => _files;
+			set {
+				_files = value;
+				PropertyChanged(this, new PropertyChangedEventArgs(nameof(Files)));
+			}
+		}
 
 		public Visibility Visibility {
 			get => _visibility;
@@ -79,11 +87,11 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 			}
 		}
 
-		private KeyBindingFile[] LoadFiles() {
+		public void LoadFiles() {
 			if (!System.IO.Directory.Exists(_directoryLocation))
-				return null;
+				this.Files = new List<KeyBindingFile>();
 
-			return System.IO.Directory.GetFiles(_directoryLocation)
+			this.Files = System.IO.Directory.GetFiles(_directoryLocation)
 				.Select(x => new KeyBindingFile(x))
 				.ToArray();
 		}

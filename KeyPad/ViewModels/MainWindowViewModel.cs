@@ -21,6 +21,7 @@ namespace KeyPad.ViewModels {
 	
 	//TODO(Logan) -> Figure out how to edit bindings and settings with new UI.
 	//TODO(Logan) -> Change the accessibility of view models to be internal.
+	//TODO(Logan) -> Figure out why _keyBindingDataManager.SaveComplete isn't being called.
 	internal class MainWindowViewModel : IObservableViewModel {
 
 		private const string APP_SETTINGS_FILE_LOCATION = "settings.json";
@@ -29,12 +30,16 @@ namespace KeyPad.ViewModels {
 		private IProcessManager _processManager;
 		private IDataManager _appSettingsManager;
 		private IDataManager _serviceSettingsManager;
+		private IDataManager _keyBindingDataManager;
 		private KeyBindingSelectorViewModel _kbSelectorVm;
 		private IViewModel _processWatcherViewModel;
 		private Window _owner;
 
 		public MainWindowViewModel(Window owner) {
 			_owner = owner;
+			_keyBindingDataManager = new KeyBindingFileManager();
+			_keyBindingDataManager.SaveComplete += (sender, args) => _kbSelectorVm.LoadFiles();
+
 			_appSettingsManager = new AppSettingsManager(new SettingsJsonSerializer());
 			_serviceSettingsManager = new ServiceSettingsManager(SERVICE_SETTINGS_FILE_LOCATION);
 			_appSettings = (IList<ApplicationSetting>)_appSettingsManager.Read();
@@ -134,7 +139,8 @@ namespace KeyPad.ViewModels {
 						new TitleAction() {
 							ActionImage= $@"{Environment.CurrentDirectory}/IconImages/edit_icon.png",
 							Action = new DelegateCommand<object>((param) => {
-								this.FormViewContent = new KeyBindingsEditorViewModel(new KeyBindingFileManager(_kbSelectorVm.SelectedFile.FileLocation), _owner);
+								((KeyBindingFileManager)_keyBindingDataManager).FileLocation = _kbSelectorVm.SelectedFile.FileLocation;
+								this.FormViewContent = new KeyBindingsEditorViewModel(_keyBindingDataManager, _owner);
 							})
 						},
 						new TitleAction() {
