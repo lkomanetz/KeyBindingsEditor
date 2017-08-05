@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KeyPad.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace KeyPad.ViewModels {
+namespace KeyPad.UserControls.ViewModels {
 
 	public class CardViewModel :
 		IViewModel,

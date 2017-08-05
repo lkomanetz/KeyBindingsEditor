@@ -30,6 +30,15 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 			_serviceSettings = (List<ServiceSetting>)_serviceSettingManager.Read();
 			_directoryLocation = $@"{Environment.CurrentDirectory}\Bindings";
 
+			//TODO(Logan) -> Look a little more into where the below conditional statment is.
+			/*
+			 * I'm not really sure about where this code is right now.  Does it make sense
+			 * for it to live in the KeyBindingSelectorViewModel? Is there a better place
+			 * for it to live?  Right now I'm not sure.
+			 */
+			if (!System.IO.Directory.Exists(_directoryLocation))
+				System.IO.Directory.CreateDirectory(_directoryLocation);
+
 			this.Files = LoadFiles();
 
 			string selectedFileLocation = _serviceSettings
@@ -38,7 +47,7 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 				.Value;
 
 			var kbf = new KeyBindingFile(selectedFileLocation);
-			this.SelectedFile = this.Files.Where(x => x.FileName.Equals(kbf.FileName)).Single(); 
+			this.SelectedFile = this.Files.FirstOrDefault(x => x.FileName.Equals(kbf.FileName)); 
 
 			PropertyChanged(this, new PropertyChangedEventArgs(nameof(Files)));
 			PropertyChanged(this, new PropertyChangedEventArgs(nameof(SelectedFile)));
@@ -80,9 +89,10 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 		}
 
 		private void UpdateServiceSettings() {
+			var selectedFile = SelectedFile ?? new KeyBindingFile();
 			for (int i = 0; i < _serviceSettings.Count; ++i) {
 				if (_serviceSettings[i].Name == PROPERTY_NAME)
-					_serviceSettings[i] = new ServiceSetting(PROPERTY_NAME, SelectedFile.FileLocation);
+					_serviceSettings[i] = new ServiceSetting(PROPERTY_NAME, selectedFile.FileLocation);
 			}
 			_serviceSettingManager.Save(_serviceSettings);
 		}

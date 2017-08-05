@@ -8,7 +8,7 @@
 					xmlns:svm="clr-namespace:KeyPad.Settings.ViewModels"
 					xmlns:kbSelectorVm="clr-namespace:KeyPad.KeyBindingSelector.ViewModels"
 					xmlns:kbSelector="clr-namespace:KeyPad.KeyBindingSelector"
-					xmlns:vm="clr-namespace:KeyPad.ViewModels"
+					xmlns:vm="clr-namespace:KeyPad.UserControls.ViewModels"
 					xmlns:ctrls="clr-namespace:KeyPad.UserControls"
 					xmlns:local="clr-namespace:KeyPad">
 	

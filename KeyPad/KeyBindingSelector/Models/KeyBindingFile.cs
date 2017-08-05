@@ -13,6 +13,11 @@ namespace KeyPad.KeyBindingSelector.Models {
 		private string _fileLocation;
 		private string _fileName;
 
+		public KeyBindingFile() {
+			_fileLocation = null;
+			_fileName = null;
+		}
+
 		public KeyBindingFile(string fileLocation) {
 			_fileLocation = fileLocation;
 			_fileName = GetFileName(fileLocation);

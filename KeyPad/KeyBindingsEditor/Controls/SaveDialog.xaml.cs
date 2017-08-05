@@ -1,4 +1,4 @@
-﻿using KeyPad.ViewModels;
+﻿using KeyPad.KeyBindingsEditor.Controls.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,15 +14,23 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace KeyPad {
+namespace KeyPad.KeyBindingsEditor.Controls {
+
 	/// <summary>
-	/// Interaction logic for MainWindow.xaml
+	/// Interaction logic for SaveDialog.xaml
 	/// </summary>
-	public partial class MainWindow : Window {
-		public MainWindow() {
+	public partial class SaveDialog : Window {
+
+		private SaveDialogViewModel _viewModel;
+
+		public SaveDialog(Window owner) {
+			_viewModel = new SaveDialogViewModel(this);
+			this.DataContext = _viewModel;
+			this.Owner = owner;
 			InitializeComponent();
-			this.DataContext = new MainWindowViewModel(this);
 		}
+
+		public string FileName { get; set; }
 
 	}
 

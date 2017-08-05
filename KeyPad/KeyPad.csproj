@@ -69,11 +69,15 @@
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="IForm.cs" />
     <Compile Include="IValidator.cs" />
+    <Compile Include="KeyBindingsEditor\Controls\SaveDialog.xaml.cs">
+      <DependentUpon>SaveDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="KeyBindingsEditor\Controls\ViewModels\SaveDialogViewModel.cs" />
     <Compile Include="TitleAction.cs" />
     <Compile Include="UserControls\Card.xaml.cs">
       <DependentUpon>Card.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\CardViewModel.cs" />
+    <Compile Include="UserControls\ViewModels\CardViewModel.cs" />
     <Compile Include="ViewModels\IObservableViewModel.cs" />
     <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="DataManager\KeyBindingFileManager.cs" />
@@ -90,6 +94,10 @@
     <Compile Include="KeyBindingsEditor\ViewModels\KeyBindingsDesignViewModel.cs" />
     <Compile Include="KeyBindingsEditor\ViewModels\KeyBindingsEditorViewModel.cs" />
     <Compile Include="KeyBindingsEditor\ViewModels\KeyBindingViewModel.cs" />
+    <Page Include="KeyBindingsEditor\Controls\SaveDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="KeyBindingSelector\KeyBindingSelector.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

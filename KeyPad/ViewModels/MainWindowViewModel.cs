@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using KeyPad.KeyBindingSelector.ViewModels;
+using KeyPad.UserControls.ViewModels;
 
 namespace KeyPad.ViewModels {
 	
@@ -31,8 +32,10 @@ namespace KeyPad.ViewModels {
 		private IDataManager _serviceSettingsManager;
 		private KeyBindingSelectorViewModel _kbSelectorVm;
 		private IViewModel _processWatcherViewModel;
+		private Window _owner;
 
-		public MainWindowViewModel() {
+		public MainWindowViewModel(Window owner) {
+			_owner = owner;
 			_appSettingsManager = new AppSettingsManager(new SettingsJsonSerializer());
 			_serviceSettingsManager = new ServiceSettingsManager(SERVICE_SETTINGS_FILE_LOCATION);
 			_appSettings = (IList<ApplicationSetting>)_appSettingsManager.Read();
@@ -117,7 +120,9 @@ namespace KeyPad.ViewModels {
 					TitleActions = new List<TitleAction>() {
 						new TitleAction() {
 							ActionImage = $@"{Environment.CurrentDirectory}/IconImages/edit_icon.png",
-							Action = new DelegateCommand<object>((param) => this.FormViewContent = new ServiceSettingsViewModel(_serviceSettingsManager))
+							Action = new DelegateCommand<object>((param) =>
+                                this.FormViewContent = new ServiceSettingsViewModel(_serviceSettingsManager)
+                            )
 						}
 					},
 					CardContent = new List<IViewModel>() {
@@ -129,11 +134,13 @@ namespace KeyPad.ViewModels {
 					TitleActions = new List<TitleAction>() {
 						new TitleAction() {
 							ActionImage= $@"{Environment.CurrentDirectory}/IconImages/edit_icon.png",
-							Action = new DelegateCommand<object>((param) => this.FormViewContent = new KeyBindingsEditorViewModel(new KeyBindingFileManager(_kbSelectorVm.SelectedFile.FileLocation)))
+							Action = new DelegateCommand<object>((param) =>
+                                this.FormViewContent = new KeyBindingsEditorViewModel(new KeyBindingFileManager(_kbSelectorVm.SelectedFile.FileLocation), _owner)
+                            )
 						},
 						new TitleAction() {
 							ActionImage = $@"{Environment.CurrentDirectory}/IconImages/add_icon.png",
-							Action = new DelegateCommand<object>((param) => this.FormViewContent = new KeyBindingsEditorViewModel())
+							Action = new DelegateCommand<object>((param) => this.FormViewContent = new KeyBindingsEditorViewModel(_owner))
 						}
 					},
 					CardContent = new List<IViewModel>() {

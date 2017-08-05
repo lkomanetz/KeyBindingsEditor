@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KeyPad.UserControls.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,7 +26,7 @@ namespace KeyPad.ViewModels {
 			}
 		};
 
-		public IForm FormViewContent = new KeyBindingsEditor.ViewModels.KeyBindingsEditorViewModel();
+		public IForm FormViewContent = new KeyBindingsEditor.ViewModels.KeyBindingsEditorViewModel(null);
 
 	}
 

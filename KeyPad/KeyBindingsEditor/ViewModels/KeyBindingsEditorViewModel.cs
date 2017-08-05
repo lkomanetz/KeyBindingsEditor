@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Input;
 using Microsoft.Win32;
 using KeyPad.DataManager;
+using KeyPad.KeyBindingsEditor.Controls;
 
 namespace KeyPad.KeyBindingsEditor.ViewModels {
 
@@ -21,8 +22,10 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 		private KeyBindingViewModel[] _bindings;
 		private KeyBindingViewModel _selectedBinding;
 		private IDataManager _fileManager;
+		private Window _owner;
 
-		public KeyBindingsEditorViewModel() {
+		public KeyBindingsEditorViewModel(Window owner) {
+			_owner = owner;
 			_bindings = new KeyBindingViewModel[15];
 			for (int i = 0; i < _bindings.Length; ++i) {
 				Models.KeyBinding binding = new Models.KeyBinding((GamepadButton)i);
@@ -32,7 +35,8 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 			this.SaveCommand = new DelegateCommand<object>((param) => SaveBindings());
 		}
 
-		public KeyBindingsEditorViewModel(IDataManager dataManager) {
+		public KeyBindingsEditorViewModel(IDataManager dataManager, Window owner) {
+			_owner = owner;
 			_fileManager = dataManager;
 			_bindings = (KeyBindingViewModel[])_fileManager.Read();
 
@@ -116,10 +120,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 		}
 
 		private string GetSaveLocation() {
-			SaveFileDialog dlg = new SaveFileDialog() {
-				DefaultExt = "*.txt",
-				Filter = "Text files (*.txt)|*.txt"
-			};
+			SaveDialog dlg = new SaveDialog(_owner);
 
 			bool? result = dlg.ShowDialog();
 			if (result == false) {
