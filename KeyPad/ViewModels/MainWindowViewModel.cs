@@ -19,9 +19,8 @@ using KeyPad.UserControls.ViewModels;
 
 namespace KeyPad.ViewModels {
 	
-	//TODO(Logan) -> Look at saving/loading key bindings to internal directory in the app.
 	//TODO(Logan) -> Figure out how to edit bindings and settings with new UI.
-	//TODO(Logan) -> Refactor how the Card UserControl is defined in the directory structure.
+	//TODO(Logan) -> Change the accessibility of view models to be internal.
 	internal class MainWindowViewModel : IObservableViewModel {
 
 		private const string APP_SETTINGS_FILE_LOCATION = "settings.json";
@@ -121,8 +120,8 @@ namespace KeyPad.ViewModels {
 						new TitleAction() {
 							ActionImage = $@"{Environment.CurrentDirectory}/IconImages/edit_icon.png",
 							Action = new DelegateCommand<object>((param) =>
-                                this.FormViewContent = new ServiceSettingsViewModel(_serviceSettingsManager)
-                            )
+								this.FormViewContent = new ServiceSettingsViewModel(_serviceSettingsManager)
+							)
 						}
 					},
 					CardContent = new List<IViewModel>() {
@@ -134,9 +133,9 @@ namespace KeyPad.ViewModels {
 					TitleActions = new List<TitleAction>() {
 						new TitleAction() {
 							ActionImage= $@"{Environment.CurrentDirectory}/IconImages/edit_icon.png",
-							Action = new DelegateCommand<object>((param) =>
-                                this.FormViewContent = new KeyBindingsEditorViewModel(new KeyBindingFileManager(_kbSelectorVm.SelectedFile.FileLocation), _owner)
-                            )
+							Action = new DelegateCommand<object>((param) => {
+								this.FormViewContent = new KeyBindingsEditorViewModel(new KeyBindingFileManager(_kbSelectorVm.SelectedFile.FileLocation), _owner);
+							})
 						},
 						new TitleAction() {
 							ActionImage = $@"{Environment.CurrentDirectory}/IconImages/add_icon.png",

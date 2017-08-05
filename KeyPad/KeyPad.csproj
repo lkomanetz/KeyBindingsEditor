@@ -64,6 +64,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DataManager\AppSettingsManager.cs" />
+    <Compile Include="DataManager\EventArguments\SaveCompleteEventArgs.cs" />
     <Compile Include="DataManager\IDataManager.cs" />
     <Compile Include="DataManager\ServiceSettingsManager.cs" />
     <Compile Include="DelegateCommand.cs" />

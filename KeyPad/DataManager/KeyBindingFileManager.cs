@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using KeyPad.KeyBindingsEditor.Models;
 using KeyPad.KeyBindingSelector.Models;
+using KeyPad.DataManager.EventArguments;
 
 namespace KeyPad.DataManager {
 
@@ -18,8 +19,10 @@ namespace KeyPad.DataManager {
 		public KeyBindingFileManager(string fileLocation) =>
 			_fileLocation = fileLocation;
 
-		public bool Save<T>(T keyBindings) where T : class {
-			var bindings = keyBindings as IEnumerable<KeyBindingViewModel>;
+		public event EventHandler<SaveCompleteEventArgs> SaveComplete;
+
+		public bool Save<T>(IList<T> keyBindings) where T : class {
+			var bindings = keyBindings as IList<KeyBindingViewModel>;
 			if (bindings == null)
 				throw new ArgumentException("keyBindings parameter is not an IEnumerable");
 
@@ -31,6 +34,7 @@ namespace KeyPad.DataManager {
 					}
 				}
 
+				SaveComplete?.Invoke(this, new SaveCompleteEventArgs(keyBindings));
 				return true;
 			}
 			catch (Exception) {

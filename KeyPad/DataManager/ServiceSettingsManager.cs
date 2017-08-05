@@ -1,4 +1,5 @@
-﻿using KeyPad.Settings.Models;
+﻿using KeyPad.DataManager.EventArguments;
+using KeyPad.Settings.Models;
 using KeyPad.Settings.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace KeyPad.DataManager {
 
 		public ServiceSettingsManager(string fileLocation) => _fileLocation = fileLocation;
 
+		public event EventHandler<SaveCompleteEventArgs> SaveComplete;
+
 		public object Read() {
 			string[] fileContents = System.IO.File.ReadAllLines(_fileLocation);
 			IList<ServiceSetting> settings = new List<ServiceSetting>();
@@ -28,7 +31,7 @@ namespace KeyPad.DataManager {
 			return settings;
 		}
 
-		public bool Save<T>(T items) where T : class {
+		public bool Save<T>(IList<T> items) where T : class {
 			var serviceSettings = items as IList<ServiceSetting>;
 			if (serviceSettings == null)
 				throw new ArgumentException("items is not of type IList<KeyPadSettingViewModel>");
@@ -47,6 +50,7 @@ namespace KeyPad.DataManager {
 					sw.Write(newContent);
 				}
 
+				SaveComplete?.Invoke(this, new SaveCompleteEventArgs(serviceSettings));
 				return true;
 			}
 			catch {
