@@ -110,7 +110,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 				if (String.IsNullOrEmpty(fileLocation))
 					return;
 
-				_fileManager = new KeyBindingFileManager(fileLocation);
+				_fileManager = new KeyBindingFileManager($@"{Environment.CurrentDirectory}/Bindings/{fileLocation}");
 			}
 
 			_fileManager.Save(this.Bindings);
