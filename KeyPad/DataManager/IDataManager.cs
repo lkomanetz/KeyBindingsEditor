@@ -9,7 +9,7 @@ namespace KeyPad.DataManager {
 
 	public interface IDataManager {
 
-		bool Save<T>(IList<T> items) where T : class;
+		bool Save<T>(T items) where T : class;
 		object Read();
 
 		event EventHandler<SaveCompleteEventArgs> SaveComplete;

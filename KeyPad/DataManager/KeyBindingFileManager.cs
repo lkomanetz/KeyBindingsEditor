@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KeyPad.KeyBindingsEditor.Models;
-using KeyPad.KeyBindingSelector.Models;
+using KeyPad.Models;
 using KeyPad.DataManager.EventArguments;
+using KeyPad.Serializer;
 
 namespace KeyPad.DataManager {
 
@@ -18,8 +18,9 @@ namespace KeyPad.DataManager {
 
 		public KeyBindingFileManager() {}
 
-		public KeyBindingFileManager(string fileLocation) =>
+		public KeyBindingFileManager(string fileLocation) {
 			_fileLocation = fileLocation;
+		}
 
 		public string FileLocation {
 			get => _fileLocation;
@@ -28,20 +29,20 @@ namespace KeyPad.DataManager {
 
 		public event EventHandler<SaveCompleteEventArgs> SaveComplete;
 
-		public bool Save<T>(IList<T> keyBindings) where T : class {
-			var bindings = keyBindings as IList<KeyBindingViewModel>;
-			if (bindings == null)
-				throw new ArgumentException("keyBindings parameter is not an IEnumerable");
+		public bool Save<T>(T file) where T : class {
+			var keyBindingFile = file as KeyBindingFile;
+			if (keyBindingFile == null)
+				throw new ArgumentException("file is not of type KeyBindingFile");
 
 			try {
-				using (StreamWriter sw = new StreamWriter(_fileLocation, false)) {
-					foreach (var binding in bindings) {
-						string keyCode = (binding.KeyCode == -1) ? "NULL" : Convert.ToString(binding.KeyCode, 16);
-						sw.WriteLine($"{(int)binding.GamepadCode}={keyCode}");
+				using (StreamWriter sw = new StreamWriter(keyBindingFile.FileLocation, false)) {
+					foreach (var binding in keyBindingFile.Bindings) {
+						string keyCode = (binding.KeyboardButton == -1) ? "NULL" : Convert.ToString(binding.KeyboardButton, 16);
+						sw.WriteLine($"{(int)binding.GamepadButton}={keyCode}");
 					}
 				}
 
-				SaveComplete?.Invoke(this, new SaveCompleteEventArgs(keyBindings));
+				SaveComplete?.Invoke(this, new SaveCompleteEventArgs(keyBindingFile));
 				return true;
 			}
 			catch (Exception) {
@@ -50,26 +51,22 @@ namespace KeyPad.DataManager {
 
 		}
 
-		public KeyBindingFile[] GetFiles() {
+		public object Read() {
 			return System.IO.Directory.GetFiles($@"{Environment.CurrentDirectory}\{DIRECTORY_NAME}")
-				.Select(x => new KeyBindingFile(x))
+				.Select(x => new KeyBindingFile(x, GetBindingsFrom(x)))
 				.ToArray();
 		}
 
-		public object Read() {
-			string[] fileContents = File.ReadAllLines(_fileLocation);
-			KeyBindingViewModel[] bindings = new KeyBindingViewModel[fileContents.Length];
+		private KeyBinding[] GetBindingsFrom(string fileLocation) {
+			string[] fileContents = File.ReadAllLines(fileLocation);
+			KeyBinding[] bindings = new KeyBinding[fileContents.Length];
 
-			for (int i = 0;i < fileContents.Length; ++i) {
+			for (short i = 0; i < fileContents.Length; ++i) {
 				string[] items = fileContents[i].Split('=');
 
-				int keyCode = -1;
-				if (items[1] != "NULL") {
-					keyCode = Convert.ToInt32(items[1], 16);
-				}
-
+				int keyCode = (items[1] != "NULL") ? Convert.ToInt32(items[1], 16) : -1;
 				GamepadButton btn = (GamepadButton)Int32.Parse(items[0]);
-				bindings[i] = new KeyBindingViewModel(new KeyBinding(btn, keyCode));
+				bindings[i] = new KeyBinding(btn, keyCode);
 			}
 
 			return bindings;

@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using KeyPad.KeyBindingsEditor.Models;
+using KeyPad.Models;
 using KeyPad.ViewModels;
 using System.ComponentModel;
 using System.Windows;
@@ -21,24 +21,34 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 
 		private KeyBindingViewModel[] _bindings;
 		private KeyBindingViewModel _selectedBinding;
-		private IDataManager _fileManager;
+		private KeyBindingFileManager _fileManager;
 		private Window _owner;
+		private KeyBindingFile _file;
 
 		public KeyBindingsEditorViewModel(Window owner) {
 			_owner = owner;
-			_bindings = new KeyBindingViewModel[15];
-			for (int i = 0; i < _bindings.Length; ++i) {
-				Models.KeyBinding binding = new Models.KeyBinding((GamepadButton)i);
-				_bindings[i] = new KeyBindingViewModel(binding);
-			}
+			InitKeyBindings();
 			this.OnKeyUp = new DelegateCommand<KeyEventArgs>((keyEvent) => SetBinding(keyEvent));
 			this.SaveCommand = new DelegateCommand<object>((param) => SaveBindings());
 		}
 
-		public KeyBindingsEditorViewModel(IDataManager dataManager, Window owner) {
+
+		public KeyBindingsEditorViewModel(
+			IDataManager dataManager,
+			KeyBindingFile file,
+			Window owner
+		) {
 			_owner = owner;
-			_fileManager = dataManager;
-			_bindings = (KeyBindingViewModel[])_fileManager.Read();
+			_fileManager = (KeyBindingFileManager)dataManager;
+			_file = file;
+
+			if (file != null) {
+				_bindings = file.Bindings
+					.Select(x => new KeyBindingViewModel(x))
+					.ToArray();
+			}
+			else
+				InitKeyBindings();
 
 			this.OnKeyUp = new DelegateCommand<KeyEventArgs>((keyEvent) => SetBinding(keyEvent));
 			this.SaveCommand = new DelegateCommand<object>((param) => SaveBindings());
@@ -56,7 +66,8 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 			}
 		}
 
-		public bool IsDirty => Bindings.Any(x => x.IsDirty);
+		public bool IsDirty => this.Bindings.Any(x => x.IsDirty);
+
 		public ICommand OnKeyUp { get; private set; }
 		public ICommand SaveCommand { get; private set; }
 
@@ -105,17 +116,21 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 				return;
 			}
 
-			if (_fileManager == null) {
-				string fileLocation = GetSaveLocation();
-				if (String.IsNullOrEmpty(fileLocation))
-					return;
+			var bindings = this.Bindings
+				.Select(x => new KeyPad.Models.KeyBinding(x.GamepadCode, x.KeyCode))
+				.ToList();
 
-				_fileManager = new KeyBindingFileManager($@"{Environment.CurrentDirectory}/Bindings/{fileLocation}");
-			}
+			string fileLocation = (_file == null) ? GetSaveLocation() : _file.FileLocation;
+			if (String.IsNullOrEmpty(fileLocation))
+				return;
 
-			_fileManager.Save(this.Bindings);
+			_file = new KeyBindingFile(
+				fileLocation,
+				bindings
+			);
+
+			_fileManager.Save(_file);
 			SaveCompleted(this, EventArgs.Empty);
-			this.Bindings = (KeyBindingViewModel[])_fileManager.Read();
 			PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
 		}
 
@@ -128,6 +143,14 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 			}
 
 			return dlg.FileName;
+		}
+
+		private void InitKeyBindings() {
+			_bindings = new KeyBindingViewModel[15];
+			for (int i = 0; i < _bindings.Length; ++i) {
+				Models.KeyBinding binding = new Models.KeyBinding((GamepadButton)i);
+				_bindings[i] = new KeyBindingViewModel(binding);
+			}
 		}
 
 	}

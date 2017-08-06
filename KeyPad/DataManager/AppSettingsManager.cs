@@ -23,7 +23,7 @@ namespace KeyPad.DataManager {
 			return _serializer.Deserialize<ApplicationSetting[]>(jsonString);
 		}
 
-		public bool Save<T>(IList<T> items) where T : class {
+		public bool Save<T>(T items) where T : class {
 			var appSettings = items as IList<ApplicationSetting>;
 			if (appSettings == null)
 				throw new ArgumentException("items parameter is not a list");

@@ -1,4 +1,4 @@
-﻿using KeyPad.KeyBindingsEditor.Models;
+﻿using KeyPad.Models;
 using KeyPad.KeyBindingsEditor.Converters;
 using System;
 using System.Collections.Generic;
@@ -11,11 +11,11 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 
 	public class KeyBindingViewModel : IObservableViewModel {
 		private const int ESCAPE_KEY_CODE = 27;
-		private Models.KeyBinding _binding;
+		private KeyBinding _binding;
 		private Guid _id;
 		private int _startingValue;
 
-		public KeyBindingViewModel(Models.KeyBinding binding) {
+		public KeyBindingViewModel(KeyBinding binding) {
 			_id = Guid.NewGuid();
 			_startingValue = binding.KeyboardButton;
 			_binding = binding;
@@ -31,7 +31,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 				int pressedKeyCode = value;
 				if (_binding.KeyboardButton != pressedKeyCode) {
 					pressedKeyCode = (pressedKeyCode == ESCAPE_KEY_CODE) ? -1 : pressedKeyCode;
-					_binding = new Models.KeyBinding(GamepadCode, pressedKeyCode);
+					_binding = new KeyBinding(GamepadCode, pressedKeyCode);
 					PropertyChanged(this, new PropertyChangedEventArgs(nameof(KeyboardButton)));
 				}
 			}

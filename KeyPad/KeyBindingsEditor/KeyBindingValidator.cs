@@ -1,4 +1,4 @@
-﻿using KeyPad.KeyBindingsEditor.Models;
+﻿using KeyPad.Models;
 using KeyPad.KeyBindingsEditor.ViewModels;
 using System;
 using System.Collections.Generic;

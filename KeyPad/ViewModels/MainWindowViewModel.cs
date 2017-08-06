@@ -16,12 +16,13 @@ using System.Text;
 using System.Windows;
 using KeyPad.KeyBindingSelector.ViewModels;
 using KeyPad.UserControls.ViewModels;
+using KeyPad.Models;
 
 namespace KeyPad.ViewModels {
 	
-	//TODO(Logan) -> Figure out how to edit bindings and settings with new UI.
+	//TODO(Logan) -> Fix how editing a KeyBindingFile doesn't update the KeyBindingSelector list.
 	//TODO(Logan) -> Change the accessibility of view models to be internal.
-	//TODO(Logan) -> Figure out why _keyBindingDataManager.SaveComplete isn't being called.
+	//TODO(Logan) -> Fix how SelectedFile in KeyBindingSelector isn't working after editing KeyBindingFile.
 	internal class MainWindowViewModel : IObservableViewModel {
 
 		private const string APP_SETTINGS_FILE_LOCATION = "settings.json";
@@ -33,10 +34,10 @@ namespace KeyPad.ViewModels {
 		private IDataManager _keyBindingDataManager;
 		private KeyBindingSelectorViewModel _kbSelectorVm;
 		private IViewModel _processWatcherViewModel;
-		private Window _owner;
+		private Window _windowOwner;
 
 		public MainWindowViewModel(Window owner) {
-			_owner = owner;
+			_windowOwner = owner;
 			_keyBindingDataManager = new KeyBindingFileManager();
 			_keyBindingDataManager.SaveComplete += (sender, args) => _kbSelectorVm.LoadFiles();
 
@@ -44,7 +45,7 @@ namespace KeyPad.ViewModels {
 			_serviceSettingsManager = new ServiceSettingsManager(SERVICE_SETTINGS_FILE_LOCATION);
 			_appSettings = (IList<ApplicationSetting>)_appSettingsManager.Read();
 
-			_kbSelectorVm = new KeyBindingSelectorViewModel(_serviceSettingsManager);
+			_kbSelectorVm = new KeyBindingSelectorViewModel(_serviceSettingsManager, _keyBindingDataManager);
 #if !DEBUG
 			_processManager = SetupProcessMonitor();
 			_processWatcherViewModel = new ProcessWatcherViewModel(_processManager);
@@ -139,13 +140,22 @@ namespace KeyPad.ViewModels {
 						new TitleAction() {
 							ActionImage= $@"{Environment.CurrentDirectory}/IconImages/edit_icon.png",
 							Action = new DelegateCommand<object>((param) => {
-								((KeyBindingFileManager)_keyBindingDataManager).FileLocation = _kbSelectorVm.SelectedFile.FileLocation;
-								this.FormViewContent = new KeyBindingsEditorViewModel(_keyBindingDataManager, _owner);
+								this.FormViewContent = new KeyBindingsEditorViewModel(
+									_keyBindingDataManager,
+									_kbSelectorVm.SelectedFile,
+									_windowOwner
+								);
 							})
 						},
 						new TitleAction() {
 							ActionImage = $@"{Environment.CurrentDirectory}/IconImages/add_icon.png",
-							Action = new DelegateCommand<object>((param) => this.FormViewContent = new KeyBindingsEditorViewModel(_owner))
+							Action = new DelegateCommand<object>((param) => {
+								this.FormViewContent = new KeyBindingsEditorViewModel(
+									_keyBindingDataManager,
+									(KeyBindingFile)param,
+									_windowOwner
+								);
+							})
 						}
 					},
 					CardContent = new List<IViewModel>() {

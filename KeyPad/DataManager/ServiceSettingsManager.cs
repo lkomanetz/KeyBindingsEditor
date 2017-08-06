@@ -31,7 +31,7 @@ namespace KeyPad.DataManager {
 			return settings;
 		}
 
-		public bool Save<T>(IList<T> items) where T : class {
+		public bool Save<T>(T items) where T : class {
 			var serviceSettings = items as IList<ServiceSetting>;
 			if (serviceSettings == null)
 				throw new ArgumentException("items is not of type IList<KeyPadSettingViewModel>");

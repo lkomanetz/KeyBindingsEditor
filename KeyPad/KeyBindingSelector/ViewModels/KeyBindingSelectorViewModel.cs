@@ -1,5 +1,5 @@
 ﻿using KeyPad.DataManager;
-using KeyPad.KeyBindingSelector.Models;
+using KeyPad.Models;
 using KeyPad.Settings.Models;
 using KeyPad.Settings.ViewModels;
 using KeyPad.ViewModels;
@@ -21,12 +21,17 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 
 		private readonly string _directoryLocation;
 		private IDataManager _serviceSettingManager;
+		private IDataManager _keyBindingFileManager;
 		private IList<ServiceSetting> _serviceSettings;
 		private Visibility _visibility;
 		private KeyBindingFile _selectedFile;
 
-		public KeyBindingSelectorViewModel(IDataManager dataManager) {
-			_serviceSettingManager = dataManager;
+		public KeyBindingSelectorViewModel(
+			IDataManager serviceSettingManager,
+			IDataManager keyBindingFileManager
+		) {
+			_serviceSettingManager = serviceSettingManager;
+			_keyBindingFileManager = keyBindingFileManager;
 			_serviceSettings = (List<ServiceSetting>)_serviceSettingManager.Read();
 			_directoryLocation = $@"{Environment.CurrentDirectory}\Bindings";
 
@@ -46,8 +51,7 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 				.Single()
 				.Value;
 
-			var kbf = new KeyBindingFile(selectedFileLocation);
-			this.SelectedFile = this.Files.FirstOrDefault(x => x.FileName.Equals(kbf.FileName)); 
+			this.SelectedFile = this.Files.FirstOrDefault(x => x.FileLocation.Equals(selectedFileLocation)); 
 
 			PropertyChanged(this, new PropertyChangedEventArgs(nameof(Files)));
 			PropertyChanged(this, new PropertyChangedEventArgs(nameof(SelectedFile)));
@@ -63,6 +67,7 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 			set {
 				_files = value;
 				PropertyChanged(this, new PropertyChangedEventArgs(nameof(Files)));
+				PropertyChanged(this, new PropertyChangedEventArgs(nameof(SelectedFile)));
 			}
 		}
 
@@ -79,6 +84,9 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 		public KeyBindingFile SelectedFile {
 			get => _selectedFile;
 			set {
+				if (value == null)
+					return;
+
 				if (_selectedFile != null && _selectedFile.FileLocation.Equals(value.FileLocation))
 					return;
 
@@ -91,9 +99,7 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 			if (!System.IO.Directory.Exists(_directoryLocation))
 				this.Files = new List<KeyBindingFile>();
 
-			this.Files = System.IO.Directory.GetFiles(_directoryLocation)
-				.Select(x => new KeyBindingFile(x))
-				.ToArray();
+			this.Files = (KeyBindingFile[])_keyBindingFileManager.Read();
 		}
 
 		private void UpdateServiceSettings() {

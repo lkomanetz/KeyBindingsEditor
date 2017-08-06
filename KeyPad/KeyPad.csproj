@@ -88,8 +88,8 @@
       <DependentUpon>KeyBindingsEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="KeyBindingsEditor\KeyBindingValidator.cs" />
-    <Compile Include="KeyBindingsEditor\Models\GamepadButton.cs" />
-    <Compile Include="KeyBindingsEditor\Models\KeyBinding.cs" />
+    <Compile Include="Models\GamepadButton.cs" />
+    <Compile Include="Models\KeyBinding.cs" />
     <Compile Include="KeyBindingsEditor\Converters\GamepadButtonToStringConverter.cs" />
     <Compile Include="KeyBindingsEditor\Converters\KeyboardButtonToStringConverter.cs" />
     <Compile Include="KeyBindingsEditor\ViewModels\KeyBindingsDesignViewModel.cs" />
@@ -104,7 +104,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="KeyBindingSelector\KeyBindingSelector.xaml.cs" />
-    <Compile Include="KeyBindingSelector\Models\KeyBindingFile.cs" />
+    <Compile Include="Models\KeyBindingFile.cs" />
     <Compile Include="KeyBindingSelector\ViewModels\KeyBindingSelectorViewModel.cs" />
     <Compile Include="ProcessWatcher\IProcessManager.cs" />
     <Compile Include="ProcessWatcher\ProcessWatcher.xaml.cs">
@@ -225,6 +225,9 @@
     <EmbeddedResource Include="IconImages\add_icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="KeyBindingsEditor\Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

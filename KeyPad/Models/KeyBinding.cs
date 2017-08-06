@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeyPad.KeyBindingsEditor.Models {
+namespace KeyPad.Models {
 
 	public class KeyBinding {
 
