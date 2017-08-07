@@ -38,6 +38,7 @@
 				   Grid.Row="0"/>
 			<ctrls:FilePicker Grid.Row="0"
 							  Grid.Column="1"
+							  FileType="Executable"
 							  Location="{Binding ServiceLocation, Mode=TwoWay}"/>
 			<Label Content="Start Service On Launch:"
 				   VerticalAlignment="Center"

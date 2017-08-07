@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace KeyPad.Settings.ViewModels {
 
-	public class ServiceSettingsViewModel : IViewModel, IObservableViewModel, IForm {
+	internal class ServiceSettingsViewModel : IViewModel, IObservableViewModel, IForm {
 		private IDataManager _dataManager;
 		private IList<ServiceSettingViewModel> _serviceSettings;
 
@@ -30,7 +30,11 @@ namespace KeyPad.Settings.ViewModels {
 		public event EventHandler<EventArgs> SaveCompleted = delegate { };
 
 		public string Title => "KeyPad Service Settings";
-		public IList<ServiceSettingViewModel> Settings => _serviceSettings;
+
+		public IList<ServiceSettingViewModel> Settings => _serviceSettings
+			.Where(x => !x.Name.Equals(ServiceSettingNames.KEYBINDINGS_LOCATION_SETTING))
+			.ToList();
+
 		public bool IsDirty => _serviceSettings.Any(x => x.IsDirty);
 		public ICommand SaveCommand { get; private set; }
 

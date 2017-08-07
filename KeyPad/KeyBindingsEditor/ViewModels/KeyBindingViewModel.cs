@@ -9,7 +9,8 @@ using KeyPad.ViewModels;
 
 namespace KeyPad.KeyBindingsEditor.ViewModels {
 
-	public class KeyBindingViewModel : IObservableViewModel {
+	internal class KeyBindingViewModel : IObservableViewModel {
+
 		private const int ESCAPE_KEY_CODE = 27;
 		private KeyBinding _binding;
 		private Guid _id;

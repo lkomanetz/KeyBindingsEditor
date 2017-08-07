@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace KeyPad.ViewModels {
 
-	public class MainWindowDesignerViewModel {
+	internal class MainWindowDesignerViewModel {
 
-		public IList<CardViewModel> Cards => new List<CardViewModel>() {
+		internal IList<CardViewModel> Cards => new List<CardViewModel>() {
 			new CardViewModel() {
 				Title = "Service",
 				TitleActions = new List<TitleAction>() {

@@ -16,7 +16,10 @@ using System.Windows.Input;
 
 namespace KeyPad.Settings.ViewModels {
 
-	public class AppSettingsEditorViewModel : IObservableViewModel, IViewModel, IForm {
+	internal class AppSettingsEditorViewModel :
+		IObservableViewModel,
+		IViewModel,
+		IForm {
 
 		private IValidator _validator;
 		private IDataManager _settingsManager;

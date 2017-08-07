@@ -31,15 +31,15 @@
 			</ItemsControl.Style>
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
-					<Grid Focusable="True">
+					<Grid Focusable="True" Margin="0,10,0,0">
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="*"/>
 							<ColumnDefinition Width="2*"/>
+							<ColumnDefinition Width="300"/>
 						</Grid.ColumnDefinitions>
 						<TextBlock Text="{Binding Name}"
 								   Grid.Column="0"/>
-						<TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-								 Grid.Column="1"/>
+						<ContentControl Grid.Column="1"
+										Content="{Binding Element}"/>
 					</Grid>
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>

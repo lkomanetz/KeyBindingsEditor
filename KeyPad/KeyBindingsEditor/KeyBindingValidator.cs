@@ -11,7 +11,7 @@ namespace KeyPad.KeyBindingsEditor {
 	public class KeyBindingValidator : IValidator {
 		private IEnumerable<KeyBindingViewModel> _bindings;
 
-		public KeyBindingValidator(IEnumerable<KeyBindingViewModel> bindings) => _bindings = bindings;
+		internal KeyBindingValidator(IEnumerable<KeyBindingViewModel> bindings) => _bindings = bindings;
 
 		public IList<ValidatorResult> Validate() {
 			var duplicates = _bindings.GroupBy(x => new { KeyboardButton = x.KeyboardButton, KeyCode = x.KeyCode })

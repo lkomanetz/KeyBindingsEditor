@@ -20,9 +20,9 @@ using KeyPad.Models;
 
 namespace KeyPad.ViewModels {
 	
-	//TODO(Logan) -> Fix how editing a KeyBindingFile doesn't update the KeyBindingSelector list.
-	//TODO(Logan) -> Change the accessibility of view models to be internal.
-	//TODO(Logan) -> Fix how SelectedFile in KeyBindingSelector isn't working after editing KeyBindingFile.
+	//TODO(Logan) -> Change the cards so there is a main card with cards as children
+	//TODO(Logan) -> Add card action for editing application setting
+	//TODO(Logan) -> Add ability to delete key bindings
 	internal class MainWindowViewModel : IObservableViewModel {
 
 		private const string APP_SETTINGS_FILE_LOCATION = "settings.json";
@@ -46,7 +46,7 @@ namespace KeyPad.ViewModels {
 			_appSettings = (IList<ApplicationSetting>)_appSettingsManager.Read();
 
 			_kbSelectorVm = new KeyBindingSelectorViewModel(_serviceSettingsManager, _keyBindingDataManager);
-#if !DEBUG
+#if DEBUG
 			_processManager = SetupProcessMonitor();
 			_processWatcherViewModel = new ProcessWatcherViewModel(_processManager);
 

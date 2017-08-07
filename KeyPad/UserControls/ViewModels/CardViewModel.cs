@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace KeyPad.UserControls.ViewModels {
 
-	public class CardViewModel :
+	internal class CardViewModel :
 		IViewModel,
 		IObservableViewModel {
 

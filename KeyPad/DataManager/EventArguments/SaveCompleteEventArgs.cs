@@ -8,11 +8,11 @@ namespace KeyPad.DataManager.EventArguments {
 
 	public class SaveCompleteEventArgs : EventArgs {
 
-		private object _itemsSaved;
+		private object _itemSaved;
 
-		public SaveCompleteEventArgs(object itemsSaved) => _itemsSaved = itemsSaved;
+		public SaveCompleteEventArgs(object itemSaved) => _itemSaved = itemSaved;
 
-		public object Items => _itemsSaved;
+		public object Item => _itemSaved;
 		
 	}
 

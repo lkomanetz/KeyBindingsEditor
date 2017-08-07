@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace KeyPad.KeyBindingsEditor.ViewModels {
 
-	public class KeyBindingsDesignViewModel {
+	internal class KeyBindingsDesignViewModel {
 
-		public KeyBindingViewModel[] Bindings => new KeyBindingViewModel[] {
+		internal KeyBindingViewModel[] Bindings => new KeyBindingViewModel[] {
 			new KeyBindingViewModel(new KeyBinding(GamepadButton.A, 97)),
 			new KeyBindingViewModel(new KeyBinding(GamepadButton.B, 98)),
 			new KeyBindingViewModel(new KeyBinding(GamepadButton.LeftShoulder, 113)),

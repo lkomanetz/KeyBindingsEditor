@@ -33,13 +33,24 @@ namespace KeyPad.Settings.UserControls {
 		public static readonly DependencyProperty LocationProperty =
 			DependencyProperty.Register("Location", typeof(string), typeof(FilePicker), new UIPropertyMetadata(null, OnLocationChanged));
 
+		public static readonly DependencyProperty FileTypeProperty =
+			DependencyProperty.Register(nameof(FileType), typeof(FileType), typeof(FilePicker), new UIPropertyMetadata(default(FileType), OnFileTypeChanged));
+
 		public string Location {
 			get => GetValue(LocationProperty).ToString();
 			set => SetValue(LocationProperty, value);
 		}
 
+		public FileType FileType {
+			get => (FileType)GetValue(FileTypeProperty);
+			set => SetValue(FileTypeProperty, value);
+		}
+
 		private static void OnLocationChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e) =>
 			_viewModel.Location = e.NewValue as String;
+
+		private static void OnFileTypeChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e) =>
+			_viewModel.FileType = (FileType)e.NewValue;
 
 	}
 

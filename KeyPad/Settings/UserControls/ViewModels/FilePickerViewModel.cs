@@ -11,8 +11,12 @@ using System.Windows.Input;
 
 namespace KeyPad.Settings.UserControls.ViewModels {
 
-	public class FilePickerViewModel : IViewModel, IObservableViewModel {
+	internal class FilePickerViewModel :
+		IViewModel,
+		IObservableViewModel {
+
 		private string _fileLocation;
+		private FileType _fileType;
 
 		public FilePickerViewModel() {
 			this.OpenCommand = new DelegateCommand<object>((param) => GetExeLocation());
@@ -29,13 +33,30 @@ namespace KeyPad.Settings.UserControls.ViewModels {
 			}
 		}
 
+		public FileType FileType {
+			get => _fileType;
+			set {
+				if (_fileType == value)
+					return;
+				_fileType = value;
+				PropertyChanged(this, new PropertyChangedEventArgs(nameof(Location)));
+			}
+		}
+
 		public event PropertyChangedEventHandler PropertyChanged;
 		public event EventHandler<EventArgs> LocationChanged;
 
 		private void GetExeLocation() {
-			OpenFileDialog dlg = new OpenFileDialog() {
-				Filter = "Exeutable Files (*.exe) | *.exe"
-			};
+			OpenFileDialog dlg = new OpenFileDialog();
+
+			switch (FileType) {
+				case FileType.Executable:
+					dlg.Filter = "Executable Files (*.exe) | *.exe";
+					break;
+				case FileType.Text:
+					dlg.Filter = "Text Files (*.txt) | *.txt";
+					break;
+			}
 
 			bool? result = dlg.ShowDialog();
 			if (result == true) {

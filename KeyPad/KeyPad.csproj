@@ -74,6 +74,8 @@
       <DependentUpon>SaveDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="KeyBindingsEditor\Controls\ViewModels\SaveDialogViewModel.cs" />
+    <Compile Include="Settings\ServiceSettings.cs" />
+    <Compile Include="Settings\UserControls\FileType.cs" />
     <Compile Include="TitleAction.cs" />
     <Compile Include="UserControls\Card.xaml.cs">
       <DependentUpon>Card.xaml</DependentUpon>

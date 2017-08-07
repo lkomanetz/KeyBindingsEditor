@@ -13,7 +13,7 @@ using System.Windows;
 
 namespace KeyPad.KeyBindingSelector.ViewModels {
 
-	public class KeyBindingSelectorViewModel :
+	internal class KeyBindingSelectorViewModel :
 		IViewModel,
 		IObservableViewModel {
 
@@ -52,9 +52,6 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 				.Value;
 
 			this.SelectedFile = this.Files.FirstOrDefault(x => x.FileLocation.Equals(selectedFileLocation)); 
-
-			PropertyChanged(this, new PropertyChangedEventArgs(nameof(Files)));
-			PropertyChanged(this, new PropertyChangedEventArgs(nameof(SelectedFile)));
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged = delegate { };
@@ -67,7 +64,6 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 			set {
 				_files = value;
 				PropertyChanged(this, new PropertyChangedEventArgs(nameof(Files)));
-				PropertyChanged(this, new PropertyChangedEventArgs(nameof(SelectedFile)));
 			}
 		}
 
@@ -84,22 +80,32 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 		public KeyBindingFile SelectedFile {
 			get => _selectedFile;
 			set {
-				if (value == null)
-					return;
-
-				if (_selectedFile != null && _selectedFile.FileLocation.Equals(value.FileLocation))
-					return;
-
 				_selectedFile = value;
+				PropertyChanged(this, new PropertyChangedEventArgs(nameof(SelectedFile)));
 				UpdateServiceSettings();
 			}
 		}
 
+		public void UpdateFile(KeyBindingFile file) {
+			var currentItem = this.Files.First(x => x.FileName.Equals(file.FileName));
+			int index = this.Files.IndexOf(currentItem);
+			this.Files[index] = file;
+		}
+
 		public void LoadFiles() {
+			var previouslySelectedFile = this.SelectedFile;
+
 			if (!System.IO.Directory.Exists(_directoryLocation))
 				this.Files = new List<KeyBindingFile>();
 
 			this.Files = (KeyBindingFile[])_keyBindingFileManager.Read();
+
+			if (previouslySelectedFile == null)
+				return;
+
+			this.SelectedFile = this.Files.FirstOrDefault(
+				x => x.FileName.Equals(previouslySelectedFile.FileName)
+			);
 		}
 
 		private void UpdateServiceSettings() {
