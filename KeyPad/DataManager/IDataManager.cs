@@ -11,6 +11,7 @@ namespace KeyPad.DataManager {
 
 		bool Save<T>(T items) where T : class;
 		object Read();
+		bool Delete<T>(T item) where T : class;
 
 		event EventHandler<SaveCompleteEventArgs> SaveComplete;
 

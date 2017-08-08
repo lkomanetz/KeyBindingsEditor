@@ -231,5 +231,10 @@
   <ItemGroup>
     <Folder Include="KeyBindingsEditor\Models\" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="IconImages\delete_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

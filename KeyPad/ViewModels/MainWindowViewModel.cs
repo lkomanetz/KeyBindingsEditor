@@ -20,9 +20,8 @@ using KeyPad.Models;
 
 namespace KeyPad.ViewModels {
 	
-	//TODO(Logan) -> Change the cards so there is a main card with cards as children
-	//TODO(Logan) -> Add card action for editing application setting
-	//TODO(Logan) -> Add ability to delete key bindings
+	//TODO(Logan) -> Figure out how to handle the Environment.CurrentDirectory/Bindings/<blah> nonsense.
+	//TODO(Logan) -> Use the modal dialog concept in an abstract way.
 	internal class MainWindowViewModel : IObservableViewModel {
 
 		private const string APP_SETTINGS_FILE_LOCATION = "settings.json";
@@ -46,7 +45,7 @@ namespace KeyPad.ViewModels {
 			_appSettings = (IList<ApplicationSetting>)_appSettingsManager.Read();
 
 			_kbSelectorVm = new KeyBindingSelectorViewModel(_serviceSettingsManager, _keyBindingDataManager);
-#if DEBUG
+#if !DEBUG
 			_processManager = SetupProcessMonitor();
 			_processWatcherViewModel = new ProcessWatcherViewModel(_processManager);
 
@@ -119,7 +118,21 @@ namespace KeyPad.ViewModels {
 		}
 
 		private IList<CardViewModel> BuildCards() {
-			return new List<CardViewModel>() {
+			IList<CardViewModel> cardMenu = new List<CardViewModel>();
+
+			var root = new CardViewModel() {
+				Title = "Application",
+				TitleActions = new List<TitleAction>() {
+					new TitleAction() {
+						ActionImage = $"{Environment.CurrentDirectory}/IconImages/edit_icon.png",
+						Action = new DelegateCommand<object>((param) =>
+							this.FormViewContent = new AppSettingsEditorViewModel(_appSettingsManager)
+						)
+					}
+				}
+			};
+
+			var children = new List<IViewModel>() {
 				new CardViewModel() {
 					Title = "Service",
 					TitleActions = new List<TitleAction>() {
@@ -137,6 +150,10 @@ namespace KeyPad.ViewModels {
 				new CardViewModel() {
 					Title = "Key Bindings",
 					TitleActions = new List<TitleAction>() {
+						new TitleAction() {
+							ActionImage = $@"{Environment.CurrentDirectory}/IconImages/delete_icon.png",
+							Action = new DelegateCommand<object>((param) => _kbSelectorVm.DeleteSelectedKeyBinding())
+						},
 						new TitleAction() {
 							ActionImage= $@"{Environment.CurrentDirectory}/IconImages/edit_icon.png",
 							Action = new DelegateCommand<object>((param) => {
@@ -163,6 +180,11 @@ namespace KeyPad.ViewModels {
 					}
 				}
 			};
+
+			root.CardContent = children;
+			cardMenu.Add(root);
+
+			return cardMenu;
 		}
 
 	}

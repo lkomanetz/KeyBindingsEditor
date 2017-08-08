@@ -108,6 +108,32 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 			);
 		}
 
+		public void DeleteSelectedKeyBinding() {
+			string msg = String.Empty;
+			if (this.SelectedFile == null)
+				msg = "No key binding file to delete.";
+			else
+				msg = $"Delete file '{SelectedFile.FileName}'?";
+
+			MessageBoxResult result = MessageBox.Show(
+				msg,
+				"Delete",
+				MessageBoxButton.YesNo,
+				MessageBoxImage.Question
+			);
+
+			if (result != MessageBoxResult.Yes)
+				return;
+
+			_keyBindingFileManager.Delete(this.SelectedFile);
+
+			this.Files = this.Files
+				.Where(x => !x.FileName.Equals(this.SelectedFile.FileName))
+				.ToList();
+
+			this.SelectedFile = (this.Files.Count > 0) ? this.Files[0] : null;
+		}
+
 		private void UpdateServiceSettings() {
 			var selectedFile = SelectedFile ?? new KeyBindingFile();
 			for (int i = 0; i < _serviceSettings.Count; ++i) {

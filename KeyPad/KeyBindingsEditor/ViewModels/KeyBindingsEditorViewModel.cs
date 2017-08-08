@@ -125,7 +125,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 				return;
 
 			_file = new KeyBindingFile(
-				fileLocation,
+				$"{Environment.CurrentDirectory}/Bindings/{fileLocation}",
 				bindings
 			);
 

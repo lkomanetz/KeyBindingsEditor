@@ -57,6 +57,20 @@ namespace KeyPad.DataManager {
 				.ToArray();
 		}
 
+		public bool Delete<T>(T file) where T : class {
+			try {
+				var keyBindingFile = file as KeyBindingFile;
+				if (keyBindingFile == null)
+					throw new ArgumentException("file is not of type KeyBindingFile");
+
+				System.IO.File.Delete(keyBindingFile.FileLocation);
+				return true;
+			}
+			catch (Exception) {
+				return false;
+			}
+		}
+
 		private KeyBinding[] GetBindingsFrom(string fileLocation) {
 			string[] fileContents = File.ReadAllLines(fileLocation);
 			KeyBinding[] bindings = new KeyBinding[fileContents.Length];

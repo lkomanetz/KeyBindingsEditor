@@ -56,8 +56,10 @@ namespace KeyPad.DataManager {
 			catch {
 				return false;
 			}
-
 		}
+
+		public bool Delete<T>(T item) where T : class => throw new NotImplementedException();
+
 	}
 
 }
