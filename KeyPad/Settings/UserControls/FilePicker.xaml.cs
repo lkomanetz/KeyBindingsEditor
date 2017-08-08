@@ -47,7 +47,7 @@ namespace KeyPad.Settings.UserControls {
 		}
 
 		private static void OnLocationChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e) =>
-			_viewModel.Location = e.NewValue as String;
+			_viewModel.Location = e.NewValue as String; 
 
 		private static void OnFileTypeChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e) =>
 			_viewModel.FileType = (FileType)e.NewValue;

@@ -5,24 +5,30 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 		xmlns:local="clr-namespace:KeyPad.KeyBindingsEditor.Controls"
 		mc:Ignorable="d" 
-		WindowStartupLocation="CenterOwner"
-		WindowStyle="None"
-		SizeToContent="Height"
+		AllowsTransparency="True"
+		SizeToContent="WidthAndHeight"
 		ResizeMode="NoResize"
-		Background="White"
+		WindowStyle="None"
+		WindowStartupLocation="CenterOwner"
+		Background="Transparent"
 		d:DesignHeight="300" d:DesignWidth="300"
-		Height="75" MinHeight="75"
-		Width="300" MinWidth="300"
+		Height="105" MinHeight="105"
+		Width="320" MinWidth="320"
 		Title="SaveDialog">
 
-	<Border BorderBrush="Black"
-			Background="{x:Static SystemColors.ControlLightLightBrush}"
+	<!--<Border BorderBrush="Black"
+			Background="White"
 			FocusManager.FocusedElement="{Binding ElementName=fileNameTxt}"
-			BorderThickness="1">
+			BorderThickness="1">-->
+	<Border Margin="10">
 		<Border.Effect>
-			<DropShadowEffect BlurRadius="15"/>
+			<DropShadowEffect BlurRadius="15"
+							  Color="Black"
+							  Direction="270"
+							  ShadowDepth="5"/>
 		</Border.Effect>
-		<Grid Margin="5">
+		<Grid Margin="5,5,0,5" x:Name="root"
+			Background="{x:Static SystemColors.ControlLightLightBrush}">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="Auto"/>
 				<ColumnDefinition Width="*"/>
@@ -34,9 +40,11 @@
 
 			<Label Grid.Column="0"
 				   Grid.Row="0"
+				   Margin="0,5,0,0"
 				   Content="File Name:"/>
 			<TextBox Grid.Column="1"
 					 Grid.Row="0"
+					 Margin="0,5,5,0"
 					 x:Name="fileNameTxt"
 					 Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged}"/>
 

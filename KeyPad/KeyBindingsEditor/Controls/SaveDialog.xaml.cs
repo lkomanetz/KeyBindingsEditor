@@ -24,7 +24,7 @@ namespace KeyPad.KeyBindingsEditor.Controls {
 		private SaveDialogViewModel _viewModel;
 
 		public SaveDialog(Window owner) {
-			_viewModel = new SaveDialogViewModel(this);
+			_viewModel = new SaveDialogViewModel(this, owner);
 			this.DataContext = _viewModel;
 			this.Owner = owner;
 			InitializeComponent();

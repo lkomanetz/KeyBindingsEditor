@@ -14,11 +14,17 @@ namespace KeyPad.DataManager {
 	public class KeyBindingFileManager : IDataManager {
 
 		private const string DIRECTORY_NAME = "Bindings";
+		private readonly string _directoryLocation;
 		private string _fileLocation;
 
-		public KeyBindingFileManager() {}
+		public KeyBindingFileManager() {
+			_directoryLocation = $"{Environment.CurrentDirectory}/Bindings";
+			if (!Directory.Exists(_directoryLocation))
+				Directory.CreateDirectory(_directoryLocation);
+		}
 
-		public KeyBindingFileManager(string fileLocation) {
+		public KeyBindingFileManager(string fileLocation) :
+			base() {
 			_fileLocation = fileLocation;
 		}
 
@@ -52,7 +58,7 @@ namespace KeyPad.DataManager {
 		}
 
 		public object Read() {
-			return System.IO.Directory.GetFiles($@"{Environment.CurrentDirectory}\{DIRECTORY_NAME}")
+			return Directory.GetFiles(_directoryLocation)
 				.Select(x => new KeyBindingFile(x, GetBindingsFrom(x)))
 				.ToArray();
 		}
@@ -63,7 +69,7 @@ namespace KeyPad.DataManager {
 				if (keyBindingFile == null)
 					throw new ArgumentException("file is not of type KeyBindingFile");
 
-				System.IO.File.Delete(keyBindingFile.FileLocation);
+				File.Delete(keyBindingFile.FileLocation);
 				return true;
 			}
 			catch (Exception) {

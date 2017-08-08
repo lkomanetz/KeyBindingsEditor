@@ -19,7 +19,6 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 
 		private const string PROPERTY_NAME = "keybindings_location";
 
-		private readonly string _directoryLocation;
 		private IDataManager _serviceSettingManager;
 		private IDataManager _keyBindingFileManager;
 		private IList<ServiceSetting> _serviceSettings;
@@ -33,16 +32,6 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 			_serviceSettingManager = serviceSettingManager;
 			_keyBindingFileManager = keyBindingFileManager;
 			_serviceSettings = (List<ServiceSetting>)_serviceSettingManager.Read();
-			_directoryLocation = $@"{Environment.CurrentDirectory}\Bindings";
-
-			//TODO(Logan) -> Look a little more into where the below conditional statment is.
-			/*
-			 * I'm not really sure about where this code is right now.  Does it make sense
-			 * for it to live in the KeyBindingSelectorViewModel? Is there a better place
-			 * for it to live?  Right now I'm not sure.
-			 */
-			if (!System.IO.Directory.Exists(_directoryLocation))
-				System.IO.Directory.CreateDirectory(_directoryLocation);
 
 			LoadFiles();
 
@@ -94,9 +83,6 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 
 		public void LoadFiles() {
 			var previouslySelectedFile = this.SelectedFile;
-
-			if (!System.IO.Directory.Exists(_directoryLocation))
-				this.Files = new List<KeyBindingFile>();
 
 			this.Files = (KeyBindingFile[])_keyBindingFileManager.Read();
 

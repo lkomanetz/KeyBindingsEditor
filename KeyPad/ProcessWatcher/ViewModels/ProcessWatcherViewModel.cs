@@ -16,11 +16,8 @@ namespace KeyPad.ProcessWatcher.ViewModels {
 		IObservableViewModel,
 		IViewModel {
 
-		private const double TIMER_INTERVAL = 250D;
 		private ICommand _stopProcessCommand;
 		private ICommand _startProcessCommand;
-		private System.Timers.Timer _executeThreadTimer;
-		private Thread _watcherThread;
 		private IProcessManager _processManager;
 		private bool _isProcessRunning;
 		private bool _buttonEnabled;
@@ -28,19 +25,13 @@ namespace KeyPad.ProcessWatcher.ViewModels {
 		public ProcessWatcherViewModel(IProcessManager processManager) {
 			_buttonEnabled = true;
 			_processManager = processManager;
-			_processManager.ProcessStarted += (sender, args) => InvokePropertyChangeEvents();
-			_processManager.ProcessStopped += (sender, args) => InvokePropertyChangeEvents();
-
-			_watcherThread = new Thread(() => WatchProcess());
-			_executeThreadTimer = new System.Timers.Timer() {
-				Interval = TIMER_INTERVAL,
-				Enabled = true
+			_processManager.ProcessStarted += (sender, args) => {
+				_isProcessRunning = true;
+				InvokePropertyChangeEvents();
 			};
-			_executeThreadTimer.Elapsed += (sender, args) => {
-				if (_watcherThread.ThreadState != ThreadState.Running)
-					_watcherThread = new Thread(() => WatchProcess());
-
-				_watcherThread.Start();
+			_processManager.ProcessStopped += (sender, args) => {
+				_isProcessRunning = false;
+				InvokePropertyChangeEvents();
 			};
 
 			_startProcessCommand = new DelegateCommand<object>((param) => ToggleActionAsync(() => _processManager.Start()));
@@ -66,11 +57,6 @@ namespace KeyPad.ProcessWatcher.ViewModels {
 		public ICommand ButtonCommand => (_isProcessRunning) ? _stopProcessCommand : _startProcessCommand;
 		public Brush StatusColor => (_isProcessRunning) ? Brushes.Green : Brushes.Red;
 		public string Title => throw new NotImplementedException();
-
-		private void WatchProcess() {
-			_isProcessRunning = _processManager.IsRunning;
-			InvokePropertyChangeEvents();
-		}
 
 		private async void ToggleActionAsync(Action action) {
 			this.ButtonEnabled = false;

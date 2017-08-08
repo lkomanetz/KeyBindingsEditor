@@ -6,53 +6,53 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeyPad.ProcessWatcher { 
+namespace KeyPad.ProcessWatcher {
 
 	public class WindowsProcessManager : IProcessManager {
 
 		private string _processName;
 		private string _exeLocation;
+		private Process _process;
 
 		public WindowsProcessManager(string processName, string exeLocation) {
 			_processName = processName;
 			_exeLocation = exeLocation;
 		}
 
-		public bool IsRunning => CheckProcessIsRunning();
+		public bool IsRunning { get; private set; }
 		public string ProcessName => _processName;
 		public string ExeLocation => _exeLocation;
 
 		public event EventHandler<EventArgs> ProcessStarted;
 		public event EventHandler<EventArgs> ProcessStopped;
 
-		public bool Start() {
+		public void Start() {
+			if (String.IsNullOrEmpty(_exeLocation))
+				return;
+
 			ProcessStartInfo info = new ProcessStartInfo() {
 				FileName = _exeLocation,
 				UseShellExecute = true,
 				WindowStyle = ProcessWindowStyle.Minimized
 			};
 
-			var keypadProcess = new Process() { StartInfo = info };
+			_process = new Process() { StartInfo = info, EnableRaisingEvents = true };
+			_process.Exited += (sender, args) => {
+				this.IsRunning = false;
+				ProcessStopped(this, EventArgs.Empty);
+			};
 
-			bool processStarted = keypadProcess.Start();
-			if (processStarted)
+			bool processStarted = _process.Start();
+			if (processStarted) {
+				this.IsRunning = true;
 				ProcessStarted(this, EventArgs.Empty);
-
-			return processStarted;
+			}
 		}
 
 		public void Stop() {
-			Process keypadProcess = Process.GetProcessesByName(_processName).SingleOrDefault();
-			if (keypadProcess == null)
-				return;
-
-			keypadProcess.Kill();
-			ProcessStopped(this, EventArgs.Empty);
-		}
-
-		private bool CheckProcessIsRunning() {
-			Process keypadProcess = Process.GetProcessesByName(_processName).SingleOrDefault();
-			return keypadProcess != null;
+			_process.Kill();
+			_process.Dispose();
+			_process = null;
 		}
 
 	}

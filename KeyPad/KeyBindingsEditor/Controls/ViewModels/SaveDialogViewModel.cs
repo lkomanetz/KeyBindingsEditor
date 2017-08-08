@@ -6,16 +6,29 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Windows.Input;
+using System.Windows;
+using System.Windows.Media.Effects;
+using System.Windows.Media;
 
 namespace KeyPad.KeyBindingsEditor.Controls.ViewModels {
 
 	internal class SaveDialogViewModel : IObservableViewModel {
 
 		private SaveDialog _dlg;
-		public SaveDialogViewModel(SaveDialog dialog) {
+		private Window _owner;
+		public SaveDialogViewModel(SaveDialog dialog, Window owner) {
 			_dlg = dialog;
-			this.SaveCommand = new DelegateCommand<object>((param) => Save());
-			this.CancelCommand = new DelegateCommand<object>((param) => _dlg.DialogResult = false);
+			_owner = owner;
+			ApplyBlur();
+
+			this.SaveCommand = new DelegateCommand<object>((param) => {
+				Save();
+				RemoveBlur();
+			});
+			this.CancelCommand = new DelegateCommand<object>((param) => {
+				_dlg.DialogResult = false;
+				RemoveBlur();
+			});
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged = delegate { };
@@ -48,6 +61,10 @@ namespace KeyPad.KeyBindingsEditor.Controls.ViewModels {
 			_dlg.FileName = modifiedFileName;
 			_dlg.Close();
 		}
+
+		private void ApplyBlur() => _owner.Effect = new BlurEffect() { Radius = 5 };
+		
+		private void RemoveBlur() => _owner.Effect = null;
 
 	}
 

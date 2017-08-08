@@ -5,7 +5,6 @@ using KeyPad.ProcessWatcher.ViewModels;
 using KeyPad.Settings.Models;
 using KeyPad.Serializer;
 using KeyPad.Settings.ViewModels;
-using KeyPad.ViewModels;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -20,7 +19,6 @@ using KeyPad.Models;
 
 namespace KeyPad.ViewModels {
 	
-	//TODO(Logan) -> Figure out how to handle the Environment.CurrentDirectory/Bindings/<blah> nonsense.
 	//TODO(Logan) -> Use the modal dialog concept in an abstract way.
 	internal class MainWindowViewModel : IObservableViewModel {
 
@@ -45,7 +43,7 @@ namespace KeyPad.ViewModels {
 			_appSettings = (IList<ApplicationSetting>)_appSettingsManager.Read();
 
 			_kbSelectorVm = new KeyBindingSelectorViewModel(_serviceSettingsManager, _keyBindingDataManager);
-#if !DEBUG
+#if DEBUG
 			_processManager = SetupProcessMonitor();
 			_processWatcherViewModel = new ProcessWatcherViewModel(_processManager);
 

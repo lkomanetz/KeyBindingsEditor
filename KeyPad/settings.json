@@ -2,7 +2,7 @@
 	{
 		"Name": "service_location",
 		"Display": "Service Location",
-		"Value": "C:\\Windows\\System32\\notepad.exe"
+		"Value": ""
 	},
 	{
 		"Name": "process_name",
@@ -12,6 +12,6 @@
 	{
 		"Name": "service_startup",
 		"Display": "Start Service on Startup",
-		"Value": false
+		"Value": true
 	}
 ]

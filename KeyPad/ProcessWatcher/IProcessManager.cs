@@ -10,9 +10,10 @@ namespace KeyPad.ProcessWatcher {
 
 		event EventHandler<EventArgs> ProcessStarted;
 		event EventHandler<EventArgs> ProcessStopped;
+
 		bool IsRunning { get; }
 
-		bool Start();
+		void Start();
 		void Stop();
 
 	}
