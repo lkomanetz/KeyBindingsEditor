@@ -2,7 +2,7 @@
 	{
 		"Name": "service_location",
 		"Display": "Service Location",
-		"Value": ""
+		"Value": "C:\\Windows\\System32\\notepad.exe"
 	},
 	{
 		"Name": "process_name",

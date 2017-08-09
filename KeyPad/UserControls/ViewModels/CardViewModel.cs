@@ -16,6 +16,7 @@ namespace KeyPad.UserControls.ViewModels {
 
 		public CardViewModel() {
 			this.ToggleCollapseState = new DelegateCommand<object>((param) => this.IsCollapsed = !this.IsCollapsed);
+			this.IsCollapsed = true;
 		}
 
 		public ICommand ToggleCollapseState { get; private set; }

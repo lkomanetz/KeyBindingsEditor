@@ -125,7 +125,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 				return;
 
 			_file = new KeyBindingFile(
-				$"{Environment.CurrentDirectory}/Bindings/{fileLocation}",
+				fileLocation,
 				bindings
 			);
 
@@ -142,7 +142,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 				return String.Empty;
 			}
 
-			return dlg.FileName;
+			return $@"{Environment.CurrentDirectory}/Bindings/{dlg.FileName}";
 		}
 
 		private void InitKeyBindings() {

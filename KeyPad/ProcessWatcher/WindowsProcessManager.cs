@@ -12,7 +12,6 @@ namespace KeyPad.ProcessWatcher {
 
 		private string _processName;
 		private string _exeLocation;
-		private Process _process;
 
 		public WindowsProcessManager(string processName, string exeLocation) {
 			_processName = processName;
@@ -30,19 +29,20 @@ namespace KeyPad.ProcessWatcher {
 			if (String.IsNullOrEmpty(_exeLocation))
 				return;
 
+			if (IsProcessRunning()) {
+				this.IsRunning = true;
+				ProcessStarted(this, EventArgs.Empty);
+			}
+
 			ProcessStartInfo info = new ProcessStartInfo() {
 				FileName = _exeLocation,
 				UseShellExecute = true,
 				WindowStyle = ProcessWindowStyle.Minimized
 			};
 
-			_process = new Process() { StartInfo = info, EnableRaisingEvents = true };
-			_process.Exited += (sender, args) => {
-				this.IsRunning = false;
-				ProcessStopped(this, EventArgs.Empty);
-			};
+			Process process = new Process() { StartInfo = info, EnableRaisingEvents = true };
 
-			bool processStarted = _process.Start();
+			bool processStarted = process.Start();
 			if (processStarted) {
 				this.IsRunning = true;
 				ProcessStarted(this, EventArgs.Empty);
@@ -50,9 +50,15 @@ namespace KeyPad.ProcessWatcher {
 		}
 
 		public void Stop() {
-			_process.Kill();
-			_process.Dispose();
-			_process = null;
+			Process[] processes = Process.GetProcessesByName(_processName);
+			foreach (Process process in processes) {
+				process.Kill();
+			}
+			ProcessStopped(this, EventArgs.Empty);
+		}
+
+		private bool IsProcessRunning() {
+			return Process.GetProcessesByName(_processName).Length > 0;
 		}
 
 	}

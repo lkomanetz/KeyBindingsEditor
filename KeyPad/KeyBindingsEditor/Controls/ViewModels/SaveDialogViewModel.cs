@@ -35,6 +35,7 @@ namespace KeyPad.KeyBindingsEditor.Controls.ViewModels {
 
 		public ICommand SaveCommand { get; private set; }
 		public ICommand CancelCommand { get; private set; }
+		public bool SaveEnabled => (this.FileName != null) && (this.FileName.Length > 0);
 
 		private string _fileName;
 		public string FileName {
@@ -44,6 +45,7 @@ namespace KeyPad.KeyBindingsEditor.Controls.ViewModels {
 					return;
 				_fileName = value;
 				PropertyChanged(this, new PropertyChangedEventArgs(nameof(FileName)));
+				PropertyChanged(this, new PropertyChangedEventArgs(nameof(SaveEnabled)));
 			}
 		}
 
