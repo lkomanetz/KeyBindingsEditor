@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using KeyPad.Models;
 using KeyPad.DataManager.EventArguments;
 using KeyPad.Serializer;
+using System.Text.RegularExpressions;
 
 namespace KeyPad.DataManager {
 
@@ -18,15 +19,14 @@ namespace KeyPad.DataManager {
 		private string _fileLocation;
 
 		public KeyBindingFileManager() {
-			_directoryLocation = $"{Environment.CurrentDirectory}/Bindings";
+			_directoryLocation = $"{Environment.CurrentDirectory}/{DIRECTORY_NAME}";
 			if (!Directory.Exists(_directoryLocation))
 				Directory.CreateDirectory(_directoryLocation);
 		}
 
 		public KeyBindingFileManager(string fileLocation) :
-			base() {
-			_fileLocation = fileLocation;
-		}
+			base() => _fileLocation = fileLocation;
+		
 
 		public string FileLocation {
 			get => _fileLocation;
@@ -59,7 +59,7 @@ namespace KeyPad.DataManager {
 
 		public object Read() {
 			return Directory.GetFiles(_directoryLocation)
-				.Select(x => new KeyBindingFile(x, GetBindingsFrom(x)))
+				.Select(x => new KeyBindingFile(GetFileName(x), GetBindingsFrom(x)))
 				.ToArray();
 		}
 
@@ -90,6 +90,14 @@ namespace KeyPad.DataManager {
 			}
 
 			return bindings;
+		}
+
+		private string GetFileName(string fileLocation) {
+			Match match = Regex.Match(fileLocation, @"[^\\]\w+(?=\.[a-zA-Z]{3}\z)");
+			if (match.Success)
+				return match.Value;
+			else
+				return String.Empty;
 		}
 
 	}

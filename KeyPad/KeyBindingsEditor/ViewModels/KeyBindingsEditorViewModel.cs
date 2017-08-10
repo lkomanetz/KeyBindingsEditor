@@ -120,12 +120,12 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 				.Select(x => new KeyPad.Models.KeyBinding(x.GamepadCode, x.KeyCode))
 				.ToList();
 
-			string fileLocation = (_file == null) ? GetSaveLocation() : _file.FileLocation;
-			if (String.IsNullOrEmpty(fileLocation))
+			string fileName = (_file == null) ? GetSaveLocation() : _file.FileName;
+			if (String.IsNullOrEmpty(fileName))
 				return;
 
 			_file = new KeyBindingFile(
-				fileLocation,
+				fileName,
 				bindings
 			);
 
@@ -142,7 +142,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 				return String.Empty;
 			}
 
-			return $@"{Environment.CurrentDirectory}/Bindings/{dlg.FileName}";
+			return dlg.FileName;
 		}
 
 		private void InitKeyBindings() {
