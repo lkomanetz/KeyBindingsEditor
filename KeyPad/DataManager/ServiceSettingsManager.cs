@@ -1,6 +1,6 @@
 ﻿using KeyPad.DataManager.EventArguments;
-using KeyPad.Settings.Models;
-using KeyPad.Settings.ViewModels;
+using KeyPad.SettingsEditor.Models;
+using KeyPad.SettingsEditor.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;

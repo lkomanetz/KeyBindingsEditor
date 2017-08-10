@@ -1,6 +1,6 @@
 ﻿using KeyPad.ViewModels;
 using KeyPad.DataManager;
-using KeyPad.Settings.Models;
+using KeyPad.SettingsEditor.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace KeyPad.Settings.ViewModels {
+namespace KeyPad.SettingsEditor.ViewModels {
 
 	internal class ServiceSettingsViewModel : IViewModel, IObservableViewModel, IForm {
 		private IDataManager _dataManager;

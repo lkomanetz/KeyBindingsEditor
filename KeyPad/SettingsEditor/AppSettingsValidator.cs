@@ -1,5 +1,4 @@
-﻿using KeyPad.Settings.Models;
-using KeyPad.Settings.ViewModels;
+﻿using KeyPad.SettingsEditor.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeyPad.Settings {
+namespace KeyPad.SettingsEditor {
 
 	//TODO(Logan) -> Fix the validator after making changes to ApplicationSettingViewModel class
 	public class AppSettingsValidator : IValidator {

@@ -4,12 +4,12 @@
 					xmlns:kbEditor="clr-namespace:KeyPad.KeyBindingsEditor"
 					xmlns:pwVm="clr-namespace:KeyPad.ProcessWatcher.ViewModels"
 					xmlns:pw="clr-namespace:KeyPad.ProcessWatcher"
-					xmlns:s="clr-namespace:KeyPad.Settings"
-					xmlns:svm="clr-namespace:KeyPad.Settings.ViewModels"
+					xmlns:s="clr-namespace:KeyPad.SettingsEditor"
+					xmlns:svm="clr-namespace:KeyPad.SettingsEditor.ViewModels"
 					xmlns:kbSelectorVm="clr-namespace:KeyPad.KeyBindingSelector.ViewModels"
 					xmlns:kbSelector="clr-namespace:KeyPad.KeyBindingSelector"
-					xmlns:vm="clr-namespace:KeyPad.UserControls.ViewModels"
-					xmlns:ctrls="clr-namespace:KeyPad.UserControls"
+					xmlns:vm="clr-namespace:KeyPad.UserControls.Cards.ViewModels"
+					xmlns:ctrls="clr-namespace:KeyPad.UserControls.Cards"
 					xmlns:local="clr-namespace:KeyPad">
 	
 	<DataTemplate DataType="{x:Type kbEditorVm:KeyBindingsEditorViewModel}">

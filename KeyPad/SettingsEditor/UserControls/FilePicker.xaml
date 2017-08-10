@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="KeyPad.Settings.UserControls.FilePicker"
+﻿<UserControl x:Class="KeyPad.SettingsEditor.UserControls.FilePicker"
 			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-			 xmlns:vm="clr-namespace:KeyPad.Settings.UserControls.ViewModels"
+			 xmlns:vm="clr-namespace:KeyPad.SettingsEditor.UserControls.ViewModels"
 			 mc:Ignorable="d" 
 			 d:DesignHeight="50" d:DesignWidth="300">
 	<Grid x:Name="rootGrid">

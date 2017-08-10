@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KeyPad.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -6,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace KeyPad {
+namespace KeyPad.UserControls.Cards {
 
-	public class TitleAction : INotifyPropertyChanged {
+	public class TitleAction : IObservableViewModel {
 
 		private string _actionImage;
 		public string ActionImage {

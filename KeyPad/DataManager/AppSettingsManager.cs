@@ -1,4 +1,4 @@
-﻿using KeyPad.Settings.Models;
+﻿using KeyPad.SettingsEditor.Models;
 using KeyPad.Serializer;
 using System;
 using System.Collections.Generic;

@@ -13,16 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace KeyPad.UserControls
+namespace KeyPad.SettingsEditor
 {
-	/// <summary>
-	/// Interaction logic for Card.xaml
-	/// </summary>
-	public partial class Card : UserControl
-	{
-		public Card()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for ServiceSettings.xaml
+    /// </summary>
+    public partial class ServiceSettings : UserControl
+    {
+        public ServiceSettings()
+        {
+            InitializeComponent();
+        }
+    }
 }

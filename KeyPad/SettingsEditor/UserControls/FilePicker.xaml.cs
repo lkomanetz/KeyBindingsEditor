@@ -1,4 +1,4 @@
-﻿using KeyPad.Settings.UserControls.ViewModels;
+﻿using KeyPad.SettingsEditor.UserControls.ViewModels;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace KeyPad.Settings.UserControls {
+namespace KeyPad.SettingsEditor.UserControls {
 
 	/// <summary>
 	/// Interaction logic for FilePicker.xaml

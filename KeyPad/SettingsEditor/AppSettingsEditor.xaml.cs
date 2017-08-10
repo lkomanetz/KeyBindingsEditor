@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace KeyPad.Settings
+namespace KeyPad.SettingsEditor
 {
     /// <summary>
     /// Interaction logic for AppSettingsEditor.xaml

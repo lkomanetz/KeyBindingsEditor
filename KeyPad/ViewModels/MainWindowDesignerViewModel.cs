@@ -1,4 +1,5 @@
-﻿using KeyPad.UserControls.ViewModels;
+﻿using KeyPad.UserControls.Cards;
+using KeyPad.UserControls.Cards.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

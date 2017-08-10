@@ -1,7 +1,7 @@
 ﻿using KeyPad.DataManager;
 using KeyPad.Models;
-using KeyPad.Settings.Models;
-using KeyPad.Settings.ViewModels;
+using KeyPad.SettingsEditor.Models;
+using KeyPad.SettingsEditor.ViewModels;
 using KeyPad.ViewModels;
 using System;
 using System.Collections.Generic;

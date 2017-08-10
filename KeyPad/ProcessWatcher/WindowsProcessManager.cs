@@ -1,4 +1,4 @@
-﻿using KeyPad.Settings.Models;
+﻿using KeyPad.SettingsEditor.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

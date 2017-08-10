@@ -2,9 +2,9 @@
 using KeyPad.KeyBindingsEditor.ViewModels;
 using KeyPad.ProcessWatcher;
 using KeyPad.ProcessWatcher.ViewModels;
-using KeyPad.Settings.Models;
+using KeyPad.SettingsEditor.Models;
 using KeyPad.Serializer;
-using KeyPad.Settings.ViewModels;
+using KeyPad.SettingsEditor.ViewModels;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -14,8 +14,9 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using KeyPad.KeyBindingSelector.ViewModels;
-using KeyPad.UserControls.ViewModels;
+using KeyPad.UserControls.Cards.ViewModels;
 using KeyPad.Models;
+using KeyPad.UserControls.Cards;
 
 namespace KeyPad.ViewModels {
 	

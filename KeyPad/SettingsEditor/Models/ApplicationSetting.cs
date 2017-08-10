@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeyPad.Settings.Models {
+namespace KeyPad.SettingsEditor.Models {
 
 	[DataContract]
 	public class ApplicationSetting {

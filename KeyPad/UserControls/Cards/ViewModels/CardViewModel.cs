@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace KeyPad.UserControls.ViewModels {
+namespace KeyPad.UserControls.Cards.ViewModels {
 
 	internal class CardViewModel :
 		IViewModel,

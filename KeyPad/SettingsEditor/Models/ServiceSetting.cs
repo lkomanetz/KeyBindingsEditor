@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeyPad.Settings.Models {
+namespace KeyPad.SettingsEditor.Models {
 
 	public class ServiceSetting {
 

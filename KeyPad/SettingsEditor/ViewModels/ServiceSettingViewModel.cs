@@ -1,5 +1,5 @@
-﻿using KeyPad.Settings.Models;
-using KeyPad.Settings.UserControls;
+﻿using KeyPad.SettingsEditor.Models;
+using KeyPad.SettingsEditor.UserControls;
 using KeyPad.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace KeyPad.Settings.ViewModels {
+namespace KeyPad.SettingsEditor.ViewModels {
 
 	internal class ServiceSettingViewModel : IObservableViewModel {
 

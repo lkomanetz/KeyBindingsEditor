@@ -1,12 +1,9 @@
 ﻿using KeyPad.ViewModels;
 using KeyPad.DataManager;
-using KeyPad.Settings.Models;
-using KeyPad.Serializer;
-using Microsoft.Win32;
+using KeyPad.SettingsEditor.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -14,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace KeyPad.Settings.ViewModels {
+namespace KeyPad.SettingsEditor.ViewModels {
 
 	internal class AppSettingsEditorViewModel :
 		IObservableViewModel,
