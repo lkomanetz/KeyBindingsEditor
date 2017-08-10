@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows;
 using System.Windows.Media.Effects;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace KeyPad.KeyBindingsEditor.Controls.ViewModels {
 
@@ -16,10 +17,12 @@ namespace KeyPad.KeyBindingsEditor.Controls.ViewModels {
 
 		private SaveDialog _dlg;
 		private Window _owner;
+
 		public SaveDialogViewModel(SaveDialog dialog, Window owner) {
 			_dlg = dialog;
 			_owner = owner;
 			ApplyBlur();
+			FadeIn();
 
 			this.SaveCommand = new DelegateCommand<object>((param) => {
 				Save();
@@ -64,7 +67,19 @@ namespace KeyPad.KeyBindingsEditor.Controls.ViewModels {
 			_dlg.Close();
 		}
 
-		private void ApplyBlur() => _owner.Effect = new BlurEffect() { Radius = 5 };
+		private void FadeIn() {
+			DoubleAnimation fadeIn = new DoubleAnimation() {
+				From = 0D,
+				To = 1D,
+				Duration = new Duration(new TimeSpan(0, 0, 0, 0, 200))
+			};
+			Storyboard.SetTargetProperty(fadeIn, new PropertyPath(UIElement.OpacityProperty));
+			Storyboard sb = new Storyboard();
+			sb.Children.Add(fadeIn);
+			sb.Begin(_dlg);
+		}
+
+		private void ApplyBlur() => _owner.Effect = new BlurEffect() { Radius = 8 };
 		
 		private void RemoveBlur() => _owner.Effect = null;
 
