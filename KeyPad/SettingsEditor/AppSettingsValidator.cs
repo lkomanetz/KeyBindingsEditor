@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace KeyPad.SettingsEditor {
 
-	//TODO(Logan) -> Fix the validator after making changes to ApplicationSettingViewModel class
 	public class AppSettingsValidator : IValidator {
 
 		private const string EXE_IDENTIFIER = "MZ";
