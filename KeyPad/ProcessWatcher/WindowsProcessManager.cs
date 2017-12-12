@@ -2,21 +2,30 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace KeyPad.ProcessWatcher {
 
-	public class WindowsProcessManager : IProcessManager {
+	public class WindowsProcessManager : IProcessManager, IDisposable {
 
+		private const long THREAD_INTERVAL_MILLIS = 500L;
 		private string _processName;
 		private string _exeLocation;
+		private Thread _watcherThread;
+		private bool _isThreadRunning;
+		private bool _wasProcessRunning;
 
 		public WindowsProcessManager(string processName, string exeLocation) {
 			_processName = processName;
 			_exeLocation = exeLocation;
+			_isThreadRunning = true;
 		}
+
 
 		public bool IsRunning { get; private set; }
 		public string ProcessName => _processName;
@@ -26,10 +35,18 @@ namespace KeyPad.ProcessWatcher {
 		public event EventHandler<EventArgs> ProcessStopped;
 
 		public void Start() {
-			if (String.IsNullOrEmpty(_exeLocation))
-				return;
+			_watcherThread = new Thread(() => {
+				while (_isThreadRunning) {
+					long elapsedTime = Do(() => CheckProcessState());
+					long delta = THREAD_INTERVAL_MILLIS - elapsedTime;
+					if (delta > 0L) Thread.Sleep((int)delta);
+				}
+			});
 
-			if (IsProcessRunning()) {
+			if (String.IsNullOrEmpty(_exeLocation)) return;
+			if (!File.Exists(_exeLocation)) return;
+
+			if (!IsProcessRunning()) {
 				this.IsRunning = true;
 				ProcessStarted(this, EventArgs.Empty);
 			}
@@ -47,6 +64,7 @@ namespace KeyPad.ProcessWatcher {
 				this.IsRunning = true;
 				ProcessStarted(this, EventArgs.Empty);
 			}
+			// _watcherThread.Start();
 		}
 
 		public void Stop() {
@@ -54,13 +72,42 @@ namespace KeyPad.ProcessWatcher {
 			foreach (Process process in processes) {
 				process.Kill();
 			}
+			this.IsRunning = false;
 			ProcessStopped(this, EventArgs.Empty);
+			_isThreadRunning = false;
 		}
 
 		private bool IsProcessRunning() {
 			return Process.GetProcessesByName(_processName).Length > 0;
 		}
 
+		private long Do(Action action) {
+			Stopwatch sw = new Stopwatch();
+			sw.Start();
+			action.Invoke();
+			sw.Stop();
+
+			return sw.ElapsedMilliseconds;
+		}
+
+		private void CheckProcessState() {
+			bool processIsRunning = IsProcessRunning();
+			if (_wasProcessRunning && !processIsRunning) {
+				this.IsRunning = false;
+				ProcessStopped(this, EventArgs.Empty);
+			}
+			else if (!_wasProcessRunning && processIsRunning) {
+				this.IsRunning = true;
+				ProcessStarted(this, EventArgs.Empty);
+			}
+			_wasProcessRunning = processIsRunning;
+		}
+
+		public void Dispose()
+		{
+			_isThreadRunning = false;
+			MessageBox.Show("Thread stopped.");
+		}
 	}
 
 }

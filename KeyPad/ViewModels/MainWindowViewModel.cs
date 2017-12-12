@@ -43,7 +43,7 @@ namespace KeyPad.ViewModels {
 			_appSettings = (IList<ApplicationSetting>)_appSettingsManager.Read();
 
 			_kbSelectorVm = new KeyBindingSelectorViewModel(_serviceSettingsManager, _keyBindingDataManager);
-#if !DEBUG
+// #if !DEBUG
 			_processManager = SetupProcessMonitor();
 			_processWatcherViewModel = new ProcessWatcherViewModel(_processManager);
 
@@ -58,7 +58,7 @@ namespace KeyPad.ViewModels {
 
 			if (_processManager.IsRunning)
 				_kbSelectorVm.Visibility = Visibility.Collapsed;	
-#endif
+// #endif
 
 			this.Cards = BuildCards();
 		}

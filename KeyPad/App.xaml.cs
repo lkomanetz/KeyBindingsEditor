@@ -22,6 +22,13 @@ namespace KeyPad {
 					MessageBoxImage.Error
 				);
 			};
+
+			Application.Current.Startup += (sender, args) => {
+				ShutdownMode = ShutdownMode.OnMainWindowClose;
+				MainWindow = new MainWindow();
+				StartupUri = new Uri("MainWindow.xaml", UriKind.Relative);
+			};
+
 		}
 
 	}
