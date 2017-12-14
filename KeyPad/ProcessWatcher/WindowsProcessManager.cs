@@ -11,9 +11,10 @@ using System.Windows;
 
 namespace KeyPad.ProcessWatcher {
 
-	public class WindowsProcessManager : IProcessManager, IDisposable {
+	public class WindowsProcessManager : IProcessManager {
 
 		private const long THREAD_INTERVAL_MILLIS = 500L;
+		private static object key = new Object();
 		private string _processName;
 		private string _exeLocation;
 		private Thread _watcherThread;
@@ -42,6 +43,7 @@ namespace KeyPad.ProcessWatcher {
 					if (delta > 0L) Thread.Sleep((int)delta);
 				}
 			});
+			_watcherThread.IsBackground = true;
 
 			if (String.IsNullOrEmpty(_exeLocation)) return;
 			if (!File.Exists(_exeLocation)) return;
@@ -64,7 +66,7 @@ namespace KeyPad.ProcessWatcher {
 				this.IsRunning = true;
 				ProcessStarted(this, EventArgs.Empty);
 			}
-			// _watcherThread.Start();
+			_watcherThread.Start();
 		}
 
 		public void Stop() {
@@ -74,7 +76,10 @@ namespace KeyPad.ProcessWatcher {
 			}
 			this.IsRunning = false;
 			ProcessStopped(this, EventArgs.Empty);
-			_isThreadRunning = false;
+
+			lock (key) {
+				_isThreadRunning = false;
+			}
 		}
 
 		private bool IsProcessRunning() {
@@ -103,11 +108,12 @@ namespace KeyPad.ProcessWatcher {
 			_wasProcessRunning = processIsRunning;
 		}
 
-		public void Dispose()
-		{
-			_isThreadRunning = false;
-			MessageBox.Show("Thread stopped.");
+		public void Dispose() {
+			lock (key) {
+				_isThreadRunning = false;
+			}
 		}
+
 	}
 
 }

@@ -20,7 +20,7 @@ using KeyPad.UserControls.Cards;
 
 namespace KeyPad.ViewModels {
 	
-	internal class MainWindowViewModel : IObservableViewModel {
+	internal class MainWindowViewModel : IObservableViewModel, IDisposable {
 
 		private const string APP_SETTINGS_FILE_LOCATION = "settings.json";
 		private const string SERVICE_SETTINGS_FILE_LOCATION = "service_settings.txt";
@@ -63,6 +63,10 @@ namespace KeyPad.ViewModels {
 			this.Cards = BuildCards();
 		}
 
+		public void Dispose() {
+			_processManager.Dispose();
+		}
+
 		public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
 		public bool IsDirty => false;
@@ -88,7 +92,10 @@ namespace KeyPad.ViewModels {
 			}
 		}
 
-		private void Shutdown() => Application.Current.Shutdown();
+		private void Shutdown() {
+			Dispose();
+			Application.Current.Shutdown();
+		}
 
 		private IProcessManager SetupProcessMonitor() {
 			var processNameSetting = _appSettings.First(x => x.Name.Equals("process_name"));

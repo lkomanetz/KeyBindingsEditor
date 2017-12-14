@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KeyPad.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -25,7 +26,6 @@ namespace KeyPad {
 
 			Application.Current.Startup += (sender, args) => {
 				ShutdownMode = ShutdownMode.OnMainWindowClose;
-				MainWindow = new MainWindow();
 				StartupUri = new Uri("MainWindow.xaml", UriKind.Relative);
 			};
 
