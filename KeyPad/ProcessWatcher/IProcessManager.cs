@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace KeyPad.ProcessWatcher {
 
-	public interface IProcessManager {
+	public interface IProcessManager : IDisposable {
 
 		event EventHandler<EventArgs> ProcessStarted;
 		event EventHandler<EventArgs> ProcessStopped;
