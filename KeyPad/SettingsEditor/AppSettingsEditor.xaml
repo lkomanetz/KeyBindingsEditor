@@ -30,6 +30,7 @@
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
 
 			<Label Content="Service Location:"
@@ -42,14 +43,26 @@
 							  Location="{Binding ServiceLocation, Mode=TwoWay}"/>
 			<Label Content="Start Service On Launch:"
 				   VerticalAlignment="Center"
-				   Grid.Row="2"
+				   Grid.Row="1"
 				   Grid.Column="0"/>
 			<CheckBox IsChecked="{Binding ShouldStartOnStartup}"
 					  Grid.Column="1"
 					  VerticalAlignment="Center"
-					  Grid.Row="2">
+					  Grid.Row="1">
 				<CheckBox.LayoutTransform>
 					<ScaleTransform ScaleX="1.25" ScaleY="1.25"/>
+				</CheckBox.LayoutTransform>
+			</CheckBox>
+			<Label Content="Stop Service on Close:"
+				   VerticalAlignment="Center"
+				   Grid.Row="2"
+				   Grid.Column="0"/>
+			<CheckBox IsChecked="{Binding ShouldStopOnClose}"
+					  Grid.Column="1"
+					  VerticalAlignment="Center"
+					  Grid.Row="2">
+				<CheckBox.LayoutTransform>
+					<ScaleTransform ScaleX="1.25" ScaleY="1.25"/> 
 				</CheckBox.LayoutTransform>
 			</CheckBox>
 		</Grid>

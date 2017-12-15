@@ -24,6 +24,8 @@ namespace KeyPad.SettingsEditor.ViewModels {
 		private ApplicationSetting _startupSetting;
 		private ApplicationSetting _locationSetting;
 		private ApplicationSetting _processNameSetting;
+		private ApplicationSetting _closeSetting;
+		private bool _initialCloseValue;
 		private bool _initialStartupValue;
 		private string _initialLocationValue;
 		private string _initialProcessNameValue;
@@ -34,6 +36,7 @@ namespace KeyPad.SettingsEditor.ViewModels {
 			_startupSetting = _settings.Where(x => x.Name.Equals("service_startup")).Single();
 			_locationSetting = _settings.Where(x => x.Name.Equals("service_location")).Single();
 			_processNameSetting = _settings.Where(x => x.Name.Equals("process_name")).Single();
+			_closeSetting = _settings.Where(x => x.Name.Equals("service_stop_on_close")).Single();
 			
 			this.SaveCommand = new DelegateCommand<object>((param) => SaveSettings());
 
@@ -48,7 +51,8 @@ namespace KeyPad.SettingsEditor.ViewModels {
 		public bool IsDirty =>
 			(_initialStartupValue != (bool)_startupSetting.Value) ||
 			(_initialLocationValue != _locationSetting.Value.ToString()) ||
-			(_initialProcessNameValue != _processNameSetting.Value.ToString());
+			(_initialProcessNameValue != _processNameSetting.Value.ToString() ||
+			(_initialCloseValue != (bool)_closeSetting.Value));
 
 		public ICommand SaveCommand { get; private set; }
 
@@ -60,6 +64,16 @@ namespace KeyPad.SettingsEditor.ViewModels {
 					PropertyChanged(this, new PropertyChangedEventArgs(nameof(ShouldStartOnStartup)));
 					PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
 				}
+			}
+		}
+
+		public bool ShouldStopOnClose {
+			get => (bool)_closeSetting.Value;
+			set {
+				if ((bool)_closeSetting.Value == value) return;
+				_closeSetting.Value = value;
+				PropertyChanged(this, new PropertyChangedEventArgs(nameof(ShouldStopOnClose)));
+				PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
 			}
 		}
 
@@ -97,6 +111,7 @@ namespace KeyPad.SettingsEditor.ViewModels {
 			_initialStartupValue = (bool)_startupSetting.Value;
 			_initialProcessNameValue = _processNameSetting.Value.ToString();
 			_initialLocationValue = _locationSetting.Value.ToString();
+			_initialCloseValue = (bool)_closeSetting.Value;
 
 			PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
 			PropertyChanged(this, new PropertyChangedEventArgs(nameof(ServiceLocation)));
