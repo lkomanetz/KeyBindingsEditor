@@ -43,7 +43,6 @@ namespace KeyPad.ViewModels {
 			_appSettings = (IList<ApplicationSetting>)_appSettingsManager.Read();
 
 			_kbSelectorVm = new KeyBindingSelectorViewModel(_serviceSettingsManager, _keyBindingDataManager);
-// #if !DEBUG
 			_processManager = SetupProcessMonitor();
 			_processWatcherViewModel = new ProcessWatcherViewModel(_processManager);
 
@@ -52,14 +51,8 @@ namespace KeyPad.ViewModels {
 				.Single()
 				.Value;
 
-			if (startService) {
-				_processManager.Start();
-			}
-
-			if (_processManager.IsRunning)
-				_kbSelectorVm.Visibility = Visibility.Collapsed;	
-// #endif
-
+			if (startService) _processManager.Start();
+			if (_processManager.IsRunning) _kbSelectorVm.Visibility = Visibility.Collapsed;	
 			this.Cards = BuildCards();
 		}
 
@@ -103,7 +96,8 @@ namespace KeyPad.ViewModels {
 
 			var wpm = new WindowsProcessManager(
 				processNameSetting.Value.ToString(),
-				exeLocationSetting.Value.ToString()
+				exeLocationSetting.Value.ToString(),
+				_appSettings
 			);
 			wpm.ProcessStarted += (sender, args) => _kbSelectorVm.Visibility = Visibility.Collapsed;
 			wpm.ProcessStopped += (sender, args) => _kbSelectorVm.Visibility = Visibility.Visible;

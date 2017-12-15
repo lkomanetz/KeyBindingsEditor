@@ -20,23 +20,26 @@ namespace KeyPad.ProcessWatcher {
 		private Thread _watcherThread;
 		private bool _isThreadRunning;
 		private bool _wasProcessRunning;
+		private bool _closeProcessOnExit;
 
-		public WindowsProcessManager(string processName, string exeLocation) {
+		public WindowsProcessManager(string processName, string exeLocation, IList<ApplicationSetting> settings) {
 			_processName = processName;
 			_exeLocation = exeLocation;
 			_isThreadRunning = true;
+			_closeProcessOnExit = settings
+				.Where(x => x.Name == "service_stop_on_close")
+				.Select(x => (bool)x.Value)
+				.Single();
 		}
 
 		public bool IsRunning { get; private set; }
-		public string ProcessName => _processName;
-		public string ExeLocation => _exeLocation;
 
 		public event EventHandler<EventArgs> ProcessStarted;
 		public event EventHandler<EventArgs> ProcessStopped;
 
 		public void Start() {
 			_watcherThread = new Thread(PollProcessState) {
-				IsBackground = true
+				IsBackground = false
 			};
 
 			if (String.IsNullOrEmpty(_exeLocation)) return;
@@ -63,6 +66,8 @@ namespace KeyPad.ProcessWatcher {
 				this.IsRunning = true;
 				ProcessStarted(this, EventArgs.Empty);
 			}
+
+			_isThreadRunning = true;
 			_watcherThread.Start();
 		}
 
@@ -71,9 +76,8 @@ namespace KeyPad.ProcessWatcher {
 			foreach (Process process in processes) {
 				process.Kill();
 			}
-			this.IsRunning = false;
-			ProcessStopped(this, EventArgs.Empty);
 
+			this.IsRunning = false;
 			lock (lockObj) {
 				_isThreadRunning = false;
 			}
@@ -83,9 +87,10 @@ namespace KeyPad.ProcessWatcher {
 			Process.GetProcessesByName(_processName).Length > 0;
 
 		private void PollProcessState() {
-			while (_isThreadRunning) {
+			while (true) {
 				long elapsedTime = Time(() => CheckProcessState());
 				long delta = THREAD_INTERVAL_MILLIS - elapsedTime;
+				if (!_isThreadRunning) break;
 				if (delta > 0L) Thread.Sleep((int)delta);
 			}
 
@@ -116,6 +121,8 @@ namespace KeyPad.ProcessWatcher {
 			lock (lockObj) {
 				_isThreadRunning = false;
 			}
+
+			if (this.IsRunning && _closeProcessOnExit) Stop();
 		}
 
 	}

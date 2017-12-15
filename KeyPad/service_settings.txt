@@ -1,0 +1,3 @@
+keybindings_location=C:\code\keypad\KeyPad\bin\Debug\Bindings\.txt
+keyboard_port=NULL
+joystick_port=NULL

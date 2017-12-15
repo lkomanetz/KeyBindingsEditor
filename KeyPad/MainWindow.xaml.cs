@@ -21,10 +21,13 @@ namespace KeyPad {
 	/// </summary>
 	public partial class MainWindow : Window {
 
+		private MainWindowViewModel _mainWindowVm;
+
 		public MainWindow() {
+			_mainWindowVm = new MainWindowViewModel(this);
 			InitializeComponent();
-			this.DataContext = new MainWindowViewModel(this);
-			App.Current.MainWindow = this;
+			this.DataContext = _mainWindowVm;
+			App.Current.Exit += (sender, args) => _mainWindowVm.Dispose();
 		}
 
 	}
