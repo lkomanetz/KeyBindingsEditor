@@ -14,7 +14,7 @@ namespace KeyPad.ProcessWatcher {
 	public class WindowsProcessManager : IProcessManager {
 
 		private const long THREAD_INTERVAL_MILLIS = 500L;
-		private static object key = new Object();
+		private static object lockObj = new Object();
 		private string _processName;
 		private string _exeLocation;
 		private Thread _watcherThread;
@@ -27,7 +27,6 @@ namespace KeyPad.ProcessWatcher {
 			_isThreadRunning = true;
 		}
 
-
 		public bool IsRunning { get; private set; }
 		public string ProcessName => _processName;
 		public string ExeLocation => _exeLocation;
@@ -36,14 +35,9 @@ namespace KeyPad.ProcessWatcher {
 		public event EventHandler<EventArgs> ProcessStopped;
 
 		public void Start() {
-			_watcherThread = new Thread(() => {
-				while (_isThreadRunning) {
-					long elapsedTime = Do(() => CheckProcessState());
-					long delta = THREAD_INTERVAL_MILLIS - elapsedTime;
-					if (delta > 0L) Thread.Sleep((int)delta);
-				}
-			});
-			_watcherThread.IsBackground = true;
+			_watcherThread = new Thread(PollProcessState) {
+				IsBackground = true
+			};
 
 			if (String.IsNullOrEmpty(_exeLocation)) return;
 			if (!File.Exists(_exeLocation)) return;
@@ -59,7 +53,10 @@ namespace KeyPad.ProcessWatcher {
 				WindowStyle = ProcessWindowStyle.Minimized
 			};
 
-			Process process = new Process() { StartInfo = info, EnableRaisingEvents = true };
+			Process process = new Process() {
+				StartInfo = info,
+				EnableRaisingEvents = true
+			};
 
 			bool processStarted = process.Start();
 			if (processStarted) {
@@ -77,22 +74,29 @@ namespace KeyPad.ProcessWatcher {
 			this.IsRunning = false;
 			ProcessStopped(this, EventArgs.Empty);
 
-			lock (key) {
+			lock (lockObj) {
 				_isThreadRunning = false;
 			}
 		}
 
-		private bool IsProcessRunning() {
-			return Process.GetProcessesByName(_processName).Length > 0;
-		}
+		private bool IsProcessRunning() =>
+			Process.GetProcessesByName(_processName).Length > 0;
 
-		private long Do(Action action) {
-			Stopwatch sw = new Stopwatch();
-			sw.Start();
-			action.Invoke();
-			sw.Stop();
+		private void PollProcessState() {
+			while (_isThreadRunning) {
+				long elapsedTime = Time(() => CheckProcessState());
+				long delta = THREAD_INTERVAL_MILLIS - elapsedTime;
+				if (delta > 0L) Thread.Sleep((int)delta);
+			}
 
-			return sw.ElapsedMilliseconds;
+			long Time(Action action) {
+				Stopwatch sw = new Stopwatch();
+				sw.Start();
+				action.Invoke();
+				sw.Stop();
+
+				return sw.ElapsedMilliseconds;
+			}
 		}
 
 		private void CheckProcessState() {
@@ -109,7 +113,7 @@ namespace KeyPad.ProcessWatcher {
 		}
 
 		public void Dispose() {
-			lock (key) {
+			lock (lockObj) {
 				_isThreadRunning = false;
 			}
 		}

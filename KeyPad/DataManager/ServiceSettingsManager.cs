@@ -33,8 +33,7 @@ namespace KeyPad.DataManager {
 
 		public bool Save<T>(T items) where T : class {
 			var serviceSettings = items as IList<ServiceSetting>;
-			if (serviceSettings == null)
-				throw new ArgumentException("items is not of type IList<KeyPadSettingViewModel>");
+			if (serviceSettings == null) throw new ArgumentException("items is not of type IList<ServiceSetting>");
 
 			try {
 				string newContent = String.Empty;
@@ -42,8 +41,7 @@ namespace KeyPad.DataManager {
 					string newVal = (String.IsNullOrEmpty(serviceSettings[i].Value)) ? "NULL" : serviceSettings[i].Value;
 					newContent += $"{serviceSettings[i].Name}={newVal}";
 
-					if (i < serviceSettings.Count)
-						newContent += Environment.NewLine;
+					if (i < serviceSettings.Count) newContent += Environment.NewLine;
 				}
 
 				using (StreamWriter sw = new StreamWriter(_fileLocation)) {
