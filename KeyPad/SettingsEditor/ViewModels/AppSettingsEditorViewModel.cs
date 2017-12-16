@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using KeyPad.Calculators;
 
 namespace KeyPad.SettingsEditor.ViewModels {
 
@@ -20,23 +21,18 @@ namespace KeyPad.SettingsEditor.ViewModels {
 
 		private IValidator _validator;
 		private IDataManager _settingsManager;
-		private IList<ApplicationSetting> _settings;
-		private ApplicationSetting _startupSetting;
-		private ApplicationSetting _locationSetting;
-		private ApplicationSetting _processNameSetting;
-		private ApplicationSetting _closeSetting;
+		private IList<ApplicationSettingViewModel> _settingModels;
 		private bool _initialCloseValue;
 		private bool _initialStartupValue;
 		private string _initialLocationValue;
 		private string _initialProcessNameValue;
 
 		public AppSettingsEditorViewModel(IDataManager settingsDataManager) {
-			_settings = (IList<ApplicationSetting>)settingsDataManager.Read();
+			var settings = (IList<ApplicationSetting>)settingsDataManager.Read();
 			_settingsManager = settingsDataManager;
-			_startupSetting = _settings.Where(x => x.Name.Equals("service_startup")).Single();
-			_locationSetting = _settings.Where(x => x.Name.Equals("service_location")).Single();
-			_processNameSetting = _settings.Where(x => x.Name.Equals("process_name")).Single();
-			_closeSetting = _settings.Where(x => x.Name.Equals("service_stop_on_close")).Single();
+			_settingModels = settings
+				.Select(x => new ApplicationSettingViewModel(x, new Md5Calculator()))
+				.ToList();
 			
 			this.SaveCommand = new DelegateCommand<object>((param) => SaveSettings());
 
@@ -48,19 +44,15 @@ namespace KeyPad.SettingsEditor.ViewModels {
 		public event EventHandler<EventArgs> SaveCompleted = delegate { };
 
 		public string Title => "Keypad Settings";
-		public bool IsDirty =>
-			(_initialStartupValue != (bool)_startupSetting.Value) ||
-			(_initialLocationValue != _locationSetting.Value.ToString()) ||
-			(_initialProcessNameValue != _processNameSetting.Value.ToString() ||
-			(_initialCloseValue != (bool)_closeSetting.Value));
-
+		public bool IsDirty => _settingModels.Any(x => x.IsDirty);
 		public ICommand SaveCommand { get; private set; }
 
 		public bool ShouldStartOnStartup {
-			get => (bool)_startupSetting.Value;
+			get => (bool)GetSetting("service_startup").Value;
 			set {
-				if ((bool)_startupSetting.Value != value) {
-					_startupSetting.Value = value;
+				var setting = GetSetting("service_startup");
+				if ((bool)setting.Value != value) {
+					setting.Value = value;
 					PropertyChanged(this, new PropertyChangedEventArgs(nameof(ShouldStartOnStartup)));
 					PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
 				}
@@ -68,21 +60,23 @@ namespace KeyPad.SettingsEditor.ViewModels {
 		}
 
 		public bool ShouldStopOnClose {
-			get => (bool)_closeSetting.Value;
+			get => (bool)GetSetting("service_stop_on_close").Value;
 			set {
-				if ((bool)_closeSetting.Value == value) return;
-				_closeSetting.Value = value;
+				var setting = GetSetting("service_stop_on_close");
+				if ((bool)setting.Value == value) return;
+				setting.Value = value;
 				PropertyChanged(this, new PropertyChangedEventArgs(nameof(ShouldStopOnClose)));
 				PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
 			}
 		}
 
 		public string ServiceLocation {
-			get => _locationSetting.Value.ToString();
+			get => GetSetting("service_location").Value.ToString();
 			set {
-				if (_locationSetting.Value.ToString() != value) {
-					_locationSetting.Value = value;
-					_processNameSetting.Value = GetProcessName(value);
+				var setting = GetSetting("service_location");
+				if (setting.Value.ToString() != value) {
+					setting.Value = value;
+					GetSetting("process_name").Value = GetProcessName(value);
 					PropertyChanged(this, new PropertyChangedEventArgs(nameof(ServiceLocation)));
 					PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
 				}
@@ -108,11 +102,6 @@ namespace KeyPad.SettingsEditor.ViewModels {
 		}
 
 		private void Initialize() {
-			_initialStartupValue = (bool)_startupSetting.Value;
-			_initialProcessNameValue = _processNameSetting.Value.ToString();
-			_initialLocationValue = _locationSetting.Value.ToString();
-			_initialCloseValue = (bool)_closeSetting.Value;
-
 			PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
 			PropertyChanged(this, new PropertyChangedEventArgs(nameof(ServiceLocation)));
 			PropertyChanged(this, new PropertyChangedEventArgs(nameof(ShouldStartOnStartup)));
@@ -125,6 +114,9 @@ namespace KeyPad.SettingsEditor.ViewModels {
 			else
 				return String.Empty;
 		}
+
+		private ApplicationSettingViewModel GetSetting(string name) =>
+			_settingModels.Where(x => x.Name == name).Single();
 
 	}
 

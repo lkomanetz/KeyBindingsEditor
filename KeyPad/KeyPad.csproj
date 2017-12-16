@@ -68,6 +68,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Calculators\ICalculator.cs" />
+    <Compile Include="Calculators\Md5Calculator.cs" />
     <Compile Include="DataManager\AppSettingsManager.cs" />
     <Compile Include="DataManager\EventArguments\SaveCompleteEventArgs.cs" />
     <Compile Include="DataManager\IDataManager.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="KeyBindingsEditor\Controls\ViewModels\SaveDialogViewModel.cs" />
     <Compile Include="SettingsEditor\ServiceSettings.cs" />
     <Compile Include="SettingsEditor\UserControls\FileType.cs" />
+    <Compile Include="SettingsEditor\ViewModels\ApplicationSettingViewModel.cs" />
     <Compile Include="UserControls\Cards\TitleAction.cs" />
     <Compile Include="UserControls\Cards\Card.xaml.cs">
       <DependentUpon>Card.xaml</DependentUpon>
