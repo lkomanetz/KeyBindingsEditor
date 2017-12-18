@@ -44,7 +44,7 @@ namespace KeyPad.SettingsEditor.ViewModels {
 			var settings = (IList<ServiceSetting>)_dataManager.Read();
 			_serviceSettings = settings.Select(x => {
 				var vm = new ServiceSettingViewModel(x, new Md5Calculator());
-				//vm.PropertyChanged += (sender, e) => PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
+				vm.PropertyChanged += (sender, e) => PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
 				return vm;
 			})
 			.ToList();

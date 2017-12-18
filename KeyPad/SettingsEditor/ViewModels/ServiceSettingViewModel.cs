@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,11 +18,12 @@ namespace KeyPad.SettingsEditor.ViewModels {
 	[Serializable]
 	internal class ServiceSettingViewModel :
 		IObservableViewModel,
+		ISerializable,
 		IDataViewModel<ServiceSetting> {
 
-		[NonSerialized] private UIElement _uiElement;
-		[NonSerialized] private ICalculator<string, object> _hashCalculator;
-		[NonSerialized] private string _initialHash;
+		private UIElement _uiElement;
+		private ICalculator<string, object> _hashCalculator;
+		private string _initialHash;
 		private ServiceSetting _setting;
 
 		public ServiceSettingViewModel(ServiceSetting setting, ICalculator<string, object> hashCalculator) {
@@ -90,6 +92,10 @@ namespace KeyPad.SettingsEditor.ViewModels {
 
 		}
 
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			info.AddValue(nameof(Value), this.Value);
+			info.AddValue(nameof(Name), this.Name);
+		}
 	}
 
 }
