@@ -1,4 +1,5 @@
-﻿using KeyPad.SettingsEditor.Models;
+﻿using KeyPad.Calculators;
+using KeyPad.SettingsEditor.Models;
 using KeyPad.SettingsEditor.UserControls;
 using KeyPad.ViewModels;
 using System;
@@ -13,17 +14,21 @@ using System.Windows.Data;
 
 namespace KeyPad.SettingsEditor.ViewModels {
 
-	internal class ServiceSettingViewModel : IObservableViewModel {
+	[Serializable]
+	internal class ServiceSettingViewModel :
+		IObservableViewModel,
+		IDataViewModel<ServiceSetting> {
 
-		private UIElement _uiElement;
+		[NonSerialized] private UIElement _uiElement;
+		[NonSerialized] private ICalculator<string, object> _hashCalculator;
+		[NonSerialized] private string _initialHash;
 		private ServiceSetting _setting;
-		private string _initialValue;
 
-		public ServiceSettingViewModel(ServiceSetting setting) {
+		public ServiceSettingViewModel(ServiceSetting setting, ICalculator<string, object> hashCalculator) {
 			_setting = setting;
-			_initialValue = _setting.Value;
-
+			_hashCalculator = hashCalculator;
 			CreateUiElement(setting.Name);
+			_initialHash = _hashCalculator.Calculate(this);
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged = delegate { };
@@ -48,7 +53,9 @@ namespace KeyPad.SettingsEditor.ViewModels {
 			}
 		}
 
-		public bool IsDirty => this.Value != _initialValue;
+		//TODO(Logan) -> There is a bug with dirty checking with Service Settings throwing an exception.  It's because of the UI Element.
+		public bool IsDirty => _initialHash != _hashCalculator.Calculate(this);
+		public ServiceSetting ToDataModel() => _setting;
 
 		private void CreateUiElement(string settingName) {
 			UIElement elem = null;

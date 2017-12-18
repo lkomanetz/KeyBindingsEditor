@@ -101,7 +101,6 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 			PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
 		}
 
-		// TODO(Logan) -> There is a bug with saving a keybinding file.  Not sure why but I need to figure it out.
 		private void SaveBindings() {
 			IValidator validator = new KeyBindingValidator(this.Bindings);
 			var results = validator.Validate();

@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using KeyPad.Calculators;
 
 namespace KeyPad.SettingsEditor.ViewModels {
 
@@ -39,13 +40,11 @@ namespace KeyPad.SettingsEditor.ViewModels {
 		public ICommand SaveCommand { get; private set; }
 
 		private void LoadSettings() {
-			if (_serviceSettings.Count > 0)
-				_serviceSettings.Clear();
-
+			if (_serviceSettings.Count > 0) _serviceSettings.Clear();
 			var settings = (IList<ServiceSetting>)_dataManager.Read();
 			_serviceSettings = settings.Select(x => {
-				var vm = new ServiceSettingViewModel(x);
-				vm.PropertyChanged += (sender, e) => PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
+				var vm = new ServiceSettingViewModel(x, new Md5Calculator());
+				//vm.PropertyChanged += (sender, e) => PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
 				return vm;
 			})
 			.ToList();

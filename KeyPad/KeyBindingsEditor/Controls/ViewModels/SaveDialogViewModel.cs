@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Media.Effects;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Text.RegularExpressions;
 
 namespace KeyPad.KeyBindingsEditor.Controls.ViewModels {
 
@@ -58,10 +59,7 @@ namespace KeyPad.KeyBindingsEditor.Controls.ViewModels {
 				return;
 			}
 
-			string modifiedFileName = (!this.FileName.Contains(".txt")) ?
-				this.FileName += ".txt" :
-				this.FileName;
-
+			string modifiedFileName = Regex.Replace(this.FileName, @"\.\w+$", String.Empty);
 			_dlg.DialogResult = true;
 			_dlg.FileName = modifiedFileName;
 			_dlg.Close();
