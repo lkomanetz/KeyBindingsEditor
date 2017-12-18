@@ -11,9 +11,7 @@ using System.Windows.Input;
 
 namespace KeyPad.SettingsEditor.UserControls.ViewModels {
 
-	internal class FilePickerViewModel :
-		IViewModel,
-		IObservableViewModel {
+	internal class FilePickerViewModel : IObservableViewModel {
 
 		private string _fileLocation;
 		private FileType _fileType;

@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace KeyPad.SettingsEditor.ViewModels {
 
-	internal class ServiceSettingsViewModel : IViewModel, IObservableViewModel, IForm {
+	internal class ServiceSettingsViewModel : IFormViewModel, IObservableViewModel, IForm {
 		private IDataManager _dataManager;
 		private IList<ServiceSettingViewModel> _serviceSettings;
 

@@ -16,16 +16,11 @@ namespace KeyPad.SettingsEditor.ViewModels {
 
 	internal class AppSettingsEditorViewModel :
 		IObservableViewModel,
-		IViewModel,
+		IFormViewModel,
 		IForm {
 
-		private IValidator _validator;
 		private IDataManager _settingsManager;
 		private IList<ApplicationSettingViewModel> _settingModels;
-		private bool _initialCloseValue;
-		private bool _initialStartupValue;
-		private string _initialLocationValue;
-		private string _initialProcessNameValue;
 
 		public AppSettingsEditorViewModel(IDataManager settingsDataManager) {
 			var settings = (IList<ApplicationSetting>)settingsDataManager.Read();
@@ -34,9 +29,10 @@ namespace KeyPad.SettingsEditor.ViewModels {
 				.Select(x => new ApplicationSettingViewModel(x, new Md5Calculator()))
 				.ToList();
 			
-			this.SaveCommand = new DelegateCommand<object>((param) => SaveSettings());
+			this.SaveCommand = new DelegateCommand<object>(
+				(param) => SaveSettings(new AppSettingsValidator(_settingModels.Select(x => x.ToDataModel()).ToList()))
+			);
 
-			_validator = new AppSettingsValidator(_settings);
 			Initialize();
 		}
 
@@ -83,8 +79,8 @@ namespace KeyPad.SettingsEditor.ViewModels {
 			}
 		}
 
-		private void SaveSettings() {
-			var results = _validator.Validate();
+		private void SaveSettings(IValidator validator) {
+			var results = validator.Validate();
 			if (results.Any(x => !x.IsSuccess)) {
 				string msg = ValidatorMessageBuilder.Build(results);
 				MessageBox.Show(
@@ -96,7 +92,7 @@ namespace KeyPad.SettingsEditor.ViewModels {
 				return;
 			}
 
-			_settingsManager.Save(_settings);
+			_settingsManager.Save(_settingModels.Select(x => x.ToDataModel()).ToList());
 			SaveCompleted(this, EventArgs.Empty);
 			Initialize();
 		}

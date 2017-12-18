@@ -8,7 +8,7 @@ namespace KeyPad {
 
 	public interface IForm {
 
-		bool IsDirty { get; }
+		//bool IsDirty { get; }
 		event EventHandler<EventArgs> SaveCompleted;
 
 	}

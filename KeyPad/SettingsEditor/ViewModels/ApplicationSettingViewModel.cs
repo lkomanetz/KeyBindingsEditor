@@ -1,5 +1,6 @@
 ﻿using KeyPad.Calculators;
 using KeyPad.SettingsEditor.Models;
+using KeyPad.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,7 +13,9 @@ using System.Threading.Tasks;
 namespace KeyPad.SettingsEditor.ViewModels {
 
 	[Serializable]
-	public class ApplicationSettingViewModel : INotifyPropertyChanged {
+	public class ApplicationSettingViewModel :
+		INotifyPropertyChanged,
+		IDataViewModel<ApplicationSetting> {
 
 		[NonSerialized] private ICalculator<string, object> _hashCalculator;
 		[NonSerialized] private string _initialHash;
@@ -37,6 +40,7 @@ namespace KeyPad.SettingsEditor.ViewModels {
 		}
 
 		public bool IsDirty => _initialHash != _hashCalculator.Calculate(this);
+		public ApplicationSetting ToDataModel() => _setting;
 
 	}
 

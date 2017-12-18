@@ -10,9 +10,7 @@ using System.Windows.Input;
 
 namespace KeyPad.UserControls.Cards.ViewModels {
 
-	internal class CardViewModel :
-		IViewModel,
-		IObservableViewModel {
+	internal class CardViewModel : IFormViewModel, IObservableViewModel {
 
 		public CardViewModel() {
 			this.ToggleCollapseState = new DelegateCommand<object>((param) => this.IsCollapsed = !this.IsCollapsed);
@@ -21,6 +19,7 @@ namespace KeyPad.UserControls.Cards.ViewModels {
 
 		public ICommand ToggleCollapseState { get; private set; }
 		public Visibility ContentVisibility => (_isCollapsed) ? Visibility.Visible : Visibility.Collapsed;
+		public bool IsDirty => false;
 
 		private string _title;
 		public string Title {

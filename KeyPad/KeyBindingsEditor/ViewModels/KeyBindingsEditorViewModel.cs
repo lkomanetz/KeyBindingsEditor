@@ -15,7 +15,7 @@ using KeyPad.KeyBindingsEditor.Controls;
 namespace KeyPad.KeyBindingsEditor.ViewModels {
 
 	internal class KeyBindingsEditorViewModel :
-		IViewModel,
+		IFormViewModel,
 		IObservableViewModel,
 		IForm {
 
@@ -101,6 +101,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 			PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));
 		}
 
+		// TODO(Logan) -> There is a bug with saving a keybinding file.  Not sure why but I need to figure it out.
 		private void SaveBindings() {
 			IValidator validator = new KeyBindingValidator(this.Bindings);
 			var results = validator.Validate();
@@ -117,7 +118,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 			}
 
 			var bindings = this.Bindings
-				.Select(x => new KeyPad.Models.KeyBinding(x.GamepadCode, x.KeyCode))
+				.Select(x => x.ToDataModel())
 				.ToList();
 
 			string fileName = (_file == null) ? GetSaveLocation() : _file.FileName;

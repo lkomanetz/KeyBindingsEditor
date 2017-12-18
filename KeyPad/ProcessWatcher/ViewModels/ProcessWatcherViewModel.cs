@@ -12,9 +12,7 @@ using System.Windows.Media;
 
 namespace KeyPad.ProcessWatcher.ViewModels {
 
-	internal class ProcessWatcherViewModel :
-		IObservableViewModel,
-		IViewModel {
+	internal class ProcessWatcherViewModel : IObservableViewModel {
 
 		private ICommand _stopProcessCommand;
 		private ICommand _startProcessCommand;
@@ -56,7 +54,6 @@ namespace KeyPad.ProcessWatcher.ViewModels {
 
 		public ICommand ButtonCommand => (_isProcessRunning) ? _stopProcessCommand : _startProcessCommand;
 		public Brush StatusColor => (_isProcessRunning) ? Brushes.Green : Brushes.Red;
-		public string Title => throw new NotImplementedException();
 
 		private async void ToggleActionAsync(Action action) {
 			this.ButtonEnabled = false;

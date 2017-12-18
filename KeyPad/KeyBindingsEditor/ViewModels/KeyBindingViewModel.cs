@@ -9,7 +9,9 @@ using KeyPad.ViewModels;
 
 namespace KeyPad.KeyBindingsEditor.ViewModels {
 
-	internal class KeyBindingViewModel : IObservableViewModel {
+	internal class KeyBindingViewModel :
+		IObservableViewModel,
+		IDataViewModel<KeyBinding> {
 
 		private const int ESCAPE_KEY_CODE = 27;
 		private KeyBinding _binding;
@@ -42,6 +44,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 		public bool IsDirty => _binding.KeyboardButton != _startingValue;
 		public string GamepadButton => GamepadButtonToStringConverter.Convert(_binding.GamepadButton);
 		public string KeyboardButton => KeyboardButtonToStringConverter.Convert(_binding.KeyboardButton);
+		public KeyBinding ToDataModel() => _binding;
 
 	}
 

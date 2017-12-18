@@ -89,8 +89,9 @@
       <DependentUpon>Card.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Cards\ViewModels\CardViewModel.cs" />
+    <Compile Include="ViewModels\IDataViewModel.cs" />
     <Compile Include="ViewModels\IObservableViewModel.cs" />
-    <Compile Include="ViewModels\IViewModel.cs" />
+    <Compile Include="ViewModels\IFormViewModel.cs" />
     <Compile Include="DataManager\KeyBindingFileManager.cs" />
     <Compile Include="KeyBindingsEditor\Controls\DisabledArrowsListView.cs" />
     <Compile Include="KeyBindingsEditor\Converters\WidthConverter.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="TriggerActions\ParameterizedCommand.cs" />
     <Compile Include="ValidatorMessageBuilder.cs" />
     <Compile Include="ValidatorResult.cs" />
+    <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="ViewModels\MainWindowDesignerViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ProcessWatcher\ViewModels\ProcessWatcherViewModel.cs" />

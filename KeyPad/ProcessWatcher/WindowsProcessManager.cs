@@ -15,7 +15,6 @@ namespace KeyPad.ProcessWatcher {
 
 		private const long THREAD_INTERVAL_MILLIS = 500L;
 		private static object lockObj = new Object();
-		private IList<ApplicationSetting> _settings;
 		private string _processName;
 		private string _exeLocation;
 		private Thread _watcherThread;

@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace KeyPad.ViewModels {
 
-	public interface IObservableViewModel : INotifyPropertyChanged {
-
-	}
+	public interface IObservableViewModel :
+		IViewModel,
+		INotifyPropertyChanged { }
 
 }

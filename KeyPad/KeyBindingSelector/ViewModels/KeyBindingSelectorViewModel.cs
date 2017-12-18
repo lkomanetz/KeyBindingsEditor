@@ -14,7 +14,7 @@ using System.Windows;
 namespace KeyPad.KeyBindingSelector.ViewModels {
 
 	internal class KeyBindingSelectorViewModel :
-		IViewModel,
+		IFormViewModel,
 		IObservableViewModel {
 
 		private const string PROPERTY_NAME = "keybindings_location";
@@ -46,6 +46,7 @@ namespace KeyPad.KeyBindingSelector.ViewModels {
 		public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
 		public string Title => String.Empty;
+		public bool IsDirty => false;
 
 		private IList<KeyBindingFile> _files;
 		public IList<KeyBindingFile> Files {
