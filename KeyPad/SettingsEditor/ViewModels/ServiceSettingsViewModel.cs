@@ -42,6 +42,14 @@ namespace KeyPad.SettingsEditor.ViewModels {
 		private void LoadSettings() {
 			if (_serviceSettings.Count > 0) _serviceSettings.Clear();
 			var settings = (IList<ServiceSetting>)_dataManager.Read();
+
+			/*
+			 * The ServiceSettingViewModel has a UIElement property that is creating at runtime.
+			 * The UIElement binds to the ServiceSettingViewModel's Value property.  When the value
+			 * property's content changes it'll call ServiceSettingViewModel.PropertyChanged.  I'm
+			 * subscribing to that event and calling this class's PropertyChanged so I can enable
+			 * or disable the Save button in the ServiceSettings.xaml page.
+			 */
 			_serviceSettings = settings.Select(x => {
 				var vm = new ServiceSettingViewModel(x, new Md5Calculator());
 				vm.PropertyChanged += (sender, e) => PropertyChanged(this, new PropertyChangedEventArgs(nameof(IsDirty)));

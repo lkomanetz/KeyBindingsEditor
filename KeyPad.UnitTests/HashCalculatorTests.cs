@@ -1,4 +1,7 @@
 ﻿using KeyPad.Calculators;
+using KeyPad.SettingsEditor;
+using KeyPad.SettingsEditor.Models;
+using KeyPad.SettingsEditor.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -40,6 +43,27 @@ namespace KeyPad.UnitTests {
 			string secondHash = _calculator.Calculate(testObj);
 
 			Assert.IsTrue(firstHash == secondHash);
+		}
+
+		[TestMethod]
+		public void ApplicationSettingViewModelWillSerialize() {
+			ApplicationSettingViewModel vm = new ApplicationSettingViewModel(
+				new ApplicationSetting() { Name = "Test", Display = "Test", Value = 5 },
+				_calculator
+			);
+
+			string hash = _calculator.Calculate(vm);
+			Assert.IsTrue(!String.IsNullOrEmpty(hash));
+		}
+
+		[TestMethod]
+		public void ServiceSettingViewModelWillSerialize() {
+			ServiceSettingViewModel vm = new ServiceSettingViewModel(
+				new ServiceSetting(ServiceSettingNames.JOYSTICK_PORT_SETTING, "Value"),
+				_calculator
+			);
+			string hash = _calculator.Calculate(vm);
+			Assert.IsTrue(!String.IsNullOrEmpty(hash));
 		}
 
 		[Serializable]

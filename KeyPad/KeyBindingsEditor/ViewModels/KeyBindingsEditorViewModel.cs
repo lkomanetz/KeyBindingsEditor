@@ -11,6 +11,7 @@ using System.Windows.Input;
 using Microsoft.Win32;
 using KeyPad.DataManager;
 using KeyPad.KeyBindingsEditor.Controls;
+using KeyPad.Calculators;
 
 namespace KeyPad.KeyBindingsEditor.ViewModels {
 
@@ -44,7 +45,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 
 			if (file != null) {
 				_bindings = file.Bindings
-					.Select(x => new KeyBindingViewModel(x))
+					.Select(x => new KeyBindingViewModel(x, new Md5Calculator()))
 					.ToArray();
 			}
 			else
@@ -149,7 +150,7 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 			_bindings = new KeyBindingViewModel[15];
 			for (int i = 0; i < _bindings.Length; ++i) {
 				Models.KeyBinding binding = new Models.KeyBinding((GamepadButton)i);
-				_bindings[i] = new KeyBindingViewModel(binding);
+				_bindings[i] = new KeyBindingViewModel(binding, new Md5Calculator());
 			}
 		}
 

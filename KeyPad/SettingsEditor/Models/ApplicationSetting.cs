@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace KeyPad.SettingsEditor.Models {
 
-	[Serializable]
 	[DataContract]
 	public class ApplicationSetting {
 

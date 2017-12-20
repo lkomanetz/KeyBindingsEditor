@@ -10,12 +10,12 @@ namespace KeyPad.KeyBindingsEditor.ViewModels {
 	internal class KeyBindingsDesignViewModel {
 
 		internal KeyBindingViewModel[] Bindings => new KeyBindingViewModel[] {
-			new KeyBindingViewModel(new KeyBinding(GamepadButton.A, 97)),
-			new KeyBindingViewModel(new KeyBinding(GamepadButton.B, 98)),
-			new KeyBindingViewModel(new KeyBinding(GamepadButton.LeftShoulder, 113)),
-			new KeyBindingViewModel(new KeyBinding(GamepadButton.RightShoulder, 114)),
-			new KeyBindingViewModel(new KeyBinding(GamepadButton.Menu, -1)),
-			new KeyBindingViewModel(new KeyBinding(GamepadButton.DpadLeft, 37))
+			new KeyBindingViewModel(new KeyBinding(GamepadButton.A, 97), null),
+			new KeyBindingViewModel(new KeyBinding(GamepadButton.B, 98), null),
+			new KeyBindingViewModel(new KeyBinding(GamepadButton.LeftShoulder, 113), null),
+			new KeyBindingViewModel(new KeyBinding(GamepadButton.RightShoulder, 114), null),
+			new KeyBindingViewModel(new KeyBinding(GamepadButton.Menu, -1), null),
+			new KeyBindingViewModel(new KeyBinding(GamepadButton.DpadLeft, 37), null)
 		};
 
 	}

@@ -3,12 +3,8 @@ using KeyPad.SettingsEditor.Models;
 using KeyPad.SettingsEditor.UserControls;
 using KeyPad.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -55,9 +51,13 @@ namespace KeyPad.SettingsEditor.ViewModels {
 			}
 		}
 
-		//TODO(Logan) -> There is a bug with dirty checking with Service Settings throwing an exception.  It's because of the UI Element.
 		public bool IsDirty => _initialHash != _hashCalculator.Calculate(this);
 		public ServiceSetting ToDataModel() => _setting;
+
+		public void GetObjectData(SerializationInfo info, StreamingContext context) {
+			info.AddValue(nameof(Value), this.Value);
+			info.AddValue(nameof(Name), this.Name);
+		}
 
 		private void CreateUiElement(string settingName) {
 			UIElement elem = null;
@@ -92,10 +92,6 @@ namespace KeyPad.SettingsEditor.ViewModels {
 
 		}
 
-		public void GetObjectData(SerializationInfo info, StreamingContext context) {
-			info.AddValue(nameof(Value), this.Value);
-			info.AddValue(nameof(Name), this.Name);
-		}
 	}
 
 }

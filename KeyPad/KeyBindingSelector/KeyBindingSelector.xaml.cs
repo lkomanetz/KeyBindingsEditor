@@ -13,16 +13,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace KeyPad.KeyBindingSelector
-{
+namespace KeyPad.KeyBindingSelector {
+
 	/// <summary>
 	/// Interaction logic for KeyBindingSelector.xaml
 	/// </summary>
-	public partial class KeyBindingSelector : UserControl
-	{
-		public KeyBindingSelector()
-		{
+	public partial class KeyBindingSelector : UserControl {
+
+		public KeyBindingSelector() {
 			InitializeComponent();
 		}
+
 	}
+
 }
